@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Verifying email...</title>
+  </head>
+  <body>
+    <p>Verifying your email...</p>
+    <script>
+      const hash = window.location.hash.substring(1);
+      const params = new URLSearchParams(hash);
+      const token = params.get("access_token");
+      const type = params.get("type");
+
+      if (token) {
+        fetch(`/api/auth/verify?token=${token}&type=${type}`)
+          .then((res) => res.json())
+          .then((data) => {
+            if (data.msg === "Email verified successfully") {
+              document.body.innerHTML =
+                "<p>✓ Email verified! You can now login.</p>";
+            } else {
+              document.body.innerHTML =
+                "<p>✗ Verification failed: " + data.msg + "</p>";
+            }
+          });
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,154 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User{
+  id String @id @default(cuid())
+  email String @unique
+  password String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  resumes Resume[]
+  jobDescriptions JobDescription[]
+}
+
+model Resume{
+  id String @id @default(cuid())
+  userId String
+  user User @relation(fields: [userId], references: [id],onDelete: Cascade)
+
+  // Personal Information
+  name String?
+  email String?
+  phone String?
+  summary String?
+  yearsOfExperience Int?
+
+  // Work Experience
+  experience Experience[]
+
+  // Education
+  education Education[]
+
+  // Projects
+  projects Project[]
+
+  // Skills - Now relationship instead of array
+  skills Skill[]
+
+  // Metadata
+  originalFileName String?
+  imageKitUrl String?
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+}
+
+model Experience {
+  id String @id @default(cuid())
+  resumeId String
+  resume Resume @relation(fields: [resumeId], references: [id], onDelete: Cascade)
+
+  title String?
+  company String?
+  startDate String?
+  endDate String?
+  description String?
+  yearsOfExperience Int?
+  responsibilities String[]
+
+  @@index([resumeId])
+}
+
+model Education {
+  id String @id @default(cuid())
+  resumeId String
+  resume Resume @relation(fields: [resumeId], references: [id], onDelete: Cascade)
+
+  degree String?
+  institution String?
+  startDate String?
+  endDate String?
+  details String?
+
+  @@index([resumeId])
+}
+
+model Project {
+  id String @id @default(cuid())
+  resumeId String
+  resume Resume @relation(fields: [resumeId], references: [id], onDelete: Cascade)
+
+  name String?
+  description String?
+  techStack String[]
+  responsibilities String[]
+
+  @@index([resumeId])
+}
+
+model Skill {
+  id String @id @default(cuid())
+  resumeId String
+  resume Resume @relation(fields: [resumeId], references: [id], onDelete: Cascade)
+
+  name String @db.VarChar(200)
+
+  createdAt DateTime @default(now())
+
+  @@unique([resumeId, name])
+  @@index([resumeId])
+  @@index([name])
+}
+
+model JobDescription {
+  id String @id @default(cuid())
+  userId String
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // Job Requirements
+  requirements String[]
+
+  // Skills Required
+  skills JobDescriptionSkill[]
+
+  // Education Requirements - Multiple degrees
+  degrees String[]
+
+  // Years of Experience
+  yearsOfExperience Int?
+
+  // Metadata
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+}
+
+model JobDescriptionSkill {
+  id String @id @default(cuid())
+  jobDescriptionId String
+  jobDescription JobDescription @relation(fields: [jobDescriptionId], references: [id], onDelete: Cascade)
+
+  name String @db.VarChar(200)
+
+  createdAt DateTime @default(now())
+
+  @@unique([jobDescriptionId, name])
+  @@index([jobDescriptionId])
+  @@index([name])
+}
