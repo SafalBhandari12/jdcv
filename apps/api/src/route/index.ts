@@ -11,5 +11,4 @@ routes.use("/auth", authRouter);
 routes.use("/resume", resumeRouter);
 routes.use("/skills", skillsRouter);
 routes.use("/job-description", jobDescriptionRouter);
-
 export default routes;
