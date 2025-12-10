@@ -1,11 +1,13 @@
 import "./config/loadEnv.js";
 import express from "express";
 import helmet from "helmet";
+import cors from "cors";
 
 import routes from "./route/index.js";
 
 const app = express();
 app.use(helmet());
+app.use(cors({ origin: "*" }));
 app.use(express.json());
 
 const PORT = process.env.PORT || 5000;
