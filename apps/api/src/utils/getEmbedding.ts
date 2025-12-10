@@ -16,6 +16,10 @@ export async function getEmbedding(text: string): Promise<number[]> {
       ? { text } // dev: Python /embeddings - { text }
       : { inputs: text }; // prod: HF router - { inputs }
 
+    if (!isDev && !process.env.HF_TOKEN) {
+      throw new Error("HF_TOKEN is required in production for embeddings");
+    }
+    
     if (!isDev && process.env.HF_TOKEN) {
       headers.Authorization = `Bearer ${process.env.HF_TOKEN}`;
     }
@@ -24,6 +28,7 @@ export async function getEmbedding(text: string): Promise<number[]> {
       method: "POST",
       headers,
       body: JSON.stringify(body),
+      signal: AbortSignal.timeout(30000), // 30 second timeout
     });
 
     if (!response.ok) {

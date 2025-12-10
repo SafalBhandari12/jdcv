@@ -1,17 +1,19 @@
 import "../config/loadEnv.js";
 
-const OUMI_BASE_URL = process.env.OUMI_BASE_URL ?? "http://127.0.0.1:8000";
+const OUMI_BASE_URL = process.env.OUMI_BASE_URL;
 
 if (!OUMI_BASE_URL) {
-  console.warn("OUMI_BASE_URL is not set; OUMI calls will fail.");
-}
+   console.warn("OUMI_BASE_URL is not set; OUMI calls will fail.");
+ }
+
+ const finalUrl = OUMI_BASE_URL ?? "http://127.0.0.1:8000";
 
 export async function callOumi(prompt: string): Promise<string> {
   if (!prompt?.trim()) {
     throw new Error("Prompt is required");
   }
 
-  const res = await fetch(`${OUMI_BASE_URL}/chat`, {
+  const res = await fetch(`${finalUrl}/chat`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

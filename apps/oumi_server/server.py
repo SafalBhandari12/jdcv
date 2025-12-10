@@ -67,7 +67,7 @@ def embeddings(req: EmbeddingRequest) -> EmbeddingResponse:
     "Content-Type": "application/json",
   }
   payload = {"inputs": req.text}
-  r = requests.post(url, headers=headers, json=payload)
+  r = requests.post(url, headers=headers, json=payload, timeout=30)
   r.raise_for_status()
   data = r.json()  # HF returns the embedding array
   return EmbeddingResponse(embedding=data)
