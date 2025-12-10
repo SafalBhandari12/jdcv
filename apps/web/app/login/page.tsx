@@ -3,16 +3,27 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { Mail, Lock, ArrowRight, Eye, EyeOff } from "lucide-react";
 import api from "@/app/utils/axiosinstance";
+import AuthNavbar from "@/components/AuthNavbar";
 
 export default function LoginPage() {
   const router = useRouter();
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const onLoginClick = async () => {
+    if (!email || !password) {
+      setError("Please fill in all fields");
+      return;
+    }
+
     try {
+      setLoading(true);
+      setError("");
       const res = await api.post("/auth/login", { email, password });
 
       const session = res.data.session;
@@ -21,65 +32,138 @@ export default function LoginPage() {
       }
 
       router.push("/dashboard");
-    } catch (err) {
-      console.log(err);
+    } catch (err: any) {
+      setError(err.response?.data?.error || "Login failed. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
-      <div className="max-w-md w-full mx-auto bg-white shadow-2xl rounded-2xl p-8 border border-gray-100">
-        <div className="text-center mb-6">
-          <h2 className="text-3xl font-bold bg-gradient-to-r from-blue-700 to-purple-700 bg-clip-text text-transparent mb-2">Welcome Back</h2>
-          <p className="text-gray-600 text-sm font-medium">Sign in to continue your journey</p>
-        </div>
-
-        <div className="flex flex-col gap-5">
-          <div className="flex flex-col gap-2">
-            <label htmlFor="email" className="text-sm font-semibold text-gray-700">Email</label>
-            <input
-              id="email"
-              type="email"
-              placeholder="m@example.com"
-              className="border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 hover:border-gray-400 text-black"
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </div>
-
-          <div className="flex flex-col gap-2">
-            <div className="flex justify-between items-center">
-              <label htmlFor="password" className="text-sm font-semibold text-gray-700">Password</label>
-              <Link href="/forgot-password" className="text-xs text-blue-600 hover:text-blue-700 hover:underline font-medium">
-                Forgot password?
-              </Link>
+    <>
+      <AuthNavbar />
+      <div className='min-h-screen bg-[#0a0a0a] flex items-center justify-center px-4 pt-20'>
+        <div className='w-full max-w-md'>
+          {/* Card */}
+          <div className='bg-gray-900/50 border border-gray-800 rounded-2xl p-8 backdrop-blur-sm'>
+            {/* Header */}
+            <div className='mb-8'>
+              <h1 className='text-3xl font-bold text-white mb-2'>
+                Welcome back
+              </h1>
+              <p className='text-gray-400'>
+                Sign in to your account to continue
+              </p>
             </div>
 
-            <input
-              id="password"
-              type="password"
-              className="border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 hover:border-gray-400 text-black"
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
+            {/* Error Message */}
+            {error && (
+              <div className='mb-6 p-4 bg-red-500/10 border border-red-500/20 rounded-lg'>
+                <p className='text-red-400 text-sm'>{error}</p>
+              </div>
+            )}
+
+            {/* Form */}
+            <form
+              id='login-form'
+              onSubmit={(e) => {
+                e.preventDefault();
+                onLoginClick();
+              }}
+              className='space-y-5 mb-8'
+            >
+              {/* Email Field */}
+              <div>
+                <label
+                  htmlFor='email'
+                  className='block text-sm font-medium text-gray-300 mb-2'
+                >
+                  Email Address
+                </label>
+                <div className='relative'>
+                  <Mail
+                    className='absolute left-3 top-3 text-gray-500'
+                    size={18}
+                  />
+                  <input
+                    id='email'
+                    type='email'
+                    placeholder='you@example.com'
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className='w-full pl-10 pr-4 py-3 bg-gray-800/50 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-white/20 focus:border-transparent transition'
+                  />
+                </div>
+              </div>
+
+              {/* Password Field */}
+              <div>
+                <label
+                  htmlFor='password'
+                  className='block text-sm font-medium text-gray-300 mb-2'
+                >
+                  Password
+                </label>
+                <div className='relative'>
+                  <Lock
+                    className='absolute left-3 top-3 text-gray-500'
+                    size={18}
+                  />
+                  <input
+                    id='password'
+                    type={showPassword ? "text" : "password"}
+                    placeholder='••••••••'
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className='w-full pl-10 pr-10 py-3 bg-gray-800/50 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-white/20 focus:border-transparent transition'
+                  />
+                  <button
+                    type='button'
+                    onClick={() => setShowPassword(!showPassword)}
+                    className='absolute right-3 top-3 text-gray-500 hover:text-gray-400'
+                  >
+                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  </button>
+                </div>
+              </div>
+            </form>
+
+            {/* Login Button */}
+            <button
+              type='submit'
+              form='login-form'
+              disabled={loading}
+              className='w-full py-3 bg-white text-gray-900 font-semibold rounded-lg hover:bg-gray-100 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2'
+            >
+              {loading ? "Signing in..." : "Sign In"}
+              {!loading && <ArrowRight size={18} />}
+            </button>
+
+            {/* Divider */}
+            <div className='my-6 flex items-center gap-3'>
+              <div className='flex-1 h-px bg-gray-700'></div>
+              <span className='text-sm text-gray-500'>or</span>
+              <div className='flex-1 h-px bg-gray-700'></div>
+            </div>
+
+            {/* Signup Link */}
+            <p className='text-center text-gray-400 text-sm'>
+              Don't have an account?{" "}
+              <Link
+                href='/register'
+                className='text-white font-semibold hover:underline'
+              >
+                Create one
+              </Link>
+            </p>
           </div>
 
-          <button
-            className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white px-4 py-3 rounded-lg font-semibold hover:from-blue-700 hover:to-purple-700 transition duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
-            type="button"
-            onClick={onLoginClick}
-          >
-            Sign In
-          </button>
-
-          <p className="text-center text-sm text-gray-600 mt-4 font-medium">
-            Don&apos;t have an account?{" "}
-            <Link href="/register" className="text-blue-600 hover:text-blue-700 font-semibold hover:underline">
-              Sign up
-            </Link>
+          {/* Footer */}
+          <p className='text-center text-gray-500 text-xs mt-6'>
+            By signing in, you agree to our Terms of Service and Privacy Policy
           </p>
         </div>
       </div>
-    </div>
+    </>
   );
 }
