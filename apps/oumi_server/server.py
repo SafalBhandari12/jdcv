@@ -69,5 +69,10 @@ def embeddings(req: EmbeddingRequest) -> EmbeddingResponse:
   payload = {"inputs": req.text}
   r = requests.post(url, headers=headers, json=payload, timeout=30)
   r.raise_for_status()
-  data = r.json()  # HF returns the embedding array
+  data = r.json()  # HF returns the embedding(s)
+  # Normalize to a 1D vector for a single text input.
+  if isinstance(data, list) and data and isinstance(data[0], list):
+    # Peel leading dimensions like [[...]] or [[[...]]] until we get a flat list.
+    while isinstance(data, list) and data and isinstance(data[0], list):
+      data = data[0]
   return EmbeddingResponse(embedding=data)
