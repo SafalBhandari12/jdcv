@@ -1,0 +1,4 @@
+oumi[all]
+fastapi
+uvicorn
+requests
