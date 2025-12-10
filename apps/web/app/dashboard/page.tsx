@@ -6,25 +6,21 @@ import AuthNavbar from "@/components/AuthNavbar";
 import ResumeUpload from "@/components/ResumeUpload";
 import JobDescriptionForm from "@/components/JobDescriptionForm";
 import ResultsView from "@/components/ResultsView";
+import { useAuth } from "@/hooks/useAuth";
 import { Upload, Search, BarChart3 } from "lucide-react";
 
 export default function DashboardPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  useAuth(); // Check authentication on mount
   const [activeTab, setActiveTab] = useState<"upload" | "find" | "results">(
     "upload"
   );
   const [resumesUploaded, setResumesUploaded] = useState(false);
   const [hasResults, setHasResults] = useState(false);
+  const [matchedCandidates, setMatchedCandidates] = useState<any[]>([]);
 
   useEffect(() => {
-    // Check if user is authenticated
-    const session = localStorage.getItem("session");
-    if (!session) {
-      router.push("/login");
-      return;
-    }
-
     // Check if there's a tab parameter in URL
     const tab = searchParams.get("tab");
     if (tab === "upload" || tab === "find") {
@@ -36,7 +32,8 @@ export default function DashboardPage() {
     setResumesUploaded(true);
   };
 
-  const handleJobDescriptionSuccess = () => {
+  const handleJobDescriptionSuccess = (candidates: any[]) => {
+    setMatchedCandidates(candidates);
     setHasResults(true);
     setActiveTab("results");
   };
@@ -151,7 +148,10 @@ export default function DashboardPage() {
                   Review the candidates ranked by their match score to your job
                   description.
                 </p>
-                <ResultsView onReset={handleReset} />
+                <ResultsView
+                  candidates={matchedCandidates}
+                  onReset={handleReset}
+                />
               </div>
             )}
           </div>

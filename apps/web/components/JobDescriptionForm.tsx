@@ -5,7 +5,7 @@ import { X, Plus, AlertCircle, CheckCircle2 } from "lucide-react";
 import api from "@/app/utils/axiosinstance";
 
 interface JobDescriptionFormProps {
-  onSuccess: () => void;
+  onSuccess: (candidates: any[]) => void;
   onNext: () => void;
 }
 
@@ -82,10 +82,12 @@ export default function JobDescriptionForm({
         skills,
         degrees: degrees.length > 0 ? degrees : undefined,
       });
+      console.log("user has submitted data");
+      console.log(res.data);
 
       setMatchedCandidates(res.data.enrichedVectorResults || []);
       setSubmitted(true);
-      onSuccess();
+      onSuccess(res.data.enrichedVectorResults || []);
     } catch (err: any) {
       let errorMessage = "Failed to submit job description";
       if (err.response?.data?.error) {

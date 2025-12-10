@@ -13,7 +13,19 @@ export default function AuthNavbar() {
   useEffect(() => {
     const session = localStorage.getItem("session");
     setIsAuthenticated(!!session);
-  }, []);
+
+    // Listen for storage changes (logout from other tabs)
+    const handleStorageChange = () => {
+      const updatedSession = localStorage.getItem("session");
+      setIsAuthenticated(!!updatedSession);
+      if (!updatedSession && window.location.pathname.includes("/dashboard")) {
+        router.push("/login");
+      }
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
+  }, [router]);
 
   const handleLogout = () => {
     localStorage.removeItem("session");

@@ -1,4 +1,5 @@
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 const api = axios.create({
   baseURL: "http://localhost:5000/api",
@@ -23,5 +24,21 @@ api.interceptors.request.use((config) => {
   }
   return config;
 });
+
+// Handle 401 errors - token expired
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      // Token expired or invalid
+      if (typeof window !== "undefined") {
+        localStorage.removeItem("session");
+        // Redirect to login
+        window.location.href = "/login";
+      }
+    }
+    return Promise.reject(error);
+  }
+);
 
 export default api;

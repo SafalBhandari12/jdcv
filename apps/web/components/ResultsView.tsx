@@ -17,22 +17,24 @@ interface Candidate {
 }
 
 interface ResultsViewProps {
+  candidates: Candidate[];
   onReset: () => void;
 }
 
-export default function ResultsView({ onReset }: ResultsViewProps) {
-  const [candidates, setCandidates] = useState<Candidate[]>([]);
-  const [loading, setLoading] = useState(true);
+export default function ResultsView({
+  candidates: initialCandidates,
+  onReset,
+}: ResultsViewProps) {
+  const [candidates, setCandidates] = useState<Candidate[]>(initialCandidates);
+  const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState<"similarity" | "experience">(
     "similarity"
   );
 
   useEffect(() => {
-    // In a real app, you'd fetch the results from API
-    // For now, we'll simulate loading
-    setLoading(false);
-  }, []);
+    setCandidates(initialCandidates);
+  }, [initialCandidates]);
 
   const filteredCandidates = candidates
     .filter(
