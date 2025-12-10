@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import DarkVeil from "../components/ui/darkVeil";
+import AuthNavbar from "../components/AuthNavbar";
 import {
   ArrowRight,
   Search,
@@ -14,25 +15,7 @@ export default function Home() {
   return (
     <main className='min-h-screen bg-[#0a0a0a] text-white'>
       {/* Navigation */}
-      <nav className='fixed top-0 w-full z-50 bg-[#0a0a0a]/80 border-b border-gray-800 backdrop-blur-md'>
-        <div className='max-w-7xl mx-auto px-8 py-4 flex items-center justify-between'>
-          <div className='text-2xl font-bold text-white'>matchMinds</div>
-          <div className='flex items-center gap-6'>
-            <Link
-              href='/login'
-              className='text-sm font-medium text-gray-300 hover:text-white transition-colors'
-            >
-              Login
-            </Link>
-            <Link
-              href='/register'
-              className='px-6 py-2 text-sm font-semibold bg-white text-gray-900 rounded hover:bg-gray-100 transition-colors'
-            >
-              Get Started
-            </Link>
-          </div>
-        </div>
-      </nav>
+      <AuthNavbar />
 
       {/* Hero Section - Full Page with Dark Veil Background */}
       <section className='relative w-full min-h-screen flex items-center justify-center overflow-hidden pt-16'>
