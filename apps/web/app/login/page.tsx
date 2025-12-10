@@ -64,7 +64,14 @@ export default function LoginPage() {
             )}
 
             {/* Form */}
-            <div className='space-y-5 mb-8'>
+            <form
+              id='login-form'
+              onSubmit={(e) => {
+                e.preventDefault();
+                onLoginClick();
+              }}
+              className='space-y-5 mb-8'
+            >
               {/* Email Field */}
               <div>
                 <label
@@ -119,11 +126,12 @@ export default function LoginPage() {
                   </button>
                 </div>
               </div>
-            </div>
+            </form>
 
             {/* Login Button */}
             <button
-              onClick={onLoginClick}
+              type='submit'
+              form='login-form'
               disabled={loading}
               className='w-full py-3 bg-white text-gray-900 font-semibold rounded-lg hover:bg-gray-100 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2'
             >

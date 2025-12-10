@@ -36,14 +36,21 @@ export default function ResumeUpload({ onSuccess, onNext }: ResumeUploadProps) {
     }
   };
 
+  const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
+
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
     setDragActive(false);
 
-    const droppedFiles = Array.from(e.dataTransfer.files).filter(
-      (file) => file.type === "application/pdf"
-    );
+    const droppedFiles = Array.from(e.dataTransfer.files).filter((file) => {
+      if (file.type !== "application/pdf") return false;
+      if (file.size > MAX_FILE_SIZE) {
+        setError(`${file.name} exceeds 10MB limit`);
+        return false;
+      }
+      return true;
+    });
 
     if (droppedFiles.length === 0) {
       setError("Please drop PDF files only");
@@ -90,9 +97,9 @@ export default function ResumeUpload({ onSuccess, onNext }: ResumeUploadProps) {
 
         results.push({
           id: res.data.resumeId,
-          name: res.data.extractedDetails.name,
-          email: res.data.extractedDetails.email,
-          extractedDetails: res.data.extractedDetails,
+          name: res.data.extractedDetails?.name ?? "Unknown",
+          email: res.data.extractedDetails?.email ?? "",
+          extractedDetails: res.data.extractedDetails ?? undefined,
         });
 
         onSuccess(res.data.resumeId);
@@ -153,10 +160,7 @@ export default function ResumeUpload({ onSuccess, onNext }: ResumeUploadProps) {
       {/* Error Message */}
       {error && (
         <div className='p-4 bg-red-500/10 border border-red-500/20 rounded-lg flex items-start gap-3'>
-          <AlertCircle
-            className='text-red-400 mt-0.5'
-            size={18}
-          />
+          <AlertCircle className='text-red-400 mt-0.5' size={18} />
           <p className='text-red-400 text-sm'>{error}</p>
         </div>
       )}

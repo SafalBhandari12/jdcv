@@ -77,13 +77,11 @@ export default function JobDescriptionForm({
       setError("");
 
       const res = await api.post("/job-description/submit", {
-        yearsOfExperience: parseInt(yearsOfExperience),
+        yearsOfExperience: parseInt(yearsOfExperience, 10),
         requirements,
         skills,
         degrees: degrees.length > 0 ? degrees : undefined,
       });
-      console.log("user has submitted data");
-      console.log(res.data);
 
       setMatchedCandidates(res.data.enrichedVectorResults || []);
       setSubmitted(true);
@@ -130,10 +128,7 @@ export default function JobDescriptionForm({
       {/* Error Message */}
       {error && (
         <div className='p-4 bg-red-500/10 border border-red-500/20 rounded-lg flex items-start gap-3'>
-          <AlertCircle
-            className='text-red-400  mt-0.5'
-            size={18}
-          />
+          <AlertCircle className='text-red-400  mt-0.5' size={18} />
           <p className='text-red-400 text-sm'>{error}</p>
         </div>
       )}

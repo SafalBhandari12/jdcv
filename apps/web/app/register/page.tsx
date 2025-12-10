@@ -54,13 +54,11 @@ export default function RegisterPage() {
         password,
         confirmPassword,
       });
-      console.log(res);
 
       // Show verification email message
       setSuccess(res.data.msg);
       setIsVerificationPending(true);
     } catch (err: any) {
-      console.log(err);
       let errorMessage = "Registration failed. Please try again.";
       if (err.response?.data?.error) {
         errorMessage =

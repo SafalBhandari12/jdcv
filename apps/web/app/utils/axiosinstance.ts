@@ -2,7 +2,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 
 const api = axios.create({
-  baseURL: "http://localhost:5000/api",
+  baseURL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api",
 });
 
 // Add token to every request

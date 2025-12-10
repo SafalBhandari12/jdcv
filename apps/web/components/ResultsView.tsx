@@ -1,8 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Search, MoreVertical, Download } from "lucide-react";
-import api from "@/app/utils/axiosinstance";
+import { Search, MoreVertical } from "lucide-react";
 
 interface Candidate {
   similarity: number;
