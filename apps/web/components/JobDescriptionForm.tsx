@@ -131,7 +131,7 @@ export default function JobDescriptionForm({
       {error && (
         <div className='p-4 bg-red-500/10 border border-red-500/20 rounded-lg flex items-start gap-3'>
           <AlertCircle
-            className='text-red-400 flex-shrink-0 mt-0.5'
+            className='text-red-400  mt-0.5'
             size={18}
           />
           <p className='text-red-400 text-sm'>{error}</p>
