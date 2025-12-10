@@ -158,7 +158,7 @@ export default function JobDescriptionForm({
             type='text'
             value={currentRequirement}
             onChange={(e) => setCurrentRequirement(e.target.value)}
-            onKeyPress={(e) => e.key === "Enter" && addRequirement()}
+            onKeyDown={(e) => e.key === "Enter" && addRequirement()}
             placeholder='Add a requirement and press Enter'
             className='flex-1 px-4 py-3 bg-gray-800/50 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-white/20'
           />
@@ -202,7 +202,7 @@ export default function JobDescriptionForm({
             type='text'
             value={currentSkill}
             onChange={(e) => setCurrentSkill(e.target.value)}
-            onKeyPress={(e) => e.key === "Enter" && addSkill()}
+            onKeyDown={(e) => e.key === "Enter" && addSkill()}
             placeholder='Add a skill and press Enter'
             className='flex-1 px-4 py-3 bg-gray-800/50 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-white/20'
           />
@@ -244,7 +244,7 @@ export default function JobDescriptionForm({
             type='text'
             value={currentDegree}
             onChange={(e) => setCurrentDegree(e.target.value)}
-            onKeyPress={(e) => e.key === "Enter" && addDegree()}
+            onKeyDown={(e) => e.key === "Enter" && addDegree()}
             placeholder='e.g., Bachelor of Science in Computer Science'
             className='flex-1 px-4 py-3 bg-gray-800/50 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-white/20'
           />

@@ -231,13 +231,16 @@ export default function RegisterPage() {
                       </button>
                     </div>
                     {password.length > 0 && (
-                      <div className='mt-2 flex gap-1'>
-                        <div
-                          className={`h-1 flex-1 rounded ${password.length >= 6 ? "bg-green-500" : "bg-gray-700"}`}
-                        ></div>
-                        <div
-                          className={`h-1 flex-1 rounded ${password.length >= 8 ? "bg-green-500" : "bg-gray-700"}`}
-                        ></div>
+                      <div className='mt-2'>
+                        <div className='flex gap-1 mb-1'>
+                          <div
+                            className={`h-1 flex-1 rounded ${password.length >= 6 ? "bg-green-500" : "bg-gray-700"}`}
+                          ></div>
+                          <div
+                            className={`h-1 flex-1 rounded ${password.length >= 8 ? "bg-green-500" : "bg-gray-700"}`}
+                          ></div>
+                        </div>
+                        <p className='text-xs text-gray-400 capitalize'>{passwordStrength}</p>
                       </div>
                     )}
                   </div>
