@@ -42,14 +42,23 @@ resumeRouter.post(
       const text = await parsePdf(req.file.buffer);
 
       // Upload to ImageKit
+      const uploadingStart = Date.now();
       const imageKitResult = await ImageKit.upload({
         file: req.file.buffer,
         fileName: req.file.originalname + "-" + randomUUID(),
         folder: "/resumes",
       });
+      console.log(
+        "ImageKit upload time:",
+        (Date.now() - uploadingStart) / 1000,
+        "seconds"
+      );
 
       // Extract details using LLM
+      console.log("Raw Text", text);
       const parsedData = await extractDetailsFromResume(text);
+
+      console.log("parsed data from resume", parsedData);
 
       // Combine all responsibilities from experience records
       const allResponsibilities = (parsedData.experience || [])
@@ -57,7 +66,13 @@ resumeRouter.post(
         .join(", ");
 
       // Generate embedding from combined responsibilities
+      const embeddingStart = Date.now();
       const resEmbedding = await getEmbedding(allResponsibilities);
+      console.log(
+        "Embedding generation time:",
+        (Date.now() - embeddingStart) / 1000,
+        "seconds"
+      );
 
       // Save to database
       const resume = await prisma.resume.create({

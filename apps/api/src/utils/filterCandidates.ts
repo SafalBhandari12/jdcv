@@ -104,14 +104,20 @@ export async function filterCandidates(
         gte: jobYOE,
       };
     }
+    console.log(whereClause);
     console.log(normalizedJobDegrees);
 
-    // Filter by degrees if specified (resume must have at least one matching education)
-    if (normalizedJobDegrees.length > 0) {
+    // Extract just the degree types for database filtering (e.g., ["bachelor", "master"])
+    const jobDegreeTypes = normalizedJobDegrees.map(
+      (degree) => degree.split(" in ")[0]?.toLowerCase() || ""
+    );
+
+    // Filter by degrees if specified - match on degree type only (more flexible)
+    if (jobDegreeTypes.length > 0) {
       whereClause.education = {
         some: {
           degree: {
-            in: normalizedJobDegrees,
+            contains: "",
             mode: "insensitive",
           },
         },
@@ -136,9 +142,12 @@ export async function filterCandidates(
       where: whereClause,
       include: {
         skills: true,
+        education: true,
       },
       take: limit * 2, // Fetch more to account for filtering during processing
     });
+
+    console.log(resumes);
 
     const matches: CandidateMatch[] = [];
 
@@ -163,8 +172,21 @@ export async function filterCandidates(
         ).length;
       }
 
-      // Include candidates who have partial skill match
-      if (skillMatches > 0) {
+      // Validate degree match at application level
+      let degreeMatches = 0;
+      if (jobDegreeTypes.length > 0 && resume.education) {
+        const resumeDegreeTypes = resume.education.map((edu) => {
+          const normalized = normalizeDegreetype(edu.degree || "");
+          return normalized.split(" in ")[0]?.toLowerCase() || "";
+        });
+
+        degreeMatches = jobDegreeTypes.filter((jobDegType) =>
+          resumeDegreeTypes.includes(jobDegType)
+        ).length;
+      }
+
+      // Include candidates who match on skills or degree
+      if (skillMatches > 0 || degreeMatches > 0) {
         matches.push({
           resumeId: resume.id,
           name: resume.name || null,
@@ -180,6 +202,7 @@ export async function filterCandidates(
 
     // Sort by skill matches descending
     matches.sort((a, b) => b.skillMatches - a.skillMatches);
+    console.log("Filtered Matches:", matches);
 
     // Return only the limited number of candidates
     return matches.slice(0, limit);

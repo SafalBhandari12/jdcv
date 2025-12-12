@@ -46,12 +46,20 @@ interface ResumeData {
 export default async function extractDetailsFromResume(
   rawText: string
 ): Promise<ResumeData> {
+  const resumeExtractionStart = Date.now();
+  console.log("Starting resume extraction...");
+
   const response = await ai.models.generateContent({
     model: "gemini-2.5-flash",
     contents: resumeParsingPrompt(rawText),
   });
-  console.log(response.text);
+  console.log(
+    "Resume extraction time:",
+    (Date.now() - resumeExtractionStart) / 1000,
+    "seconds"
+  );
   if (!response.text) throw new Error("No response from AI");
+  console.log("AI Response:", response.text);
   const responseJson: ResumeData = JSON.parse(response.text);
   return responseJson;
 }

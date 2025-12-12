@@ -1,124 +1,281 @@
 export const resumeParsingPrompt = (rawText: string): string => {
   return `
+Return only valid JSON that exactly matches the ParsedResume schema described below. Do NOT add or remove fields, explanations, comments, code fences, markdown, or any text outside the JSON. The output must be a pure JSON object that can be parsed by JSON.parse() with no trailing characters. If a value cannot be determined with reasonable confidence, use null. Dates must follow ISO 8601 (full datetime with Z when possible, or "YYYY-MM-DD", "YYYY-MM", or "YYYY"). For fuzzy dates, use the FlexibleDate structure. Trim all strings and deduplicate lists. Do not fabricate information.- DO NOT wrap the output in \`\`\`json, \`\`\` or any other delimiters
 
-Return only valid JSON that exactly matches the schema below. Do NOT add or remove fields, explanations, comments, code fences, markdown formatting, or any text outside the JSON. The output must be a pure JSON object that can be directly parsed using JSON.parse(). If a value cannot be determined with reasonable confidence, use null. Dates must follow ISO 8601 (YYYY-MM-DD, YYYY-MM, or YYYY). For ongoing roles, set endDate to null. Trim all strings and deduplicate lists.
+TOP-LEVEL RULES
 
-JSON Schema (must match exactly):
+Always return a JSON object containing exactly the keys defined in the schema.
+
+id: required string; you may generate a deterministic ID such as "resume_main" if nothing else is known.
+
+If a sub-object is optional and no data exists, use null or empty arrays as required by the schema.
+
+Avoid guessing; when uncertain, use null.
+
+No metadata is required or allowed in output.
+
+SCHEMA (NO METADATA FIELD)
+
+The top-level object must contain exactly these keys:
+
 {
-  "name": "string|null",
-  "email": "string|null",
-  "phone": "string|null",
-  "summary": "string|null",
-  "yearsOfExperience": "number|null",
-  "experience": [
-    {
-      "title": "string|null",
-      "company": "string|null",
-      "startDate": "string|null",
-      "endDate": "string|null",
-      "description": "string|null",
-      "yearsOfExperience": "number|null",
-      "responsibilities": ["string"]
-    }
-  ],
-  "education": [
-    {
-      "degree": "string|null",
-      "institution": "string|null",
-      "startDate": "string|null",
-      "endDate": "string|null",
-      "details": "string|null"
-    }
-  ],
-  "projects": [
-    {
-      "name": "string|null",
-      "description": "string|null",
-      "techStack": ["string"],
-      "responsibilities": ["string"]
-    }
-  ],
-  "skills": ["string"]
+  "id": string,
+  "analysis": ResumeAnalysis,
+  "verification": VerificationFlags,
+  "basics": Basics,
+  "skills": SkillProfile[],
+  "workExperience": WorkExperience[],
+  "education": Education[],
+  "projects": Project[],
+  "certifications": Certification[],
+  "languages": Language[]
 }
 
-Parsing & Normalization Rules:
-1. Output must be ONLY the JSON object. No markdown. No backticks. No code blocks.
-2. name: Proper case if confidently identifiable, else null.
-3. email: Lowercase, must match email format, else null.
-4. phone: Normalize to digits or E.164 (+<country><number>). If ambiguous, digits-only. If missing, null.
-5. summary: Professional summary up to 800 characters or null.
-6. experience:
-   - Most recent first, max 10 items.
-   - startDate/endDate use ISO formats.
-   - Year-only → "YYYY".
-   - Ongoing role → endDate = null.
-   - description ≤ 800 chars.
-   - responsibilities: Action-based tasks, ≤ 200 chars each, deduplicated.
-7. education:
-   - Most recent first, max 10.
-   - Same ISO date rules.
-   - degree: Extract the degree type and field. Format as "[Degree Type] in [Field]" (e.g., "Bachelor in Computer Science", "Master in Business Administration", "PhD in Engineering"). If only degree type is available (e.g., "BSc", "MBA"), format as the full form ("Bachelor of Science", "Master of Business Administration"). If field is available but degree type is unclear, use "Bachelor in [Field]" as default. Normalize variations.
-   - details ≤ 500 chars or null.
-8. projects:
-   - Most relevant/recent first, max 10.
-   - description ≤ 800 chars.
-   - techStack: canonical names, deduplicated, max 50 items total.
-   - responsibilities ≤ 200 chars each.
-9. skills:
-   - Deduplicated canonical names, max 100, ordered by relevance.
-10. Ambiguity policy:
-    - If conflicting data (e.g., two emails), choose most prominent. If unclear, null.
-    - Never guess or fabricate.
-11. Security:
-    - Remove unsafe content like scripts.
-12. Strictness:
-    - If uncertain, return null for that field.
+1. analysis (ResumeAnalysis)
+{
+  "quality": {
+    "score": number,                   // 0–100
+    "level": "low"|"average"|"high"|"exceptional",
+    "hints": ["string"]
+  },
+  "suspicion": {
+    "score": number,                   // 0–100
+    "level": "safe"|"concern"|"suspicious"|"high_risk",
+    "flags": [
+      {
+        "type": "string",
+        "severity": "low"|"medium"|"critical",
+        "description": "string"
+      }
+    ]
+  },
+  "writingStyle": {
+    "actionVerbsRate": number,         // 0.0–1.0
+    "quantificationRate": number,      // 0.0–1.0
+    "clichéCount": number
+  }
+}
 
-Input Wrapper:
+
+Quality level mapping:
+0–40 low, >40–70 average, >70–90 high, >90 exceptional.
+
+2. verification (VerificationFlags)
+{
+  "timeline": {
+    "hasGaps": boolean,
+    "gaps": [
+      {
+        "startDate": IsoDate,
+        "endDate": IsoDate,
+        "durationDays": number
+      }
+    ]
+  },
+  "identity": {
+    "geoConsistency": "match"|"mismatch"|"unknown",
+    "socialFootprintFound": boolean
+  }
+}
+
+
+Detect gaps between jobs/education > 60 days.
+
+Social footprint refers to existence of LinkedIn/GitHub/etc. signals in the résumé.
+
+3. basics (Basics)
+{
+  "name": Traceable<string>,
+  "email": Traceable<string>[],
+  "phone": Traceable<string>[],
+  "location": Location,
+  "urls": [
+    {
+      "type": "linkedin"|"github"|"portfolio"|"personal",
+      "url": "string"
+    }
+  ],
+  "summary": "string|null"
+}
+
+Traceable<T>
+{
+  "value": T,
+  "rawText": string,
+  "confidence": number,     // 0–1
+  "pageIndex": number|null
+}
+
+Location
+{
+  "rawInput": string,
+  "city": string|null,
+  "state": string|null,
+  "country": string|null,
+  "zipCode": string|null,
+  "countryCode": string|null
+}
+
+
+Rules:
+
+Emails must be lowercase, valid format only.
+
+Phones must be normalized to E.164 when possible; digits-only otherwise.
+
+Summary ≤ 800 chars.
+
+4. skills: SkillProfile[]
+{
+  "name": string,
+  "normalizedName": string,
+  "category": string,
+  "computedLevel": "novice"|"intermediate"|"advanced"|"expert",
+  "validityScore": number, // 0–10
+  "metadata": {
+    "firstSeen": IsoDate,
+    "lastUsed": IsoDate,
+    "totalMonthsExperience": number,
+    "occurrenceCount": number,
+    "sources": [
+      {
+        "sectionId": string,
+        "sectionType": "experience"|"education"|"project"
+      }
+    ]
+  }
+}
+
+
+Canonicalize skill names.
+
+Deduplicate strongly.
+
+Max 200 skills.
+
+5. workExperience: WorkExperience[]
+{
+  "id": string,
+  "title": Traceable<string>,
+  "normalizedTitle": string|null,
+  "company": Traceable<string>,
+  "companyDomain": string|null,
+  "location": Location|null,
+  "type": "full-time"|"contract"|"internship"|null,
+  "startDate": FlexibleDate,
+  "endDate": FlexibleDate,
+  "description": string|null,
+  "responsibilities": ["string"],
+  "skillsDetected": ["string"],
+  "isVerified": boolean,
+  "verificationNotes": string|null,
+  "verificationConfidence": number|null,
+  "verificationDate": IsoDate|null
+}
+
+FlexibleDate
+{
+  "rawText": string,
+  "isoDate": IsoDate|null,
+  "isCurrent": boolean
+}
+
+
+Rules:
+
+Most recent first.
+
+Ongoing roles → endDate.isoDate = null, isCurrent = true.
+
+Responsibilities ≤ 200 chars each.
+
+skillsDetected: canonicalized skill names.
+
+6. education: Education[]
+{
+  "id": string,
+  "institution": Traceable<string>,
+  "degree": Traceable<string>,
+  "normalizedDegree": "high_school"|"bachelors"|"masters"|"phd"|null,
+  "fieldOfStudy": string|null,
+  "startDate": FlexibleDate|null,
+  "endDate": FlexibleDate|null,
+  "gpa": {
+    "score": number,
+    "scale": number
+  } | null
+}
+
+
+Normalize degree types:
+
+BSc/BS/Bachelor → "bachelors"
+
+MSc/MS/Master → "masters"
+
+PhD/Doctorate → "phd"
+
+7. projects: Project[]
+{
+  "name": string,
+  "description": string|null,
+  "url": string|null,
+  "skillsUsed": ["string"]
+}
+
+8. certifications: Certification[]
+{
+  "name": string,
+  "issuer": string,
+  "date": FlexibleDate,
+  "doesExpire": boolean,
+  "verificationUrl": string|null
+}
+
+9. languages: Language[]
+{
+  "language": string,
+  "proficiency": "native"|"fluent"|"conversational"|"basic"
+}
+
+PARSING RULES
+
+Trim all strings.
+
+Deduplicate arrays case-insensitively.
+
+Preserve ordering by relevance.
+
+Maximum items:
+
+experience: 50
+
+education: 50
+
+skills: 200
+
+projects: 50
+
+Never invent details; use null when not confident.
+
+Remove unsafe content (scripts, hidden text, encoded payloads).
+
+INPUT WRAPPER
+
+Include resume text only between:
+
 ===START===
 ${rawText}
 ===END===
 
-Final Instruction:
-Use this entire prompt as-is. Append the resume text inside the wrapper. Return only the JSON object that conforms exactly to the schema, with no markdown and no code fences.
+FINAL INSTRUCTION
 
-`;
-};
+Use this entire prompt as-is. Append the resume text inside the wrapper.
+Return only the JSON object that conforms exactly to this schema.
+No markdown. No explanations. No extra text.
 
-export const jobDescriptionParsingPrompt = (rawText: string): string => {
-  return `
-Return only valid JSON that exactly matches the schema below. Do NOT add or remove fields, explanations, comments, code fences, markdown formatting, or any text outside the JSON. The output must be a pure JSON object that can be directly parsed using JSON.parse().
-
-JSON Schema (must match exactly):
-{
-  "title": "string|null",
-  "company": "string|null",
-  "description": "string|null",
-  "yearsOfExperience": "number|null",
-  "requirements": ["string"],
-  "skills": ["string"],
-  "degrees": ["string"]
-}
-
-Parsing & Normalization Rules:
-1. Output must be ONLY the JSON object. No markdown. No backticks. No code blocks.
-2. title: Job title (e.g., "Senior Software Engineer"), or null if not found.
-3. company: Company name, or null if not found.
-4. description: Brief description of the role (1-2 sentences, max 500 chars), or null.
-5. yearsOfExperience: Numeric value if mentioned (e.g., 5, 10), or null if not found. Must be integer >= 0.
-6. requirements: Array of all job requirements extracted from the posting (deduplicated, max 50 items).
-7. skills: Array of required technical skills/technologies (lowercase, deduplicated, max 100 items).
-8. degrees: Array of educational degree requirements. Extract the degree type and field if available. Format each as "[Degree Type] in [Field]" (e.g., "Bachelor in Computer Science", "Master in Business Administration", "PhD in Engineering"). If only degree type is available (e.g., "BSc", "MBA"), format as the full form ("Bachelor of Science", "Master of Business Administration"). Normalize variations of the same degree. Empty array if none found.
-9. All string values should be trimmed and not duplicated.
-10. If a field cannot be determined with reasonable confidence, use null or empty array as appropriate.
-11. Security: Remove unsafe content like scripts.
-
-Input Wrapper:
 ===START===
 ${rawText}
 ===END===
-
-Final Instruction:
-Use this entire prompt as-is. Append the job description text inside the wrapper. Return only the JSON object that conforms exactly to the schema, with no markdown and no code fences.
 `;
 };

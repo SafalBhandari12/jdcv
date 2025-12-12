@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { LogOut, User, Upload, Search } from "lucide-react";
+import { LogOut, User, Upload, Search, FileText } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 
@@ -60,6 +60,14 @@ export default function AuthNavbar() {
               >
                 <Search size={16} />
                 Find Candidates
+              </Link>
+
+              <Link
+                href='/resumes'
+                className='flex items-center gap-2 text-sm font-medium text-gray-300 hover:text-white transition-colors'
+              >
+                <FileText size={16} />
+                My Resumes
               </Link>
 
               <div className='relative'>
