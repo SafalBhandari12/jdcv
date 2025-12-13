@@ -18,6 +18,8 @@ If a sub-object is optional and no data exists, use null or empty arrays as requ
 
 Avoid guessing; when uncertain, use null.
 
+
+
 No metadata is required or allowed in output.
 
 SCHEMA (NO METADATA FIELD)
@@ -195,6 +197,9 @@ Ongoing roles → endDate.isoDate = null, isCurrent = true.
 
 Responsibilities ≤ 200 chars each.
 
+If title.value is present, normalize it using a canonical job title taxonomy (e.g., "Sr." → "Senior", "SDE" → "Software Engineer", remove company-specific prefixes). If normalization cannot be performed with high confidence, set normalizedTitle to null. Never invent seniority or role scope.
+
+
 skillsDetected: canonicalized skill names.
 
 6. education: Education[]
@@ -279,6 +284,196 @@ FINAL INSTRUCTION
 Use this entire prompt as-is. Append the resume text inside the wrapper.
 Return only the JSON object that conforms exactly to this schema.
 No markdown. No explanations. No extra text.
+ENTERPRISE SCORING & DETERMINISTIC RULES (APPEND-ONLY)
+
+The following rules define EXACT, deterministic methods to compute all scores and flags.
+These rules are authoritative. Do not invent alternative heuristics.
+
+================================================================
+A. SKILL VALIDITY SCORE (skills[].validityScore)
+================================================================
+
+Range: 0.0 – 10.0 (float allowed, round to 1 decimal)
+
+Purpose:
+Measures confidence that a skill is real, relevant, and supported by evidence in the résumé.
+
+Formula:
+
+validityScore =
+  (
+    0.30 * occurrenceFactor +
+    0.25 * recencyFactor +
+    0.20 * corroborationFactor +
+    0.15 * experienceFactor +
+    0.10 * sourceReliabilityFactor
+  ) * 10
+
+All factors are clamped to 0.0 – 1.0.
+
+Definitions:
+
+1. occurrenceFactor
+   = min(1.0, log(1 + occurrenceCount) / log(1 + 20))
+
+2. recencyFactor
+   - If lastUsed is null → 0.0
+   - Else:
+       monthsSinceLastUse = months between lastUsed and now
+       recencyFactor =
+         monthsSinceLastUse <= 6  → 1.0
+         <= 12                    → 0.8
+         <= 24                    → 0.6
+         <= 48                    → 0.4
+         > 48                     → 0.2
+
+3. corroborationFactor
+   = min(1.0, number of distinct sectionTypes in sources / 3)
+   (experience, project, education)
+
+4. experienceFactor
+   - If totalMonthsExperience is null → 0.0
+   - Else:
+       experienceFactor = min(1.0, totalMonthsExperience / 60)
+
+5. sourceReliabilityFactor
+   - Appears in workExperience → 1.0
+   - Appears only in projects → 0.7
+   - Appears only in education → 0.6
+   - Appears only in summary/skills list → 0.4
+
+ComputedLevel Mapping (skills[].computedLevel):
+- validityScore < 3.0        → novice
+- 3.0 – 5.9                  → intermediate
+- 6.0 – 8.4                  → advanced
+- ≥ 8.5                      → expert
+
+================================================================
+B. RESUME QUALITY SCORE (analysis.quality)
+================================================================
+
+Range: 0 – 100 (integer)
+
+quality.score =
+  0.30 * structureScore +
+  0.30 * contentDepthScore +
+  0.20 * clarityScore +
+  0.20 * consistencyScore
+
+Each component normalized to 0–100.
+
+1. structureScore
+   - Presence of basics, experience, skills, education
+   - +25 per major section present (max 100)
+
+2. contentDepthScore
+   - Average responsibilities per role ≥ 3 → 100
+   - ≥ 2 → 75
+   - ≥ 1 → 50
+   - else → 25
+
+3. clarityScore
+   - Based on writingStyle:
+     clarityScore =
+       (actionVerbsRate * 50) +
+       (quantificationRate * 40) -
+       (min(clicheCount, 10) * 2)
+
+   Clamp 0–100.
+
+4. consistencyScore
+   - No overlapping dates → 100
+   - Minor overlaps or fuzzy dates → 70
+   - Multiple conflicts → 40
+
+quality.level mapping:
+0–40 low
+>40–70 average
+>70–90 high
+>90 exceptional
+
+================================================================
+C. SUSPICION SCORE (analysis.suspicion)
+================================================================
+
+Range: 0 – 100
+
+Start at 0, add penalties:
+
++20  unexplained timeline gap > 12 months
++15  multiple overlapping full-time roles
++15  excessive buzzwords without evidence
++10  skills listed but never used
++10  inconsistent locations across roles
++30  fabricated-looking company names or dates
+
+Clamp to 100.
+
+suspicion.level:
+0–20     → safe
+21–40    → concern
+41–70    → suspicious
+>70      → high_risk
+
+================================================================
+D. WRITING STYLE METRICS (analysis.writingStyle)
+================================================================
+
+actionVerbsRate
+= (# bullet points starting with action verb) / (total bullet points)
+
+quantificationRate
+= (# bullet points containing numbers, %, $, metrics) / (total bullet points)
+
+clicheCount
+= count of overused phrases (e.g., "hard-working", "team player", "go-getter")
+
+================================================================
+E. WORK EXPERIENCE VERIFICATION RULES
+================================================================
+
+isVerified = true ONLY IF:
+- Company domain exists AND
+- Role dates are consistent AND
+- Skill usage aligns with role title
+
+Else isVerified = false.
+
+verificationConfidence (0.0 – 1.0):
+- 1.0 → all signals match
+- 0.7 → partial corroboration
+- 0.4 → weak evidence
+- null → no verification attempted
+
+================================================================
+F. TIMELINE GAP DETECTION
+================================================================
+
+A gap exists if:
+(endDate of previous role) → (startDate of next role) > 60 days
+
+durationDays must be exact.
+
+================================================================
+G. TRACEABLE CONFIDENCE RULES
+================================================================
+
+Traceable.confidence:
+- Exact match (email, phone, URL) → 1.0
+- Minor normalization → 0.9
+- Heuristic extraction → 0.7
+- Inferred / ambiguous → 0.4
+
+================================================================
+H. GLOBAL SAFETY & DETERMINISM
+================================================================
+
+- Never infer skills, companies, or dates not explicitly present.
+- Scores must be explainable using the rules above.
+- If required inputs are missing, degrade score deterministically.
+- No randomness. Same input must produce same output.
+
+END OF ENTERPRISE EXTENSIONS
 
 ===START===
 ${rawText}

@@ -22,6 +22,7 @@ import {
 import { formatZodErrors } from "../utils/formatZodErrors.js";
 import { upsertVectors } from "../config/pinecone.js";
 import getMetaDataFromResume from "../utils/getMetaDataFromResume.js";
+import { buildResumeEmbeddingText } from "../utils/buildResumeEmbeddingText.js";
 
 const resumeRouter = Router();
 
@@ -57,7 +58,7 @@ resumeRouter.post(
       const parsedData = await extractDetailsFromResume(text);
       console.log("parsed data from resume", parsedData);
 
-      parsedData.metadata = metaData;
+      parsedData.metaData = metaData;
 
       // Write to local file for reference
       fs.writeFileSync(
@@ -65,93 +66,98 @@ resumeRouter.post(
         JSON.stringify(parsedData, null, 2)
       );
 
-      // Combine all responsibilities from experience records
-      const allResponsibilities = (parsedData.experience || [])
-        .flatMap((exp: any) => exp.responsibilities || [])
-        .join(", ");
+      const textForEmbedding = buildResumeEmbeddingText(parsedData);
+      console.log(textForEmbedding);
 
-      const resEmbedding = await getEmbedding(allResponsibilities);
+      const resEmbedding = await getEmbedding(textForEmbedding);
 
+      // // Save to database
+      // const resume = await prisma.resume.create({
+      //   data: {
+      //     userId: req.user.id,
+      //     name: parsedData.name,
+      //     email: parsedData.email,
+      //     phone: parsedData.phone,
+      //     summary: parsedData.summary,
+      //     yearsOfExperience: parsedData.yearsOfExperience,
+      //     imageKitUrl: imageKitResult.url,
+      //     originalFileName: req.file.originalname,
+      //     skills: {
+      //       createMany: {
+      //         data: (parsedData.skills || []).map((skill: string) => ({
+      //           name: skill.trim().toLowerCase(),
+      //         })),
+      //         skipDuplicates: true,
+      //       },
+      //     },
+      //     experience: {
+      //       createMany: {
+      //         data: (parsedData.experience || []).map((exp: any) => ({
+      //           title: exp.title,
+      //           company: exp.company,
+      //           startDate: exp.startDate,
+      //           endDate: exp.endDate,
+      //           description: exp.description,
+      //           yearsOfExperience: exp.yearsOfExperience,
+      //           responsibilities: exp.responsibilities || [],
+      //         })),
+      //       },
+      //     },
+      //     education: {
+      //       createMany: {
+      //         data: (parsedData.education || []).map((edu: any) => ({
+      //           degree: edu.degree,
+      //           institution: edu.institution,
+      //           startDate: edu.startDate,
+      //           endDate: edu.endDate,
+      //           details: edu.details,
+      //         })),
+      //       },
+      //     },
+      //     projects: {
+      //       createMany: {
+      //         data: (parsedData.projects || []).map((proj: any) => ({
+      //           name: proj.name,
+      //           description: proj.description,
+      //           techStack: proj.techStack || [],
+      //           responsibilities: proj.responsibilities || [],
+      //         })),
+      //       },
+      //     },
+      //   },
+      // });
 
-      // Save to database
-      const resume = await prisma.resume.create({
-        data: {
-          userId: req.user.id,
-          name: parsedData.name,
-          email: parsedData.email,
-          phone: parsedData.phone,
-          summary: parsedData.summary,
-          yearsOfExperience: parsedData.yearsOfExperience,
-          imageKitUrl: imageKitResult.url,
-          originalFileName: req.file.originalname,
-          skills: {
-            createMany: {
-              data: (parsedData.skills || []).map((skill: string) => ({
-                name: skill.trim().toLowerCase(),
-              })),
-              skipDuplicates: true,
-            },
-          },
-          experience: {
-            createMany: {
-              data: (parsedData.experience || []).map((exp: any) => ({
-                title: exp.title,
-                company: exp.company,
-                startDate: exp.startDate,
-                endDate: exp.endDate,
-                description: exp.description,
-                yearsOfExperience: exp.yearsOfExperience,
-                responsibilities: exp.responsibilities || [],
-              })),
-            },
-          },
-          education: {
-            createMany: {
-              data: (parsedData.education || []).map((edu: any) => ({
-                degree: edu.degree,
-                institution: edu.institution,
-                startDate: edu.startDate,
-                endDate: edu.endDate,
-                details: edu.details,
-              })),
-            },
-          },
-          projects: {
-            createMany: {
-              data: (parsedData.projects || []).map((proj: any) => ({
-                name: proj.name,
-                description: proj.description,
-                techStack: proj.techStack || [],
-                responsibilities: proj.responsibilities || [],
-              })),
-            },
-          },
-        },
-      });
+      // // Upload resume to pinecone
+      // await upsertVectors({
+      //   id: resume.id,
+      //   embedding: resEmbedding,
+      //   metadata: { userId: req.user.id, resumeId: resume.id, type: "resume" },
+      // });
 
-      // Upload resume to pinecone
+      // await upsertVectors({
+      //   id: resume.id,
+      //   embedding: resEmbedding,
+      //   metadata: { userId: req.user.id, resumeId: resume.id, type: "resume" },
+      // });
 
-      await upsertVectors({
-        id: resume.id,
-        embedding: resEmbedding,
-        metadata: { userId: req.user.id, resumeId: resume.id, type: "resume" },
-      });
-
+      // res.status(201).json({
+      //   msg: "Resume uploaded and parsed successfully",
+      //   resumeId: resume.id,
+      //   imageKitUrl: imageKitResult.url,
+      //   extractedDetails: {
+      //     name: parsedData.name,
+      //     email: parsedData.email,
+      //     phone: parsedData.phone,
+      //     summary: parsedData.summary,
+      //     skills: parsedData.skills,
+      //     experience: parsedData.experience,
+      //     education: parsedData.education,
+      //     projects: parsedData.projects,
+      //     yearsOfExperience: parsedData.yearsOfExperience,
+      //   },
+      // });
       res.status(201).json({
         msg: "Resume uploaded and parsed successfully",
-        resumeId: resume.id,
-        imageKitUrl: imageKitResult.url,
-        extractedDetails: {
-          name: parsedData.name,
-          email: parsedData.email,
-          phone: parsedData.phone,
-          summary: parsedData.summary,
-          skills: parsedData.skills,
-          experience: parsedData.experience,
-          education: parsedData.education,
-          projects: parsedData.projects,
-          yearsOfExperience: parsedData.yearsOfExperience,
-        },
       });
     } catch (error: any) {
       console.log(error);
