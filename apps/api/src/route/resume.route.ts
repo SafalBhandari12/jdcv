@@ -21,6 +21,7 @@ import {
 } from "./resume.validation.js";
 import { formatZodErrors } from "../utils/formatZodErrors.js";
 import { upsertVectors } from "../config/pinecone.js";
+import getMetaDataFromResume from "../utils/getMetaDataFromResume.js";
 
 const resumeRouter = Router();
 
@@ -42,37 +43,35 @@ resumeRouter.post(
       const text = await parsePdf(req.file.buffer);
 
       // Upload to ImageKit
-      const uploadingStart = Date.now();
       const imageKitResult = await ImageKit.upload({
         file: req.file.buffer,
         fileName: req.file.originalname + "-" + randomUUID(),
         folder: "/resumes",
       });
-      console.log(
-        "ImageKit upload time:",
-        (Date.now() - uploadingStart) / 1000,
-        "seconds"
-      );
+
+      // Extract metadata
+      const metaData = getMetaDataFromResume(text, req.file.originalname);
+      console.log("Extracted Metadata:", metaData);
 
       // Extract details using LLM
-      console.log("Raw Text", text);
       const parsedData = await extractDetailsFromResume(text);
-
       console.log("parsed data from resume", parsedData);
+
+      parsedData.metadata = metaData;
+
+      // Write to local file for reference
+      fs.writeFileSync(
+        "resume-output.json",
+        JSON.stringify(parsedData, null, 2)
+      );
 
       // Combine all responsibilities from experience records
       const allResponsibilities = (parsedData.experience || [])
         .flatMap((exp: any) => exp.responsibilities || [])
         .join(", ");
 
-      // Generate embedding from combined responsibilities
-      const embeddingStart = Date.now();
       const resEmbedding = await getEmbedding(allResponsibilities);
-      console.log(
-        "Embedding generation time:",
-        (Date.now() - embeddingStart) / 1000,
-        "seconds"
-      );
+
 
       // Save to database
       const resume = await prisma.resume.create({
@@ -137,12 +136,6 @@ resumeRouter.post(
         embedding: resEmbedding,
         metadata: { userId: req.user.id, resumeId: resume.id, type: "resume" },
       });
-
-      // Write to local file for reference
-      fs.writeFileSync(
-        "resume-output.json",
-        JSON.stringify(parsedData, null, 2)
-      );
 
       res.status(201).json({
         msg: "Resume uploaded and parsed successfully",

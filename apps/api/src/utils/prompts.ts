@@ -1,6 +1,12 @@
 export const resumeParsingPrompt = (rawText: string): string => {
   return `
-Return only valid JSON that exactly matches the ParsedResume schema described below. Do NOT add or remove fields, explanations, comments, code fences, markdown, or any text outside the JSON. The output must be a pure JSON object that can be parsed by JSON.parse() with no trailing characters. If a value cannot be determined with reasonable confidence, use null. Dates must follow ISO 8601 (full datetime with Z when possible, or "YYYY-MM-DD", "YYYY-MM", or "YYYY"). For fuzzy dates, use the FlexibleDate structure. Trim all strings and deduplicate lists. Do not fabricate information.- DO NOT wrap the output in \`\`\`json, \`\`\` or any other delimiters
+Return only valid JSON that exactly matches the ParsedResume schema described below. Do NOT add or remove fields, explanations, comments, code fences, markdown, or any text outside the JSON. The output must be a pure JSON object that can be parsed by JSON.parse() with no trailing characters. If a value cannot be determined with reasonable confidence, use null. Dates must follow ISO 8601 (full datetime with Z when possible, or "YYYY-MM-DD", "YYYY-MM", or "YYYY"). For fuzzy dates, use the FlexibleDate structure. Trim all strings and deduplicate lists. Do not fabricate information.
+
+The response MUST be a raw JSON object.
+Do NOT use markdown.
+Do NOT use triple backticks.
+Do NOT wrap the output in \`\`\`json or \`\`\`.
+If any non-JSON character is produced, the output is invalid.
 
 TOP-LEVEL RULES
 
@@ -52,7 +58,7 @@ The top-level object must contain exactly these keys:
   "writingStyle": {
     "actionVerbsRate": number,         // 0.0–1.0
     "quantificationRate": number,      // 0.0–1.0
-    "clichéCount": number
+    "clicheCount": number
   }
 }
 
@@ -277,5 +283,43 @@ No markdown. No explanations. No extra text.
 ===START===
 ${rawText}
 ===END===
+`;
+};
+
+export const jobDescriptionParsingPrompt = (rawText: string): string => {
+  return `
+Return only valid JSON that exactly matches the schema below. Do NOT add or remove fields, explanations, comments, code fences, markdown formatting, or any text outside the JSON. The output must be a pure JSON object that can be directly parsed using JSON.parse().
+
+JSON Schema (must match exactly):
+{
+  "title": "string|null",
+  "company": "string|null",
+  "description": "string|null",
+  "yearsOfExperience": "number|null",
+  "requirements": ["string"],
+  "skills": ["string"],
+  "degrees": ["string"]
+}
+
+Parsing & Normalization Rules:
+1. Output must be ONLY the JSON object. No markdown. No backticks. No code blocks.
+2. title: Job title (e.g., "Senior Software Engineer"), or null if not found.
+3. company: Company name, or null if not found.
+4. description: Brief description of the role (1-2 sentences, max 500 chars), or null.
+5. yearsOfExperience: Numeric value if mentioned (e.g., 5, 10), or null if not found. Must be integer >= 0.
+6. requirements: Array of all job requirements extracted from the posting (deduplicated, max 50 items).
+7. skills: Array of required technical skills/technologies (lowercase, deduplicated, max 100 items).
+8. degrees: Array of educational degree requirements. Extract the degree type and field if available. Format each as "[Degree Type] in [Field]" (e.g., "Bachelor in Computer Science", "Master in Business Administration", "PhD in Engineering"). If only degree type is available (e.g., "BSc", "MBA"), format as the full form ("Bachelor of Science", "Master of Business Administration"). Normalize variations of the same degree. Empty array if none found.
+9. All string values should be trimmed and not duplicated.
+10. If a field cannot be determined with reasonable confidence, use null or empty array as appropriate.
+11. Security: Remove unsafe content like scripts.
+
+Input Wrapper:
+===START===
+${rawText}
+===END===
+
+Final Instruction:
+Use this entire prompt as-is. Append the job description text inside the wrapper. Return only the JSON object that conforms exactly to the schema, with no markdown and no code fences.
 `;
 };
