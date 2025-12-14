@@ -89,57 +89,57 @@ jobDescriptionRouter.post(
         .map((match) => match.metadata?.resumeId as string)
         .filter((id): id is string => !!id);
 
-      const resumeDetailsFromVectors = await prisma.resume.findMany({
-        where: {
-          id: {
-            in: vectorResultResumeIds,
-          },
-        },
-        include: {
-          skills: true,
-          education: true,
-          experience: true,
-          projects: true,
-        },
-      });
+      // const resumeDetailsFromVectors = await prisma.resume.findMany({
+      //   where: {
+      //     id: {
+      //       in: vectorResultResumeIds,
+      //     },
+      //   },
+      //   include: {
+      //     skills: true,
+      //     education: true,
+      //     experience: true,
+      //     projects: true,
+      //   },
+      // });
 
-      // Create a map for easy lookup of resume details by resumeId
-      const resumeDetailMap = new Map(
-        resumeDetailsFromVectors.map((resume) => [resume.id, resume])
-      );
+      // // Create a map for easy lookup of resume details by resumeId
+      // const resumeDetailMap = new Map(
+      //   resumeDetailsFromVectors.map((resume) => [resume.id, resume])
+      // );
 
-      // Enhance the vector results with full resume details
-      const enrichedVectorResults = result.matches.map((match) => {
-        const resume = resumeDetailMap.get(match.metadata?.resumeId as string);
-        return {
-          similarity: match.score,
-          resumeDetails: resume
-            ? {
-                id: resume.id,
-                userId: resume.userId,
-                name: resume.name,
-                email: resume.email,
-                phone: resume.phone,
-                summary: resume.summary,
-                yearsOfExperience: resume.yearsOfExperience,
-                imageKitUrl: resume.imageKitUrl,
-              }
-            : null,
-        };
-      });
+      // // Enhance the vector results with full resume details
+      // const enrichedVectorResults = result.matches.map((match) => {
+      //   const resume = resumeDetailMap.get(match.metadata?.resumeId as string);
+      //   return {
+      //     similarity: match.score,
+      //     resumeDetails: resume
+      //       ? {
+      //           id: resume.id,
+      //           userId: resume.userId,
+      //           name: resume.name,
+      //           email: resume.email,
+      //           phone: resume.phone,
+      //           summary: resume.summary,
+      //           yearsOfExperience: resume.yearsOfExperience,
+      //           imageKitUrl: resume.imageKitUrl,
+      //         }
+      //       : null,
+      //   };
+      // });
 
-      console.log("Matched Resume IDs:", enrichedVectorResults);
+      // console.log("Matched Resume IDs:", enrichedVectorResults);
 
-      res.status(201).json({
-        msg: "Job description submitted successfully",
-        jobDescriptionId: jobDescriptionRecord.id,
-        jobDescription: {
-          id: jobDescriptionRecord.id,
-          yearsOfExperience: jobData.yearsOfExperience,
-          requirements: jobData.requirements,
-        },
-        enrichedVectorResults,
-      });
+      // res.status(201).json({
+      //   msg: "Job description submitted successfully",
+      //   jobDescriptionId: jobDescriptionRecord.id,
+      //   jobDescription: {
+      //     id: jobDescriptionRecord.id,
+      //     yearsOfExperience: jobData.yearsOfExperience,
+      //     requirements: jobData.requirements,
+      //   },
+      //   enrichedVectorResults,
+      // });
     } catch (error: any) {
       console.log(error);
       res.status(500).json({
