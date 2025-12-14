@@ -271,14 +271,6 @@ Never invent details; use null when not confident.
 
 Remove unsafe content (scripts, hidden text, encoded payloads).
 
-INPUT WRAPPER
-
-Include resume text only between:
-
-===START===
-${rawText}
-===END===
-
 FINAL INSTRUCTION
 
 Use this entire prompt as-is. Append the resume text inside the wrapper.

@@ -1,5 +1,19 @@
 import { skillLevelMap, type ResumeData } from "./extractDetailsFromResume.js";
-import type { Prisma } from "@prisma/client";
+import { ExperienceType, type Prisma } from "@prisma/client";
+
+/**
+ * Map experience type from AI output to Prisma enum
+ * Handles edge cases and unmapped values gracefully
+ */
+function mapExperienceType(type: string): ExperienceType {
+  const typeMap: Record<string, ExperienceType> = {
+    "full-time": ExperienceType.FULL_TIME,
+    contract: ExperienceType.CONTRACT,
+    internship: ExperienceType.INTERNSHIP,
+  };
+
+  return typeMap[type.toLowerCase()] ?? ExperienceType.OTHER;
+}
 
 /**
  * Maps extracted ResumeData from LLM output to a Prisma Resume.create() payload
@@ -9,7 +23,8 @@ export function mapResumeDataToPrisma(
   parsedData: ResumeData,
   userId: string,
   imageKitUrl: string,
-  originalFileName: string,): Prisma.ResumeCreateInput {
+  originalFileName: string
+): Prisma.ResumeCreateInput {
   const data = {
     user: { connect: { id: userId } },
 
@@ -147,9 +162,8 @@ export function mapResumeDataToPrisma(
 
         location: exp.location,
 
-        type: exp.type
-          ? (exp.type.toUpperCase().replace("-", "_") as any)
-          : null,
+        // Map experience type with fallback to OTHER for unmapped values
+        type: exp.type ? mapExperienceType(exp.type) : null,
 
         startDateRaw: exp.startDate?.rawText ?? null,
         startDateIso: exp.startDate?.isoDate

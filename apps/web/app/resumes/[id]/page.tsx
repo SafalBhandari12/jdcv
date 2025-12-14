@@ -148,20 +148,6 @@ export default function ResumeDetailPage() {
             )}
           </div>
 
-          {/* Professional Summary */}
-          {resume.summary && (
-            <section className='mb-8'>
-              <div className='bg-gray-900 border border-gray-800 rounded-lg p-6'>
-                <h2 className='text-2xl font-bold text-white mb-4'>
-                  Professional Summary
-                </h2>
-                <p className='text-gray-300 leading-relaxed'>
-                  {resume.summary}
-                </p>
-              </div>
-            </section>
-          )}
-
           {/* Experience Section */}
           {resume.experience && resume.experience.length > 0 && (
             <section className='mb-8'>

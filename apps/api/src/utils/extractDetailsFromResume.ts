@@ -168,12 +168,13 @@ export interface ResumeData {
   languages: Language[];
 }
 
-export const skillLevelMap: Record<SkillProfile["computedLevel"], SkillLevel> = {
-  novice: SkillLevel.NOVICE,
-  intermediate: SkillLevel.INTERMEDIATE,
-  advanced: SkillLevel.ADVANCED,
-  expert: SkillLevel.EXPERT,
-};
+export const skillLevelMap: Record<SkillProfile["computedLevel"], SkillLevel> =
+  {
+    novice: SkillLevel.NOVICE,
+    intermediate: SkillLevel.INTERMEDIATE,
+    advanced: SkillLevel.ADVANCED,
+    expert: SkillLevel.EXPERT,
+  };
 
 export default async function extractDetailsFromResume(
   rawText: string
@@ -187,6 +188,17 @@ export default async function extractDetailsFromResume(
   console.log(response.text);
 
   if (!response.text) throw new Error("No response from AI");
-  const responseJson: ResumeData = JSON.parse(response.text);
-  return responseJson;
+
+  try {
+    const responseJson: ResumeData = JSON.parse(response.text);
+    return responseJson;
+  } catch (parseError) {
+    console.error(
+      "Failed to parse AI response:",
+      response.text?.substring(0, 500)
+    );
+    throw new Error(
+      "AI returned invalid JSON response. Please try uploading again."
+    );
+  }
 }

@@ -1,6 +1,6 @@
 import { createHash } from "crypto";
 
-export function geterateHashValue(text: string): string {
+export function generateHashValue(text: string): string {
   const normalized = normalizeText(text);
   return createHash("sha256").update(normalized).digest("hex");
 }
@@ -19,7 +19,7 @@ function normalizeText(text: string): string {
 export default function getMetaDataFromResume(text: string, fileName: string) {
   return {
     fileName,
-    fileHash: geterateHashValue(text),
+    fileHash: generateHashValue(text),
     parsedAt: new Date().toISOString(),
     parserVersion: "1.0.0",
     Language: "en",
