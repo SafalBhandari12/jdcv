@@ -1,5 +1,6 @@
 import { GoogleGenAI } from "@google/genai";
 import { resumeParsingPrompt } from "./prompts.js";
+import { SkillLevel } from "@prisma/client";
 
 const ai = new GoogleGenAI({
   apiKey: process.env.GEMINI_API_KEY || "",
@@ -166,6 +167,13 @@ export interface ResumeData {
   certifications: Certification[];
   languages: Language[];
 }
+
+export const skillLevelMap: Record<SkillProfile["computedLevel"], SkillLevel> = {
+  novice: SkillLevel.NOVICE,
+  intermediate: SkillLevel.INTERMEDIATE,
+  advanced: SkillLevel.ADVANCED,
+  expert: SkillLevel.EXPERT,
+};
 
 export default async function extractDetailsFromResume(
   rawText: string

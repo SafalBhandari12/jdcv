@@ -3,6 +3,7 @@
 
 // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+// Updated Prisma schema to store the full ResumeData shape (normalized + JSON for complex fields)
 
 generator client {
   provider = "prisma-client-js"
@@ -13,101 +14,240 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User{
-  id String @id @default(cuid())
-  email String @unique
-  password String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  
-  resumes Resume[]
-  jobDescriptions JobDescription[]
+enum ExperienceType {
+  FULL_TIME
+  CONTRACT
+  INTERNSHIP
+  OTHER
 }
 
-model Resume{
-  id String @id @default(cuid())
-  userId String
-  user User @relation(fields: [userId], references: [id],onDelete: Cascade)
+enum NormalizedDegree {
+  HIGH_SCHOOL
+  BACHELORS
+  MASTERS
+  PHD
+  OTHER
+}
 
-  // Personal Information
-  name String?
-  email String?
-  phone String?
-  summary String?
-  yearsOfExperience Int?
+enum SkillLevel {
+  NOVICE
+  INTERMEDIATE
+  ADVANCED
+  EXPERT
+}
 
-  // Work Experience
-  experience Experience[]
+model User {
+  id        String    @id @default(cuid())
+  email     String    @unique
+  password  String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 
-  // Education
-  education Education[]
+  resumes          Resume[]
+  jobDescriptions  JobDescription[]
+}
 
-  // Projects
-  projects Project[]
+model Resume {
+  id            String    @id @default(cuid())
+  userId        String
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  // Skills - Now relationship instead of array
-  skills Skill[]
+  // Basic, easily queried fields
+  name                String?
+  summary             String?
+  yearsOfExperience   Int?
 
-  // Metadata
-  originalFileName String?
-  imageKitUrl String?
-  
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  // single canonical contact/email/phone can be stored here (optional)
+  primaryEmail        String?
+  primaryPhone        String?
+
+  // Original file / parsing metadata
+  originalFileName    String?
+  imageKitUrl         String?
+  fileHash            String?          // metaData.fileHash
+  parsedAt            DateTime?        // metaData.parsedAt
+  parserVersion       String?          // metaData.parserVersion
+
+    // --------------------
+  // DERIVED / QUERYABLE ANALYSIS FIELDS 
+  // --------------------
+  qualityScore        Int?      // analysis.quality.score
+  qualityLevel        String?   // low | average | high | exceptional
+
+  suspicionScore      Int?      // analysis.suspicion.score
+  suspicionLevel      String?   // safe | concern | suspicious | high_risk
+
+  hasTimelineGaps     Boolean?  // verification.timeline.hasGaps
+  geoConsistency      String?   // match | mismatch | unknown
+  socialFootprintFound Boolean? // verification.identity.socialFootprintFound
+
+  // Complex/structured data stored as JSON for flexibility and to avoid early modeling churn
+  analysis            Json?            // ResumeAnalysis (quality, suspicion, writingStyle)
+  verification        Json?            // VerificationFlags
+  basics              Json?            // full Basics object if needed
+
+  // Normalized relations for core entities (queryable)
+  experiences         Experience[]
+  education           Education[]
+  projects            Project[]
+  certifications      Certification[]
+  languages           Language[]
+  skillProfiles       SkillProfile[]   // richer skill metadata
+  skills              Skill[]          // simple normalized skill list (name-level)
+
+  // Traceable contact items (for audit / trace)
+  emails              ResumeEmail[]
+  phones              ResumePhone[]
+  urls                ResumeUrl[]
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
   @@index([userId])
+  @@index([fileHash])
+  @@index([parsedAt])
+}
+
+model ResumeEmail {
+  id         String  @id @default(cuid())
+  resumeId   String
+  resume     Resume  @relation(fields: [resumeId], references: [id], onDelete: Cascade)
+
+  email      String
+  rawText    String?
+  confidence Float?
+  pageIndex  Int?
+
+  @@index([resumeId])
+  @@index([email])
+}
+
+model ResumePhone {
+  id         String  @id @default(cuid())
+  resumeId   String
+  resume     Resume  @relation(fields: [resumeId], references: [id], onDelete: Cascade)
+
+  phone      String
+  rawText    String?
+  confidence Float?
+  pageIndex  Int?
+
+  @@index([resumeId])
+  @@index([phone])
+}
+
+model ResumeUrl {
+  id         String  @id @default(cuid())
+  resumeId   String
+  resume     Resume  @relation(fields: [resumeId], references: [id], onDelete: Cascade)
+
+  type       String?    // "linkedin" | "github" | "portfolio" | "personal" (kept open for extension)
+  url        String
+  rawText    String?
+  pageIndex  Int?
+
+  @@index([resumeId])
+  @@index([url])
 }
 
 model Experience {
-  id String @id @default(cuid())
-  resumeId String
-  resume Resume @relation(fields: [resumeId], references: [id], onDelete: Cascade)
+  id                   String        @id @default(cuid())
+  resumeId             String
+  resume               Resume        @relation(fields: [resumeId], references: [id], onDelete: Cascade)
 
-  title String?
-  company String?
-  startDate String?
-  endDate String?
-  description String?
-  yearsOfExperience Int?
-  responsibilities String[]
+  title                String?
+  titleRaw             String?        // traceable.rawText for title
+  normalizedTitle      String?
+
+  company              String?
+  companyRaw           String?
+  companyDomain        String?
+
+  // location stored as JSON to preserve city/state/country/zip/countryCode and rawInput
+  location             Json?
+
+  type                 ExperienceType?
+
+  // FlexibleDate fields - store raw & ISO string + boolean isCurrent
+  startDateRaw         String?
+  startDateIso         DateTime?      // iso date if parseable
+  startIsCurrent       Boolean?       @default(false)
+
+  endDateRaw           String?
+  endDateIso           DateTime?
+  endIsCurrent         Boolean?       @default(false)
+
+  description          String?
+  responsibilities     String[]       // array of responsibility sentences
+  skillsDetected       String[]       // array of skill names detected in this experience
+
+  // verification fields
+  isVerified           Boolean?       @default(false)
+  verificationNotes    String?
+  verificationConfidence Float?
+  verificationDate     DateTime?
+
+  yearsOfExperience    Int?
+
+  createdAt            DateTime       @default(now())
+  updatedAt            DateTime       @updatedAt
 
   @@index([resumeId])
+  @@index([company])
+  @@index([title])
 }
 
 model Education {
-  id String @id @default(cuid())
-  resumeId String
-  resume Resume @relation(fields: [resumeId], references: [id], onDelete: Cascade)
+  id                  String        @id @default(cuid())
+  resumeId            String
+  resume              Resume        @relation(fields: [resumeId], references: [id], onDelete: Cascade)
 
-  degree String?
-  institution String?
-  startDate String?
-  endDate String?
-  details String?
+  institution         String?
+  institutionRaw      String?
+  degree              String?
+  degreeRaw           String?
+  normalizedDegree    NormalizedDegree?
+  fieldOfStudy        String?
+  startDateRaw        String?
+  startDateIso        DateTime?
+  endDateRaw          String?
+  endDateIso          DateTime?
+  gpaScore            Float?
+  gpaScale            Float?
+  details             String?
+
+  createdAt           DateTime      @default(now())
+  updatedAt           DateTime      @updatedAt
 
   @@index([resumeId])
+  @@index([institution])
 }
 
 model Project {
-  id String @id @default(cuid())
-  resumeId String
-  resume Resume @relation(fields: [resumeId], references: [id], onDelete: Cascade)
+  id           String   @id @default(cuid())
+  resumeId     String
+  resume       Resume   @relation(fields: [resumeId], references: [id], onDelete: Cascade)
 
-  name String?
-  description String?
-  techStack String[]
-  responsibilities String[]
+  name         String?
+  description  String?
+  url          String?
+  techStack    String[]    // array of tech strings
+  responsibilities String[] // array of responsibilities
+
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
 
   @@index([resumeId])
+  @@index([name])
 }
 
 model Skill {
-  id String @id @default(cuid())
-  resumeId String
-  resume Resume @relation(fields: [resumeId], references: [id], onDelete: Cascade)
+  // simple normalized name list for quick lookup / tagging
+  id        String   @id @default(cuid())
+  resumeId  String
+  resume    Resume   @relation(fields: [resumeId], references: [id], onDelete: Cascade)
 
-  name String @db.VarChar(200)
-
+  name      String   @db.VarChar(200)
   createdAt DateTime @default(now())
 
   @@unique([resumeId, name])
@@ -115,24 +255,77 @@ model Skill {
   @@index([name])
 }
 
+model SkillProfile {
+  // richer skill metadata matching SkillProfile interface
+  id                     String    @id @default(cuid())
+  resumeId               String
+  resume                 Resume    @relation(fields: [resumeId], references: [id], onDelete: Cascade)
+
+  name                   String
+  normalizedName         String?
+  category               String?
+  computedLevel          SkillLevel?
+  validityScore          Float?       // 0–10
+
+  // metadata contains firstSeen, lastUsed, totalMonthsExperience, occurrenceCount (can be JSON)
+  metadata               Json?
+
+  // sources optionally stored as JSON array of { sectionId, sectionType }
+  sources                Json?
+
+  createdAt              DateTime     @default(now())
+
+  @@index([resumeId])
+  @@index([name])
+  @@index([normalizedName])
+}
+
+model Certification {
+  id            String   @id @default(cuid())
+  resumeId      String
+  resume        Resume   @relation(fields: [resumeId], references: [id], onDelete: Cascade)
+
+  name          String?
+  issuer        String?
+  dateRaw       String?
+  dateIso       DateTime?
+  doesExpire    Boolean? @default(false)
+  verificationUrl String?
+
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([resumeId])
+  @@index([name])
+}
+
+model Language {
+  id           String   @id @default(cuid())
+  resumeId     String
+  resume       Resume   @relation(fields: [resumeId], references: [id], onDelete: Cascade)
+
+  language     String
+  proficiency  String    // "native" | "fluent" | "conversational" | "basic"
+
+  createdAt    DateTime  @default(now())
+
+  @@index([resumeId])
+  @@index([language])
+}
+
 model JobDescription {
   id String @id @default(cuid())
   userId String
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  // Job Requirements
   requirements String[]
 
-  // Skills Required
   skills JobDescriptionSkill[]
 
-  // Education Requirements - Multiple degrees
   degrees String[]
 
-  // Years of Experience
   yearsOfExperience Int?
 
-  // Metadata
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
