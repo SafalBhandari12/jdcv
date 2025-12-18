@@ -27,6 +27,7 @@ out/
 build
 dist
 
+/resumes/
 
 # Debug
 npm-debug.log*
