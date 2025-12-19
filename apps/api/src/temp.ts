@@ -47,7 +47,7 @@ interface JDSkills {
   must?: SkillRequirement[];
   optional?: SkillRequirement[];
   minOptionalRequired?: number;
-  either?: SkillRequirement[];
+  either?: SkillRequirement[][];
 }
 
 async function loadAllResumes(resumeDir: string): Promise<Resume[]> {
@@ -270,62 +270,63 @@ function matchSkill(
   return true;
 }
 
-// function skillGate(candidateSkills: Skill[], jdSkills: JDSkills): boolean {
-//   const lookUp: { [key: string]: Skill } = {};
-//   for (const skill of candidateSkills) {
-//     const normalizedName = (skill?.normalizedName ?? "").toLowerCase();
-//     lookUp[normalizedName] = skill;
-//   }
+function skillGate(candidateSkills: Skill[], jdSkills: JDSkills): boolean {
+  const lookUp: { [key: string]: Skill } = {};
+  for (const skill of candidateSkills) {
+    const normalizedName = (skill?.normalizedName ?? "").toLowerCase();
+    lookUp[normalizedName] = skill;
+  }
 
-//   // Compulsory Fields
-//   for (const req of jdSkills.must ?? []) {
-//     const skillName = req.name.toLowerCase();
-//     if (!(skillName in lookUp)) {
-//       return false;
-//     }
-//     const candidateSkill = lookUp[skillName];
-//     if (!matchSkill(candidateSkill, req, true)) {
-//       return false;
-//     }
-//   }
+  // Compulsory Fields
+  for (const req of jdSkills.must ?? []) {
+    const skillName = req.name.toLowerCase();
+    if (!(skillName in lookUp)) {
+      return false;
+    }
+    const candidateSkill = lookUp[skillName];
+    if (candidateSkill && !matchSkill(candidateSkill, req, true)) {
+      return false;
+    }
+  }
 
-//   // Optional Fields
-//   let optionalCount = 0;
-//   for (const req of jdSkills.optional ?? []) {
-//     const skillName = req.name.toLowerCase();
-//     if (skillName in lookUp) {
-//       const candidateSkill = lookUp[skillName];
-//       if (matchSkill(candidateSkill, req)) {
-//         optionalCount++;
-//       }
-//     }
-//   }
-//   if (optionalCount < (jdSkills.minOptionalRequired ?? 0)) {
-//     return false;
-//   }
+  // Optional Fields
+  let optionalCount = 0;
+  for (const req of jdSkills.optional ?? []) {
+    const skillName = req.name.toLowerCase();
+    if (skillName in lookUp) {
+      const candidateSkill = lookUp[skillName];
+      if (candidateSkill && matchSkill(candidateSkill, req)) {
+        optionalCount++;
+      }
+    }
+  }
+  if (optionalCount < (jdSkills.minOptionalRequired ?? 0)) {
+    return false;
+  }
 
-//   // Either Fields
-//   for (const skill of jdSkills.either ?? []) {
-//     let eitherMatched = false;
-//     for (const skillName of skill.skills ?? []) {
-//       const normalizedSkillName = skillName.toLowerCase();
-//       if (normalizedSkillName in lookUp) {
-//         const candidateSkill = lookUp[normalizedSkillName];
-//         const req: SkillRequirement = {
-//           minLevel: skill.minLevel ?? "novice",
-//         };
-//         if (matchSkill(candidateSkill, req)) {
-//           eitherMatched = true;
-//           break;
-//         }
-//       }
-//     }
-//     if (!eitherMatched) {
-//       return false;
-//     }
-//   }
-//   return true;
-// }
+  // Either Fields
+  for (const eitherSkills of jdSkills.either ?? []) {
+    let eitherMatched = false;
+    for (const skill of eitherSkills ?? []) {
+      const normalizedSkillName = skill.name.toLowerCase();
+      if (normalizedSkillName in lookUp) {
+        const candidateSkill = lookUp[normalizedSkillName];
+        if(!candidateSkill) {
+          break;
+        }
+        const req = skill;
+        if (matchSkill(candidateSkill, req)) {
+          eitherMatched = true;
+          break;
+        }
+      }
+    }
+    if (!eitherMatched) {
+      return false;
+    }
+  }
+  return true;
+}
 
 // Main execution
 async function main() {
@@ -350,45 +351,69 @@ async function main() {
     );
     console.log("Education Gate Result:", educationResult);
 
-    // const jdSkills: JDSkills = {
-    //   must: [
-    //     {
-    //       name: "Docker",
-    //       minLevel: "advanced",
-    //       minMonthsExperience: 6,
-    //       maxMonthsSinceLastUse: 24,
-    //     },
-    //     {
-    //       name: "Kubernetes",
-    //       minLevel: "intermediate",
-    //       minMonthsExperience: 6,
-    //       maxMonthsSinceLastUse: 24,
-    //     },
-    //     {
-    //       name: "ci/cd",
-    //       minLevel: "expert",
-    //       minMonthsExperience: 12,
-    //       maxMonthsSinceLastUse: 12,
-    //     },
-    //   ],
-    //   optional: [
-    //     { name: "Docker", minLevel: "advanced" },
-    //     { name: "AWS", minLevel: "expert" },
-    //   ],
-    //   minOptionalRequired: 1,
-    //   either: [
-    //     {
-    //       skills: ["PostgreSQL", "MySQL"],
-    //       minLevel: "intermediate",
-    //     },
-    //   ],
-    // };
+    const jdSkills: JDSkills = {
+      must: [
+        {
+          name: "Docker",
+          minLevel: "advanced",
+          minMonthsExperience: 6,
+          maxMonthsSinceLastUse: 24,
+        },
+        {
+          name: "Kubernetes",
+          minLevel: "intermediate",
+          minMonthsExperience: 6,
+          maxMonthsSinceLastUse: 24,
+        },
+        {
+          name: "ci/cd",
+          minLevel: "expert",
+          minMonthsExperience: 12,
+          maxMonthsSinceLastUse: 12,
+        },
+      ],
+      optional: [
+        { name: "Docker", minLevel: "advanced" },
+        { name: "AWS", minLevel: "expert" },
+      ],
+      minOptionalRequired: 1,
+      either: [
+        [
+          {
+            name: "GCP",
+            minLevel: "intermediate",
+            minMonthsExperience: 6,
+            maxMonthsSinceLastUse: 24,
+          },
+          {
+            name: "Azure",
+            minLevel: "intermediate",
+            minMonthsExperience: 6,
+            maxMonthsSinceLastUse: 24,
+          },
+        ],
+        [
+          {
+            name: "Jenkins",
+            minLevel: "intermediate",
+            minMonthsExperience: 6,
+            maxMonthsSinceLastUse: 24,
+          },
+          {
+            name: "GitLab CI",
+            minLevel: "intermediate",
+            minMonthsExperience: 6,
+            maxMonthsSinceLastUse: 24,
+          },
+        ],
+      ],
+    };
 
-    // const skillGateResult = skillGate(
-    //   allResumes[1]?.extractedResume?.skills ?? [],
-    //   jdSkills
-    // );
-    // console.log("Skill Gate Result:", skillGateResult);
+    const skillGateResult = skillGate(
+      allResumes[1]?.extractedResume?.skills ?? [],
+      jdSkills
+    );
+    console.log("Skill Gate Result:", skillGateResult);
   }
 }
 
