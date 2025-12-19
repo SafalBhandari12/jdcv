@@ -1,5 +1,7 @@
 import * as fs from "fs";
 import * as path from "path";
+import { getEmbedding } from "./utils/getEmbedding.js";
+import { cosineSimilarity } from "fast-cosine-similarity";
 
 // Directory containing parsed resume JSON files
 const RESUME_DIR = "./resumes/parsed";
@@ -331,6 +333,7 @@ function skillGate(candidateSkills: Skill[], jdSkills: JDSkills): boolean {
 // Main execution
 async function main() {
   const allResumes = await loadAllResumes(RESUME_DIR);
+  const score: { resumeId: string; score: number }[] = [];
 
   for (const resume of allResumes) {
     console.log(
@@ -364,7 +367,7 @@ async function main() {
           minLevel: "intermediate",
           minMonthsExperience: 6,
           maxMonthsSinceLastUse: 24,
-        }
+        },
       ],
       optional: [
         { name: "Docker", minLevel: "advanced" },
@@ -414,7 +417,37 @@ async function main() {
       jdSkills
     );
     console.log("Skill Gate Result:", skillGateResult);
+
+    const RESPONSIBILITIES = [
+      "Design, develop, and maintain scalable server-side applications and services using PHP and Laravel framework",
+      "Architect and implement RESTful APIs with authentication, validation, and documentation",
+      "Define and enforce database schemas, migrations, and efficient query patterns using Eloquent ORM or raw SQL",
+      "Write clean, modular, secure, and testable code conforming to PSR standards and framework best practices",
+      "Develop and maintain automated unit, feature, and integration tests using PHPUnit and Laravel testing tools",
+      "Perform code reviews, enforce coding standards, and mentor peers on framework usage and engineering practices",
+      "Optimize application performance, caching strategies, and asynchronous workflows (queues, jobs, events)",
+      "Identify, debug, and resolve production defects, security vulnerabilities, and performance bottlenecks",
+      "Integrate third-party APIs, external services, and payment gateways with robust error handling",
+      "Collaborate with front-end teams to integrate UI components and ensure seamless data exchange and UX consistency",
+      "Participate in architecture discussions, sprint planning, technical design reviews, and daily agile ceremonies",
+      "Implement secure session management, authentication/authorization flows, and apply OWASP security best practices",
+      "Configure and maintain CI/CD pipelines, deployment scripts, and environment-specific configurations",
+      "Document system design, API specifications, deployment processes, and operational procedures",
+    ];
+    const responsibilitiesText = RESPONSIBILITIES.join(" ");
+    const embedding = await getEmbedding(responsibilitiesText);
+    const similarity = cosineSimilarity(
+      embedding,
+      resume?.embeddingInfo?.embedding ?? []
+    );
+    score.push({
+      resumeId: resume?.extractedResume?.basics?.name ?? "Unknown",
+      score: similarity,
+    });
+    console.log("Cosine Similarity with Responsibilities:", similarity);
+    console.log("Embedding vector length:", embedding.length);
   }
+  console.log("Final Scores:", score);
 }
 
 main().catch(console.error);
