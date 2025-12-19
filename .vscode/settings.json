@@ -1,4 +1,7 @@
 {
   "python-envs.pythonProjects": [],
-  "prisma.pinToPrisma6": true
+  "prisma.pinToPrisma6": true,
+  "python.analysis.typeCheckingMode": "strict",
+  "python.analysis.autoImportCompletions": true,
+  "python.analysis.useLibraryCodeForTypes": true
 }

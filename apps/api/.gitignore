@@ -4,6 +4,8 @@ node_modules
 .env.local
 .env.*.local
 
+/resumes/
+
 /src/generated/prisma
 
 # Build and dist
