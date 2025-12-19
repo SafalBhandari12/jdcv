@@ -311,7 +311,7 @@ function skillGate(candidateSkills: Skill[], jdSkills: JDSkills): boolean {
       const normalizedSkillName = skill.name.toLowerCase();
       if (normalizedSkillName in lookUp) {
         const candidateSkill = lookUp[normalizedSkillName];
-        if(!candidateSkill) {
+        if (!candidateSkill) {
           break;
         }
         const req = skill;
@@ -346,7 +346,7 @@ async function main() {
     const educationResult = educationGate(
       resume?.extractedResume?.education ?? [],
       ["bachelors", "masters"],
-      ["software"],
+      ["software", "computer science", "computer engineering", "it"],
       false
     );
     console.log("Education Gate Result:", educationResult);
@@ -364,13 +364,7 @@ async function main() {
           minLevel: "intermediate",
           minMonthsExperience: 6,
           maxMonthsSinceLastUse: 24,
-        },
-        {
-          name: "ci/cd",
-          minLevel: "expert",
-          minMonthsExperience: 12,
-          maxMonthsSinceLastUse: 12,
-        },
+        }
       ],
       optional: [
         { name: "Docker", minLevel: "advanced" },
@@ -387,6 +381,12 @@ async function main() {
           },
           {
             name: "Azure",
+            minLevel: "intermediate",
+            minMonthsExperience: 6,
+            maxMonthsSinceLastUse: 24,
+          },
+          {
+            name: "Aws",
             minLevel: "intermediate",
             minMonthsExperience: 6,
             maxMonthsSinceLastUse: 24,
