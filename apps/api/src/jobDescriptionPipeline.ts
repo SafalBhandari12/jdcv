@@ -413,7 +413,7 @@ async function main() {
     };
 
     const skillGateResult = skillGate(
-      allResumes[1]?.extractedResume?.skills ?? [],
+      resume?.extractedResume?.skills ?? [],
       jdSkills
     );
     console.log("Skill Gate Result:", skillGateResult);
@@ -434,18 +434,9 @@ async function main() {
       "Configure and maintain CI/CD pipelines, deployment scripts, and environment-specific configurations",
       "Document system design, API specifications, deployment processes, and operational procedures",
     ];
-    const responsibilitiesText = RESPONSIBILITIES.join(" ");
-    const embedding = await getEmbedding(responsibilitiesText);
-    const similarity = cosineSimilarity(
-      embedding,
-      resume?.embeddingInfo?.embedding ?? []
-    );
-    score.push({
-      resumeId: resume?.extractedResume?.basics?.name ?? "Unknown",
-      score: similarity,
-    });
-    console.log("Cosine Similarity with Responsibilities:", similarity);
-    console.log("Embedding vector length:", embedding.length);
+    for (const responsibility of RESPONSIBILITIES) {
+      
+    }
   }
   console.log("Final Scores:", score);
 }
