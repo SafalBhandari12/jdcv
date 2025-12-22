@@ -4,7 +4,7 @@
  */
 
 // Utility Types
-export type IsoDate = string; // ISO 8601 format
+export type IsoDate = string ; // ISO 8601 format
 
 export interface Traceable<T> {
   value: T;

@@ -5,12 +5,10 @@ import { cosineSimilarity } from "fast-cosine-similarity";
 import type { ParsedResume } from "./types/resume.js";
 
 // Directory containing parsed resume JSON files
-const RESUME_DIR = "./resumes/oldparsed";
-
-
+const RESUME_DIR = "./resumes/parsed";
 
 interface FlexibleDate {
-  isoDate?: string;
+  isoDate?: string | null;
   isCurrent?: boolean;
 }
 
@@ -20,9 +18,9 @@ interface WorkExperience {
 }
 
 interface Education {
-  normalizedDegree?: string;
-  fieldOfStudy?: string;
-  endDate?: FlexibleDate;
+  normalizedDegree?: string | null;
+  fieldOfStudy?: string | null;
+  endDate?: FlexibleDate | null;
 }
 
 interface Skill {
@@ -77,8 +75,7 @@ function passesQualityGate(
   maxSuspicion: number = 40
 ): boolean {
   const qualityScore = resume?.analysis?.quality?.score ?? 0;
-  const suspicionScore =
-    resume?.analysis?.suspicion?.score ?? 0;
+  const suspicionScore = resume?.analysis?.suspicion?.score ?? 0;
   return qualityScore >= minQuality && suspicionScore <= maxSuspicion;
 }
 
@@ -144,8 +141,7 @@ function industryExperienceGate(
   minIndustryExperience: number = 36
 ): boolean {
   let totalMonths = 0;
-  const workExperiences: WorkExperience[] =
-    resume?.workExperience ?? [];
+  const workExperiences: WorkExperience[] = resume?.workExperience ?? [];
   for (const workExperience of workExperiences) {
     totalMonths += getTotalMonths(
       workExperience.startDate,
@@ -408,10 +404,7 @@ async function main() {
       ],
     };
 
-    const skillGateResult = skillGate(
-      resume?.skills ?? [],
-      jdSkills
-    );
+    const skillGateResult = skillGate(resume?.skills ?? [], jdSkills);
     console.log("Skill Gate Result:", skillGateResult);
 
     const RESPONSIBILITIES = [
