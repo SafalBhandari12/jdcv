@@ -84,7 +84,8 @@ export interface VerificationFlags {
 // Basics Types
 export interface Url {
   type: "linkedin" | "github" | "portfolio" | "personal";
-  url: string;
+  //   This is temporary fix for the issue that when the pdf is parsed and even if url is present the parser is unable to extract it and returns empty string
+  url: string | null;
 }
 
 export interface Basics {
@@ -94,6 +95,7 @@ export interface Basics {
   location: Location;
   urls: Url[];
   summary: string | null;
+  summaryEmbedding?: number[] | null;
 }
 
 // Skills Types
@@ -131,7 +133,9 @@ export interface WorkExperience {
   startDate: FlexibleDate;
   endDate: FlexibleDate;
   description: string | null;
+  descriptionEmbedding?: number[] | null;
   responsibilities: string[];
+  responsibilitiesEmbeddings?: number[][] | null;
   skillsDetected: string[];
   isVerified: boolean;
   verificationNotes: string | null;
@@ -160,6 +164,7 @@ export interface Education {
 export interface Project {
   name: string;
   description: string | null;
+  descriptionEmbedding?: number[] | null;
   url: string | null;
   skillsUsed: string[];
 }

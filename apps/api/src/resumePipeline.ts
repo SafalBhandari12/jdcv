@@ -3,9 +3,9 @@ import path from "path";
 import dotenv from "dotenv";
 const pdfjsLib = await import("pdfjs-dist/legacy/build/pdf.mjs");
 import crypto from "crypto";
-import { GoogleGenerativeAI } from "@google/generative-ai";
 import { resumePrompt } from "./utils/prompts.js";
 import type { ParsedResume } from "./types/resume.js";
+import resumeData from "./resumeData.js";
 
 dotenv.config();
 
@@ -15,24 +15,17 @@ const getEnv = (key: string): string | undefined => {
   return process.env[key];
 };
 
-// Using multiple api keys to distribute load
-const GEMINI_API_KEY1 = getEnv("GEMINI_API_KEY_2023001106");
-const GEMINI_API_KEY2 = getEnv("GEMINI_API_KEY_seikouuber");
-const GEMINI_API_KEY3 = getEnv("GEMINI_API_KEY_safalbhandari069");
-const GEMINI_API_KEY4 = getEnv("GEMINI_API_KEY_safalbhandari212");
-const GEMINI_API_KEY5 = getEnv("GEMINI_API_KEY_safalbhandari0001");
-const GEMINI_API_KEY6 = getEnv("GEMINI_API_KEY_bhandarisafal0001");
+// OpenRouter API Key
+const OPENROUTER_API_KEY = getEnv("OPENROUTER_API_KEY");
 
 const HF_TOKEN = getEnv("HF_TOKEN");
 
-const API_KEYS: Array<string | undefined> = [
-  GEMINI_API_KEY1,
-  GEMINI_API_KEY2,
-  GEMINI_API_KEY3,
-  GEMINI_API_KEY4,
-  GEMINI_API_KEY5,
-  GEMINI_API_KEY6,
-];
+// OpenRouter token check
+if (OPENROUTER_API_KEY) {
+  console.log("✓ OpenRouter API key found");
+} else {
+  throw new Error("OPENROUTER_API_KEY is not set");
+}
 
 // HF token check
 if (HF_TOKEN) {
@@ -172,38 +165,70 @@ export async function extractResumeWithLLM(
   return generateWithApiKeyFallback(resumeParsingPrompt);
 }
 
+async function callOpenRouter(
+  prompt: string,
+  model: string = "google/gemini-2.0-flash-exp:free"
+): Promise<string> {
+  const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${OPENROUTER_API_KEY}`,
+    },
+    body: JSON.stringify({
+      model: model,
+      messages: [
+        {
+          role: "user",
+          content: prompt,
+        },
+      ],
+    }),
+  });
+
+  if (!res.ok) {
+    const err = await res.text();
+    throw new Error(err);
+  }
+
+  const json = (await res.json()) as {
+    choices?: Array<{
+      message?: {
+        content?: string;
+      };
+    }>;
+  };
+
+  const text = json.choices?.[0]?.message?.content;
+
+  if (!text) {
+    throw new Error("No text content in OpenRouter response");
+  }
+
+  return text;
+}
+
 async function generateWithApiKeyFallback(
   prompt: string
 ): Promise<ParsedResume> {
   let lastError: unknown = null;
 
-  for (let i = 0; i < API_KEYS.length; i++) {
-    const apiKey = API_KEYS[i];
+  // Model options from OpenRouter (free and paid)
+  const models = [
+    "google/gemini-2.0-flash-exp:free",
+    "google/gemini-1.5-flash-exp:free",
+    "google/gemini-1.5-pro",
+  ];
 
-    if (!apiKey) {
-      console.warn(`⚠ API key #${i + 1} is not configured`);
-      continue;
-    }
-
+  for (const model of models) {
     try {
-      console.log(`→ Trying Gemini API key #${i + 1}`);
-
-      const genAI = new GoogleGenerativeAI(apiKey);
-      const model = genAI.getGenerativeModel({
-        model: "gemini-1.5-flash",
-      });
-
-      const result = await model.generateContent(prompt);
-      const responseText = result.response.text();
+      const responseText = await callOpenRouter(prompt, model);
 
       if (!responseText) {
-        throw new Error("Empty response from Gemini");
+        throw new Error("Empty response from OpenRouter");
       }
 
       const parsed = JSON.parse(responseText) as ParsedResume;
-
-      console.log(`✓ Success using API key #${i + 1}`);
-      console.log(`Resume ID: ${parsed?.id ?? "unknown"}`);
 
       return parsed;
     } catch (err: any) {
@@ -217,12 +242,19 @@ async function generateWithApiKeyFallback(
         message.toLowerCase().includes("quota") ||
         message.toLowerCase().includes("resource exhausted");
 
+      const isModelNotAvailable =
+        message.includes("not found") ||
+        message.includes("not available") ||
+        message.includes("INVALID_ARGUMENT");
+
       if (err instanceof SyntaxError) {
-        console.error(` JSON parsing failed with API key #${i + 1}`);
+        console.error(`✗ JSON parsing failed with model ${model}`);
         throw err;
       }
 
-      console.warn(`✗ API key #${i + 1} failed: ${message}`);
+      if (isModelNotAvailable) {
+        continue;
+      }
 
       if (!isRateLimit) {
         throw err;
@@ -230,7 +262,9 @@ async function generateWithApiKeyFallback(
     }
   }
 
-  throw new Error("All Gemini API keys exhausted");
+  throw new Error(
+    "All OpenRouter models exhausted. Last error: " + String(lastError)
+  );
 }
 
 // ---------------------Add neta data to parsed resume ----------------------//
@@ -245,26 +279,215 @@ export function addMetadataToResume(
   }
 ): ParsedResume {
   parsedResume.metaData = metadata;
+  return parsedResume;
+}
 
-  console.log("✓ Metadata added to parsed resume");
-  console.log("\nMetadata in resume:");
-  console.log(JSON.stringify(parsedResume.metaData, null, 2));
+// ---------------------Generate Embedding for Different text fields----------------------//
+const API_URL =
+  "https://router.huggingface.co/hf-inference/models/sentence-transformers/all-MiniLM-L6-v2/pipeline/feature-extraction";
+if (!HF_TOKEN) {
+  throw new Error("HF_TOKEN is not set");
+}
+type Embedding = number[];
+
+async function embedTexts(texts: string[]): Promise<Embedding[]> {
+  const response = await fetch(API_URL, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${HF_TOKEN}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ inputs: texts }),
+  });
+
+  if (!response.ok) {
+    const err = await response.text();
+    throw new Error(`HF API error ${response.status}: ${err}`);
+  }
+
+  return (await response.json()) as Embedding[];
+}
+
+export async function generateEmbeddingsForResume(
+  parsedResume: ParsedResume
+): Promise<ParsedResume> {
+  // Step 1: Collect all texts with their metadata for proper tracking
+  interface TextItem {
+    text: string;
+    type:
+      | "summary"
+      | "workDescription"
+      | "responsibility"
+      | "projectDescription";
+    expIndex?: number;
+    respIndex?: number;
+    projIndex?: number;
+  }
+
+  const textItems: TextItem[] = [];
+
+  // Collect basics summary
+  if (parsedResume.basics.summary) {
+    textItems.push({
+      text: parsedResume.basics.summary,
+      type: "summary",
+    });
+  }
+
+  // Collect work experience descriptions and responsibilities
+  parsedResume.workExperience.forEach((exp, expIndex) => {
+    if (exp.description) {
+      textItems.push({
+        text: exp.description,
+        type: "workDescription",
+        expIndex,
+      });
+    }
+    if (exp.responsibilities && exp.responsibilities.length > 0) {
+      exp.responsibilities.forEach((resp, respIndex) => {
+        textItems.push({
+          text: resp,
+          type: "responsibility",
+          expIndex,
+          respIndex,
+        });
+      });
+    }
+  });
+
+  // Collect project descriptions
+  parsedResume.projects.forEach((proj, projIndex) => {
+    if (proj.description) {
+      textItems.push({
+        text: proj.description,
+        type: "projectDescription",
+        projIndex,
+      });
+    }
+  });
+
+  // Step 2: Generate embeddings for all texts at once
+  if (textItems.length === 0) {
+    return parsedResume;
+  }
+
+  const texts = textItems.map((item) => item.text);
+  const embeddings = await embedTexts(texts);
+
+  // Step 3: Map embeddings back to their original locations
+  textItems.forEach((item, idx) => {
+    const embedding = embeddings[idx] ?? null;
+
+    switch (item.type) {
+      case "summary":
+        parsedResume.basics.summaryEmbedding = embedding;
+        break;
+
+      case "workDescription":
+        if (item.expIndex !== undefined) {
+          const exp = parsedResume.workExperience[item.expIndex];
+          if (exp) {
+            exp.descriptionEmbedding = embedding;
+          }
+        }
+        break;
+
+      case "responsibility":
+        if (item.expIndex !== undefined && item.respIndex !== undefined) {
+          const exp = parsedResume.workExperience[item.expIndex];
+          if (exp) {
+            if (!exp.responsibilitiesEmbeddings) {
+              exp.responsibilitiesEmbeddings = [];
+            }
+            // Ensure the array has enough slots
+            const embArray = exp.responsibilitiesEmbeddings as number[][];
+            embArray[item.respIndex] = embedding!;
+          }
+        }
+        break;
+
+      case "projectDescription":
+        if (item.projIndex !== undefined) {
+          const proj = parsedResume.projects[item.projIndex];
+          if (proj) {
+            proj.descriptionEmbedding = embedding;
+          }
+        }
+        break;
+    }
+  });
 
   return parsedResume;
 }
 
+// ---------------------Display and Export the Results----------------------//
+export function displayAndExportParsedResume(
+  parsedResume: unknown,
+  fileHash: string
+): string {
+  const EXPORT_DIR = "./resumes/parsed";
+
+  if (!fs.existsSync(EXPORT_DIR)) {
+    fs.mkdirSync(EXPORT_DIR, { recursive: true });
+  }
+
+  const outputFile = path.join(EXPORT_DIR, `${fileHash}.json`);
+
+  if (!fs.existsSync(outputFile)) {
+    fs.writeFileSync(outputFile, JSON.stringify(parsedResume, null, 2), {
+      encoding: "utf-8",
+    });
+  }
+
+  return outputFile;
+}
+
 async function main() {
-  // console.log(API_KEYS);
-  const files = uploadResumesFromDir("./resumes/resumes");
-  for (const file of files.slice(0, 2)) {
-    const text = await parsePdf(file.actualPath);
-    const metadata = extractMetadata(text, file.originalName);
-    console.log("\n" + "-".repeat(40));
-    console.log(metadata);
+  try {
+    const resumeFiles = uploadResumesFromDir("./resumes/resumes");
+
+    for (const file of resumeFiles.slice(0, 10)) {
+      console.log(`Processing: ${file.originalName}`);
+
+      try {
+        const resumeText = await parsePdf(file.actualPath);
+
+        // STEP 2: Extract metadata
+        const metadata = extractMetadata(resumeText, file.originalName);
+
+        // STEP 3: Extract resume with LLM
+        const resumeDataId = metadata.fileName.split(".")[0];
+        if (!resumeDataId) {
+          continue;
+        }
+        let parsedResume = resumeData[resumeDataId];
+        if (!parsedResume) {
+          continue;
+        }
+
+        // STEP 4: Add metadata to parsed resume
+        parsedResume = addMetadataToResume(parsedResume, metadata);
+
+        // STEP 5: Generate embeddings for text fields
+        parsedResume = await generateEmbeddingsForResume(parsedResume);
+
+        // STEP 6: Display and export parsed resume
+        displayAndExportParsedResume(parsedResume, metadata.fileHash);
+
+        console.log(`✓ COMPLETED: ${file.originalName}`);
+      } catch (fileError) {
+        console.error(`✗ Error: ${fileError}`);
+      }
+    }
+
+    console.log("✓ PIPELINE COMPLETED");
+  } catch (err) {
+    console.error("✗ Fatal error:", err);
+    process.exit(1);
   }
 }
 
 main().catch((err) => {
-  console.error(err);
+  console.error("✗ Error:", err);
   process.exit(1);
 });

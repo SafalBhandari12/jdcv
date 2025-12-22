@@ -2,13 +2,12 @@ import * as fs from "fs";
 import * as path from "path";
 import { getEmbedding } from "./utils/getEmbedding.js";
 import { cosineSimilarity } from "fast-cosine-similarity";
+import type { ParsedResume } from "./types/resume.js";
 
 // Directory containing parsed resume JSON files
-const RESUME_DIR = "./resumes/parsed";
+const RESUME_DIR = "./resumes/oldparsed";
 
-interface Resume {
-  [key: string]: any;
-}
+
 
 interface FlexibleDate {
   isoDate?: string;
@@ -52,8 +51,8 @@ interface JDSkills {
   either?: SkillRequirement[][];
 }
 
-async function loadAllResumes(resumeDir: string): Promise<Resume[]> {
-  const resumes: Resume[] = [];
+async function loadAllResumes(resumeDir: string): Promise<ParsedResume[]> {
+  const resumes: ParsedResume[] = [];
   try {
     const files = fs.readdirSync(resumeDir);
     for (const file of files) {
@@ -73,13 +72,13 @@ async function loadAllResumes(resumeDir: string): Promise<Resume[]> {
 // Here if you look at the prompt you will see that min_quality greater than 60 is average and max_suspicion less than 40 is concerning
 // todo: refactor to use enums for quality and suspicion levels
 function passesQualityGate(
-  resume: Resume,
+  resume: ParsedResume,
   minQuality: number = 60,
   maxSuspicion: number = 40
 ): boolean {
-  const qualityScore = resume?.extractedResume?.analysis?.quality?.score ?? 0;
+  const qualityScore = resume?.analysis?.quality?.score ?? 0;
   const suspicionScore =
-    resume?.extractedResume?.analysis?.suspicion?.score ?? 0;
+    resume?.analysis?.suspicion?.score ?? 0;
   return qualityScore >= minQuality && suspicionScore <= maxSuspicion;
 }
 
@@ -141,12 +140,12 @@ function getTotalMonths(
 }
 
 function industryExperienceGate(
-  resume: Resume,
+  resume: ParsedResume,
   minIndustryExperience: number = 36
 ): boolean {
   let totalMonths = 0;
   const workExperiences: WorkExperience[] =
-    resume?.extractedResume?.workExperience ?? [];
+    resume?.workExperience ?? [];
   for (const workExperience of workExperiences) {
     totalMonths += getTotalMonths(
       workExperience.startDate,
@@ -336,10 +335,7 @@ async function main() {
   const score: { resumeId: string; score: number }[] = [];
 
   for (const resume of allResumes) {
-    console.log(
-      "Processing Resume:",
-      resume?.extractedResume?.basics?.name ?? "Unknown"
-    );
+    console.log("Processing Resume:", resume?.basics.name ?? "Unknown");
     const qualityGateResult = passesQualityGate(resume, 70, 30);
     console.log("Quality Gate Result:", qualityGateResult);
 
@@ -347,7 +343,7 @@ async function main() {
     console.log("Industry Experience Gate Result:", industryExperienceResult);
 
     const educationResult = educationGate(
-      resume?.extractedResume?.education ?? [],
+      resume?.education ?? [],
       ["bachelors", "masters"],
       ["software", "computer science", "computer engineering", "it"],
       false
@@ -413,7 +409,7 @@ async function main() {
     };
 
     const skillGateResult = skillGate(
-      resume?.extractedResume?.skills ?? [],
+      resume?.skills ?? [],
       jdSkills
     );
     console.log("Skill Gate Result:", skillGateResult);
@@ -435,7 +431,6 @@ async function main() {
       "Document system design, API specifications, deployment processes, and operational procedures",
     ];
     for (const responsibility of RESPONSIBILITIES) {
-      
     }
   }
   console.log("Final Scores:", score);
