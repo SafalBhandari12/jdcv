@@ -4,7 +4,7 @@
  */
 
 // Utility Types
-export type IsoDate = string ; // ISO 8601 format
+export type IsoDate = string; // ISO 8601 format
 
 export interface Traceable<T> {
   value: T;
@@ -23,10 +23,11 @@ export interface Location {
 }
 
 export interface FlexibleDate {
-  rawText: string;
+  rawText: string | null;
   isoDate: IsoDate | null;
   isCurrent: boolean;
 }
+
 
 // Analysis Types
 export interface QualityScore {
@@ -105,9 +106,9 @@ export interface SkillSource {
 }
 
 export interface SkillMetadata {
-  firstSeen: IsoDate;
-  lastUsed: IsoDate;
-  totalMonthsExperience: number;
+  firstSeen: IsoDate | null;
+  lastUsed: IsoDate | null;
+  totalMonthsExperience: number | null;
   occurrenceCount: number;
   sources: SkillSource[];
 }

@@ -3,6 +3,7 @@ import * as path from "path";
 import { getEmbedding } from "./utils/getEmbedding.js";
 import { cosineSimilarity } from "fast-cosine-similarity";
 import type { ParsedResume } from "./types/resume.js";
+import { embedTexts } from "./resumePipeline.js";
 
 // Directory containing parsed resume JSON files
 const RESUME_DIR = "./resumes/parsed";
@@ -27,8 +28,8 @@ interface Skill {
   normalizedName?: string;
   computedLevel?: string;
   metadata?: {
-    totalMonthsExperience?: number;
-    lastUsed?: string;
+    totalMonthsExperience?: number | null;
+    lastUsed?: string | null;
   };
 }
 
@@ -325,6 +326,24 @@ function skillGate(candidateSkills: Skill[], jdSkills: JDSkills): boolean {
   return true;
 }
 
+// Utility function for calculating the cosine similarity of one embedding with multiple embeddings
+function normalize(v: number[]): number[] {
+  const norm = Math.sqrt(v.reduce((s, x) => s + x * x, 0));
+  return v.map((x) => x / norm);
+}
+
+export function cosineSimilarityBatchNormalized(
+  query: number[],
+  vectors: number[][]
+): number[] {
+  const q = normalize(query);
+  const normalizedVectors = vectors.map(normalize);
+
+  return normalizedVectors.map((v) =>
+    v.reduce((sum, x, i) => sum + (q[i] ?? 0) * x, 0)
+  );
+}
+
 // Main execution
 async function main() {
   const allResumes = await loadAllResumes(RESUME_DIR);
@@ -387,20 +406,6 @@ async function main() {
             maxMonthsSinceLastUse: 24,
           },
         ],
-        [
-          {
-            name: "Jenkins",
-            minLevel: "intermediate",
-            minMonthsExperience: 6,
-            maxMonthsSinceLastUse: 24,
-          },
-          {
-            name: "GitLab CI",
-            minLevel: "intermediate",
-            minMonthsExperience: 6,
-            maxMonthsSinceLastUse: 24,
-          },
-        ],
       ],
     };
 
@@ -423,8 +428,45 @@ async function main() {
       "Configure and maintain CI/CD pipelines, deployment scripts, and environment-specific configurations",
       "Document system design, API specifications, deployment processes, and operational procedures",
     ];
-    for (const responsibility of RESPONSIBILITIES) {
+    const jdEmbeddings = await embedTexts(RESPONSIBILITIES);
+    const resumeEmbeddings: number[][] = [];
+    resumeEmbeddings.push(
+      ...(resume.workExperience
+        ?.flatMap((we) => we.responsibilitiesEmbeddings || [])
+        .filter((e) => e && e.length > 0) ?? [])
+    );
+    resumeEmbeddings.push(
+      ...(resume.projects
+        ?.flatMap((p) =>
+          p.descriptionEmbedding ? [p.descriptionEmbedding] : []
+        )
+        .filter((e) => e && e.length > 0) ?? [])
+    );
+    if (
+      resume.basics.summaryEmbedding &&
+      resume.basics.summaryEmbedding.length > 0
+    ) {
+      resumeEmbeddings.push(resume.basics.summaryEmbedding);
     }
+    resumeEmbeddings.push(
+      ...resume.projects
+        .map((p) => p.descriptionEmbedding)
+        .filter(
+          (e): e is number[] => e !== null && e !== undefined && e.length > 0
+        )
+    );
+    let currentSum = 0;
+    for (const responsibilityEmbeddingJd of jdEmbeddings) {
+      const similarities = cosineSimilarityBatchNormalized(
+        responsibilityEmbeddingJd,
+        resumeEmbeddings.filter(
+          (e) => e !== null && e !== undefined
+        ) as number[][]
+      );
+      currentSum += Math.max(...similarities, 0);
+    }
+    const score = currentSum / jdEmbeddings.length;
+    console.log("Embedding Similarity Score:", score.toFixed(4));
   }
   console.log("Final Scores:", score);
 }

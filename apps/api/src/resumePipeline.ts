@@ -77,10 +77,6 @@ export function uploadResumesFromDir(
 
 //-------------------Parsing Pdf Resume Function-------------------//
 export async function parsePdf(resumeFilePath: string): Promise<string> {
-  console.log("\n" + "=".repeat(60));
-  console.log("STEP 1: PARSE PDF");
-  console.log("=".repeat(60) + "\n");
-
   try {
     const data = new Uint8Array(fs.readFileSync(resumeFilePath));
     const pdf = await pdfjsLib.getDocument({ data }).promise;
@@ -115,10 +111,6 @@ export function extractMetadata(
   parserVersion: string;
   Language: string;
 } {
-  console.log("\n" + "=".repeat(60));
-  console.log("STEP 2: EXTRACT METADATA");
-  console.log("=".repeat(60) + "\n");
-
   function generateHashValue(text: string): string {
     // Normalize text (matches Python behavior)
     let normalized = text.trim().toLowerCase();
@@ -290,7 +282,7 @@ if (!HF_TOKEN) {
 }
 type Embedding = number[];
 
-async function embedTexts(texts: string[]): Promise<Embedding[]> {
+export async function embedTexts(texts: string[]): Promise<Embedding[]> {
   const response = await fetch(API_URL, {
     method: "POST",
     headers: {
@@ -446,7 +438,7 @@ async function main() {
   try {
     const resumeFiles = uploadResumesFromDir("./resumes/resumes");
 
-    for (const file of resumeFiles.slice(0, 10)) {
+    for (const file of resumeFiles.slice(0, 27)) {
       console.log(`Processing: ${file.originalName}`);
 
       try {

@@ -3128,7 +3128,7 @@ const resumeData: Record<string, ParsedResume> = {
       },
     ],
   },
-  10: {
+  "10": {
     id: "resume_main",
     analysis: {
       quality: {
@@ -3418,6 +3418,5577 @@ const resumeData: Record<string, ParsedResume> = {
       {
         language: "Hindi",
         proficiency: "conversational",
+      },
+    ],
+  },
+  "11": {
+    id: "resume_main",
+    analysis: {
+      quality: {
+        score: 94,
+        level: "exceptional",
+        hints: [
+          "Clear senior-level ownership of architecture and delivery",
+          "Strong quantification of impact and performance improvements",
+          "Consistent progression across high-scale enterprise systems",
+        ],
+      },
+      suspicion: {
+        score: 20,
+        level: "safe",
+        flags: [],
+      },
+      writingStyle: {
+        actionVerbsRate: 0.86,
+        quantificationRate: 0.42,
+        clicheCount: 0,
+      },
+    },
+    verification: {
+      timeline: {
+        hasGaps: false,
+        gaps: [],
+      },
+      identity: {
+        geoConsistency: "match",
+        socialFootprintFound: true,
+      },
+    },
+    basics: {
+      name: {
+        value: "Deependra Khadka",
+        rawText: "DEEPENDRA KHADKA",
+        confidence: 0.9,
+        pageIndex: 0,
+      },
+      email: [
+        {
+          value:
+            "[khadkadeependra371@gmail.com](mailto:khadkadeependra371@gmail.com)",
+          rawText:
+            "[khadkadeependra371@gmail.com](mailto:khadkadeependra371@gmail.com)",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+      ],
+      phone: [
+        {
+          value: "+9779702291318",
+          rawText: "+977-9702291318",
+          confidence: 0.9,
+          pageIndex: 0,
+        },
+      ],
+      location: {
+        rawInput: "Kathmandu, Nepal | Remote | Open to relocation",
+        city: "Kathmandu",
+        state: null,
+        country: "Nepal",
+        zipCode: null,
+        countryCode: "NP",
+      },
+      urls: [],
+      summary:
+        "Senior full stack developer with over six years of experience designing and scaling MERN and Next.js applications with GraphQL and AWS. Proven ability to architect performant microservices, optimize APIs, and lead agile teams delivering enterprise-grade solutions.",
+    },
+    skills: [
+      {
+        name: "React",
+        normalizedName: "react",
+        category: "frontend",
+        computedLevel: "expert",
+        validityScore: 9.2,
+        metadata: {
+          firstSeen: "2018-09",
+          lastUsed: "2025-03",
+          totalMonthsExperience: 78,
+          occurrenceCount: 14,
+          sources: [
+            {
+              sectionId: "exp_appsha",
+              sectionType: "experience",
+            },
+            {
+              sectionId: "exp_fedex",
+              sectionType: "experience",
+            },
+          ],
+        },
+      },
+      {
+        name: "Node.js",
+        normalizedName: "node.js",
+        category: "backend",
+        computedLevel: "expert",
+        validityScore: 9.0,
+        metadata: {
+          firstSeen: "2018-09",
+          lastUsed: "2025-03",
+          totalMonthsExperience: 78,
+          occurrenceCount: 13,
+          sources: [
+            {
+              sectionId: "exp_appsha",
+              sectionType: "experience",
+            },
+            {
+              sectionId: "exp_groupado",
+              sectionType: "experience",
+            },
+          ],
+        },
+      },
+      {
+        name: "GraphQL",
+        normalizedName: "graphql",
+        category: "backend",
+        computedLevel: "expert",
+        validityScore: 8.7,
+        metadata: {
+          firstSeen: "2019-01",
+          lastUsed: "2025-03",
+          totalMonthsExperience: 74,
+          occurrenceCount: 10,
+          sources: [
+            {
+              sectionId: "exp_groupado",
+              sectionType: "experience",
+            },
+            {
+              sectionId: "exp_aerion",
+              sectionType: "experience",
+            },
+          ],
+        },
+      },
+    ],
+    workExperience: [
+      {
+        id: "exp_aerion",
+        title: {
+          value: "Full Stack Developer",
+          rawText: "Full Stack Developer",
+          confidence: 0.9,
+          pageIndex: 0,
+        },
+        normalizedTitle: "Full Stack Developer",
+        company: {
+          value: "Aerion Tech",
+          rawText: "Aerion Tech",
+          confidence: 0.9,
+          pageIndex: 0,
+        },
+        companyDomain: null,
+        location: null,
+        type: "full-time",
+        startDate: {
+          rawText: "Nov 2023",
+          isoDate: "2023-11",
+          isCurrent: true,
+        },
+        endDate: {
+          rawText: "Present",
+          isoDate: null,
+          isCurrent: true,
+        },
+        description:
+          "Full ownership of full-stack systems using Next.js, Nest.js, and GraphQL.",
+        responsibilities: [
+          "Built inventory management system with real-time chat via WebSockets",
+          "Designed GraphQL schemas reducing data transfer by 35%",
+          "Implemented CI/CD pipelines on AWS Lambda with GitHub Actions",
+        ],
+        skillsDetected: ["react", "node.js", "graphql", "aws"],
+        isVerified: false,
+        verificationNotes: null,
+        verificationConfidence: null,
+        verificationDate: null,
+      },
+      {
+        id: "exp_groupado",
+        title: {
+          value: "Lead MERN Developer",
+          rawText: "Lead MERN Developer",
+          confidence: 0.9,
+          pageIndex: 0,
+        },
+        normalizedTitle: "Lead MERN Developer",
+        company: {
+          value: "Groupado",
+          rawText: "Groupado",
+          confidence: 0.9,
+          pageIndex: 0,
+        },
+        companyDomain: null,
+        location: null,
+        type: "contract",
+        startDate: {
+          rawText: "Dec 2022",
+          isoDate: "2022-12",
+          isCurrent: false,
+        },
+        endDate: {
+          rawText: "Mar 2023",
+          isoDate: "2023-03",
+          isCurrent: false,
+        },
+        description: "Led development of real-time eCommerce platform.",
+        responsibilities: [
+          "Architected Next.js and Nest.js systems with WebSockets",
+          "Led backend team handling over one million records",
+          "Built analytics dashboard reducing data latency by 60%",
+        ],
+        skillsDetected: ["react", "node.js", "graphql", "mongodb"],
+        isVerified: false,
+        verificationNotes: null,
+        verificationConfidence: null,
+        verificationDate: null,
+      },
+      {
+        id: "exp_fedex",
+        title: {
+          value: "Senior MERN Developer",
+          rawText: "Senior MERN Developer",
+          confidence: 0.9,
+          pageIndex: 0,
+        },
+        normalizedTitle: "Senior MERN Developer",
+        company: {
+          value: "FedEx (via CST Timing)",
+          rawText: "FedEx (via CST Timing)",
+          confidence: 0.9,
+          pageIndex: 0,
+        },
+        companyDomain: null,
+        location: null,
+        type: "full-time",
+        startDate: {
+          rawText: "Jul 2021",
+          isoDate: "2021-07",
+          isCurrent: false,
+        },
+        endDate: {
+          rawText: "Dec 2022",
+          isoDate: "2022-12",
+          isCurrent: false,
+        },
+        description:
+          "Senior developer role focused on performance and scalability.",
+        responsibilities: [
+          "Optimized API latency from 800ms to 220ms",
+          "Implemented GraphQL reducing overfetching by 40%",
+          "Deployed Dockerized services on AWS with CI/CD",
+        ],
+        skillsDetected: ["node.js", "graphql", "aws", "docker"],
+        isVerified: false,
+        verificationNotes: null,
+        verificationConfidence: null,
+        verificationDate: null,
+      },
+    ],
+    education: [
+      {
+        id: "edu_bim",
+        institution: {
+          value: "St. Xavier’s College",
+          rawText: "St. Xavier’s College, Tribhuvan University",
+          confidence: 0.9,
+          pageIndex: 1,
+        },
+        degree: {
+          value: "Bachelor of Information and Technology",
+          rawText: "Bachelor of Information and Technology",
+          confidence: 0.9,
+          pageIndex: 1,
+        },
+        normalizedDegree: "bachelors",
+        fieldOfStudy: "Information Technology",
+        startDate: null,
+        endDate: null,
+        gpa: null,
+      },
+    ],
+    projects: [],
+    certifications: [],
+    languages: [
+      {
+        language: "English",
+        proficiency: "fluent",
+      },
+      {
+        language: "Nepali",
+        proficiency: "native",
+      },
+    ],
+  },
+  "12": {
+    id: "resume_main",
+    analysis: {
+      quality: {
+        score: 86,
+        level: "high",
+        hints: [
+          "Strong .NET backend depth with databases and reporting systems",
+          "Clear progression across multiple engineering roles",
+          "Good exposure to healthcare, fintech, and SaaS domains",
+        ],
+      },
+      suspicion: {
+        score: 20,
+        level: "safe",
+        flags: [],
+      },
+      writingStyle: {
+        actionVerbsRate: 0.79,
+        quantificationRate: 0.05,
+        clicheCount: 1,
+      },
+    },
+    verification: {
+      timeline: {
+        hasGaps: false,
+        gaps: [],
+      },
+      identity: {
+        geoConsistency: "match",
+        socialFootprintFound: true,
+      },
+    },
+    basics: {
+      name: {
+        value: "Hari Narayan Chaudhary",
+        rawText: "Hari Narayan Chaudhary",
+        confidence: 0.9,
+        pageIndex: 0,
+      },
+      email: [
+        {
+          value:
+            "[chaudharyharri450@gmail.com](mailto:chaudharyharri450@gmail.com)",
+          rawText:
+            "[chaudharyharri450@gmail.com](mailto:chaudharyharri450@gmail.com)",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+      ],
+      phone: [
+        {
+          value: "9812672449",
+          rawText: "9812672449",
+          confidence: 0.7,
+          pageIndex: 0,
+        },
+      ],
+      location: {
+        rawInput: "Jorpati, Kathmandu",
+        city: "Kathmandu",
+        state: null,
+        country: "Nepal",
+        zipCode: null,
+        countryCode: "NP",
+      },
+      urls: [
+        {
+          type: "github",
+          url: "[https://github.com/HarrryBaidhya](https://github.com/HarrryBaidhya)",
+        },
+      ],
+      summary:
+        "NET full stack developer with strong experience building healthcare and fintech systems using C#, .NET Core, SQL, and REST APIs. Experienced in database optimization, reporting, third-party integrations, and agile delivery.",
+    },
+    skills: [
+      {
+        name: "C#",
+        normalizedName: "csharp",
+        category: "language",
+        computedLevel: "expert",
+        validityScore: 8.6,
+        metadata: {
+          firstSeen: "2022-05",
+          lastUsed: "2025-09",
+          totalMonthsExperience: 40,
+          occurrenceCount: 12,
+          sources: [
+            {
+              sectionId: "exp_midas",
+              sectionType: "experience",
+            },
+            {
+              sectionId: "exp_dghub",
+              sectionType: "experience",
+            },
+          ],
+        },
+      },
+      {
+        name: ".NET Core",
+        normalizedName: "dotnet-core",
+        category: "backend",
+        computedLevel: "advanced",
+        validityScore: 8.1,
+        metadata: {
+          firstSeen: "2022-05",
+          lastUsed: "2025-09",
+          totalMonthsExperience: 40,
+          occurrenceCount: 10,
+          sources: [
+            {
+              sectionId: "exp_midas",
+              sectionType: "experience",
+            },
+          ],
+        },
+      },
+      {
+        name: "SQL",
+        normalizedName: "sql",
+        category: "database",
+        computedLevel: "advanced",
+        validityScore: 7.8,
+        metadata: {
+          firstSeen: "2022-05",
+          lastUsed: "2025-09",
+          totalMonthsExperience: 40,
+          occurrenceCount: 11,
+          sources: [
+            {
+              sectionId: "exp_midas",
+              sectionType: "experience",
+            },
+            {
+              sectionId: "exp_dghub",
+              sectionType: "experience",
+            },
+          ],
+        },
+      },
+    ],
+    workExperience: [
+      {
+        id: "exp_midas",
+        title: {
+          value: "Software Engineer",
+          rawText: "Software Engineer",
+          confidence: 0.9,
+          pageIndex: 0,
+        },
+        normalizedTitle: "Software Engineer",
+        company: {
+          value: "Midas Health Services",
+          rawText: "Midas Health services",
+          confidence: 0.9,
+          pageIndex: 0,
+        },
+        companyDomain: null,
+        location: {
+          rawInput: "Kathmandu, PaniPokhari",
+          city: "Kathmandu",
+          state: null,
+          country: "Nepal",
+          zipCode: null,
+          countryCode: "NP",
+        },
+        type: "full-time",
+        startDate: {
+          rawText: "March 2024",
+          isoDate: "2024-03",
+          isCurrent: false,
+        },
+        endDate: {
+          rawText: "September 2025",
+          isoDate: "2025-09",
+          isCurrent: false,
+        },
+        description:
+          "Development of healthcare applications and reporting systems.",
+        responsibilities: [
+          "Developed .NET Core and .NET Framework applications using C#",
+          "Built REST APIs and integrated insurance and third-party services",
+          "Designed SQL queries, views, stored procedures, and reports",
+        ],
+        skillsDetected: ["csharp", "dotnet-core", "sql", "postgresql"],
+        isVerified: false,
+        verificationNotes: null,
+        verificationConfidence: null,
+        verificationDate: null,
+      },
+      {
+        id: "exp_dghub",
+        title: {
+          value: ".NET Developer",
+          rawText: ".Net Developer",
+          confidence: 0.9,
+          pageIndex: 0,
+        },
+        normalizedTitle: ".NET Developer",
+        company: {
+          value: "DG HUB",
+          rawText: "DG HUB",
+          confidence: 0.9,
+          pageIndex: 0,
+        },
+        companyDomain: null,
+        location: {
+          rawInput: "Kathmandu, KamalPokhari",
+          city: "Kathmandu",
+          state: null,
+          country: "Nepal",
+          zipCode: null,
+          countryCode: "NP",
+        },
+        type: "full-time",
+        startDate: {
+          rawText: "February 2023",
+          isoDate: "2023-02-20",
+          isCurrent: false,
+        },
+        endDate: {
+          rawText: "November 2023",
+          isoDate: "2023-11-27",
+          isCurrent: false,
+        },
+        description: "Backend development for digital wallet platform.",
+        responsibilities: [
+          "Integrated third-party REST and SOAP APIs",
+          "Developed reports, pagination, and admin features",
+          "Optimized SQL queries and implemented repository pattern",
+        ],
+        skillsDetected: ["csharp", "sql", "rest"],
+        isVerified: false,
+        verificationNotes: null,
+        verificationConfidence: null,
+        verificationDate: null,
+      },
+      {
+        id: "exp_bentary",
+        title: {
+          value: ".NET Developer",
+          rawText: ".Net Developer",
+          confidence: 0.9,
+          pageIndex: 0,
+        },
+        normalizedTitle: ".NET Developer",
+        company: {
+          value: "Bentary Technologies",
+          rawText: "Bentary Technologies",
+          confidence: 0.9,
+          pageIndex: 0,
+        },
+        companyDomain: null,
+        location: {
+          rawInput: "Lalitpur, Chakupat",
+          city: "Lalitpur",
+          state: null,
+          country: "Nepal",
+          zipCode: null,
+          countryCode: "NP",
+        },
+        type: "full-time",
+        startDate: {
+          rawText: "August 2022",
+          isoDate: "2022-08-29",
+          isCurrent: false,
+        },
+        endDate: {
+          rawText: "February 2023",
+          isoDate: "2023-02-10",
+          isCurrent: false,
+        },
+        description: "Accounting and SaaS application development.",
+        responsibilities: [
+          "Developed REST APIs and new features in accounting software",
+          "Maintained SaaS applications and database logic",
+        ],
+        skillsDetected: ["csharp", "sql", "dotnet"],
+        isVerified: false,
+        verificationNotes: null,
+        verificationConfidence: null,
+        verificationDate: null,
+      },
+      {
+        id: "exp_eda",
+        title: {
+          value: ".NET Developer",
+          rawText: ".Net Developer",
+          confidence: 0.9,
+          pageIndex: 0,
+        },
+        normalizedTitle: ".NET Developer",
+        company: {
+          value: "EDA Nepal",
+          rawText: "EDA NEPAL",
+          confidence: 0.9,
+          pageIndex: 0,
+        },
+        companyDomain: null,
+        location: {
+          rawInput: "Kathmandu, Chakrapath",
+          city: "Kathmandu",
+          state: null,
+          country: "Nepal",
+          zipCode: null,
+          countryCode: "NP",
+        },
+        type: "full-time",
+        startDate: {
+          rawText: "May 2022",
+          isoDate: "2022-05-18",
+          isCurrent: false,
+        },
+        endDate: {
+          rawText: "August 2022",
+          isoDate: "2022-08-23",
+          isCurrent: false,
+        },
+        description: "Frontend and backend support on .NET applications.",
+        responsibilities: [
+          "Built frontend UI components and fixed production bugs",
+          "Added new features to client web applications",
+        ],
+        skillsDetected: ["csharp", "dotnet-core"],
+        isVerified: false,
+        verificationNotes: null,
+        verificationConfidence: null,
+        verificationDate: null,
+      },
+    ],
+    education: [
+      {
+        id: "edu_bit",
+        institution: {
+          value: "Sunderland University Kathmandu",
+          rawText: "Sundarland University Kathmandu",
+          confidence: 0.9,
+          pageIndex: 0,
+        },
+        degree: {
+          value: "Bachelor in Information Technology",
+          rawText: "Bachelor in Information Technology",
+          confidence: 0.9,
+          pageIndex: 0,
+        },
+        normalizedDegree: "bachelors",
+        fieldOfStudy: "Information Technology",
+        startDate: {
+          rawText: "2019",
+          isoDate: "2019",
+          isCurrent: false,
+        },
+        endDate: {
+          rawText: "2023",
+          isoDate: "2023",
+          isCurrent: false,
+        },
+        gpa: null,
+      },
+    ],
+    projects: [],
+    certifications: [],
+    languages: [
+      {
+        language: "English",
+        proficiency: "fluent",
+      },
+      {
+        language: "Nepali",
+        proficiency: "native",
+      },
+    ],
+  },
+  "13": {
+    id: "resume_main",
+    analysis: {
+      quality: {
+        score: 92,
+        level: "exceptional",
+        hints: [
+          "Excellent use of quantifiable metrics across all roles.",
+          "Strong structure with detailed technical projects.",
+          "High density of action-oriented bullet points.",
+        ],
+      },
+      suspicion: {
+        score: 0,
+        level: "safe",
+        flags: [],
+      },
+      writingStyle: {
+        actionVerbsRate: 1.0,
+        quantificationRate: 0.85,
+        clicheCount: 0,
+      },
+    },
+    verification: {
+      timeline: {
+        hasGaps: false,
+        gaps: [],
+      },
+      identity: {
+        geoConsistency: "match",
+        socialFootprintFound: true,
+      },
+    },
+    basics: {
+      name: {
+        value: "Harshwardhan Sable",
+        rawText: "HARSHWARDHAN SABLE",
+        confidence: 1.0,
+        pageIndex: 0,
+      },
+      email: [
+        {
+          value: "sableharsh98@gmail.com",
+          rawText: "sableharsh98@gmail.com",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+      ],
+      phone: [
+        {
+          value: "+917276230103",
+          rawText: "+91 7276230103",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+      ],
+      location: {
+        rawInput: "Pune, Maharashtra",
+        city: "Pune",
+        state: "Maharashtra",
+        country: "India",
+        zipCode: null,
+        countryCode: "IN",
+      },
+      urls: [
+        {
+          type: "linkedin",
+          url: "[linkedin.com/in/harshwardhan-sable-0100bb1a6](https://www.google.com/search?q=https://linkedin.com/in/harshwardhan-sable-0100bb1a6)",
+        },
+      ],
+      summary:
+        "Engineer I with 4 years of experience in automating infrastructure, managing cloud-native deployments, and streamlining CI/CD workflows. Adept at building resilient pipelines, containerized environments, and scalable cloud infrastructure using AWS, Docker, Kubernetes, Terraform, and Jenkins. Proven ability to reduce deployment time by 40% and improve monitoring visibility by 99.5%.",
+    },
+    skills: [
+      {
+        name: "AWS",
+        normalizedName: "Amazon Web Services",
+        category: "Cloud",
+        computedLevel: "expert",
+        validityScore: 9.2,
+        metadata: {
+          firstSeen: "2021-06-01",
+          lastUsed: "2025-12-22",
+          totalMonthsExperience: 49,
+          occurrenceCount: 5,
+          sources: [
+            {
+              sectionId: "exp_accelya",
+              sectionType: "experience",
+            },
+            {
+              sectionId: "proj_cloud_mig",
+              sectionType: "project",
+            },
+          ],
+        },
+      },
+      {
+        name: "Docker",
+        normalizedName: "Docker",
+        category: "DevOps",
+        computedLevel: "advanced",
+        validityScore: 8.4,
+        metadata: {
+          firstSeen: "2021-06-01",
+          lastUsed: "2025-12-22",
+          totalMonthsExperience: 49,
+          occurrenceCount: 4,
+          sources: [
+            {
+              sectionId: "exp_accelya",
+              sectionType: "experience",
+            },
+            {
+              sectionId: "proj_cicd",
+              sectionType: "project",
+            },
+          ],
+        },
+      },
+      {
+        name: "Kubernetes",
+        normalizedName: "Kubernetes",
+        category: "Orchestration",
+        computedLevel: "advanced",
+        validityScore: 8.1,
+        metadata: {
+          firstSeen: "2021-11-01",
+          lastUsed: "2025-12-22",
+          totalMonthsExperience: 49,
+          occurrenceCount: 3,
+          sources: [
+            {
+              sectionId: "exp_accelya",
+              sectionType: "experience",
+            },
+          ],
+        },
+      },
+      {
+        name: "Terraform",
+        normalizedName: "Terraform",
+        category: "IaC",
+        computedLevel: "advanced",
+        validityScore: 7.8,
+        metadata: {
+          firstSeen: "2021-11-01",
+          lastUsed: "2025-12-22",
+          totalMonthsExperience: 49,
+          occurrenceCount: 2,
+          sources: [
+            {
+              sectionId: "exp_accelya",
+              sectionType: "experience",
+            },
+          ],
+        },
+      },
+    ],
+    workExperience: [
+      {
+        id: "exp_accelya",
+        title: {
+          value: "Engineer I",
+          rawText: "Engineer I | Cloud & Automation",
+          confidence: 0.9,
+          pageIndex: 0,
+        },
+        normalizedTitle: "Cloud Engineer",
+        company: {
+          value: "Accelya Solutions India Limited",
+          rawText: "Accelya Solutions India Limited",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+        companyDomain: "accelya.com",
+        location: {
+          rawInput: "Pune, India",
+          city: "Pune",
+          state: null,
+          country: "India",
+          zipCode: null,
+          countryCode: "IN",
+        },
+        type: "full-time",
+        startDate: {
+          rawText: "Nov 2021",
+          isoDate: "2021-11-01",
+          isCurrent: false,
+        },
+        endDate: {
+          rawText: "Present",
+          isoDate: null,
+          isCurrent: true,
+        },
+        description:
+          "Cloud and Automation engineer focusing on AWS migration and CI/CD optimization.",
+        responsibilities: [
+          "Executed complex migration of legacy systems from on-premises Linux servers to AWS cloud infrastructure.",
+          "Optimized shell scripts for archiving/purging efficiency, reducing batch processing time by 40%.",
+          "Led end-to-end implementation of production environment module migrations with zero critical issues.",
+          "Conducted detailed Root Cause Analysis (RCA) using Tomcat and JBoss logs to remediate complex bugs.",
+          "Created centralized knowledge repository in Confluence, reducing resolution time by 45%.",
+        ],
+        skillsDetected: [
+          "AWS",
+          "Docker",
+          "Kubernetes",
+          "Terraform",
+          "CI/CD",
+          "Linux",
+          "JBoss",
+          "Tomcat",
+          "Shell Scripting",
+          "SQL",
+          "Confluence",
+        ],
+        isVerified: true,
+        verificationNotes: "Company domain exists and roles are consistent.",
+        verificationConfidence: 1.0,
+        verificationDate: "2025-12-22",
+      },
+    ],
+    education: [
+      {
+        id: "edu_1",
+        institution: {
+          value: "Smt. Kashibai Navale College of Engineering",
+          rawText: "Smt. Kashibai Navale College of Engineering",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+        degree: {
+          value: "Bachelor of Engineering",
+          rawText: "Bachelor of Engineering - Computer Engineering",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+        normalizedDegree: "bachelors",
+        fieldOfStudy: "Computer Engineering",
+        startDate: null,
+        endDate: {
+          rawText: "Jun 2021",
+          isoDate: "2021-06-01",
+          isCurrent: false,
+        },
+        gpa: null,
+      },
+    ],
+    projects: [
+      {
+        name: "Enterprise CI/CD Pipeline Transformation",
+        description:
+          "Designed and implemented scalable CI/CD pipeline with parallelization and caching, reducing build times from 45 to 12 minutes.",
+        url: null,
+        skillsUsed: [
+          "Jenkins",
+          "GitLab CI",
+          "Docker",
+          "Kubernetes",
+          "Shell Scripting",
+          "Argo CD",
+          "JFrog Artifactory",
+        ],
+      },
+      {
+        name: "Enterprise Monitoring & Observability Solution",
+        description:
+          "Architected monitoring system covering 50+ services with 99.5% visibility and predictive alerting.",
+        url: null,
+        skillsUsed: [
+          "Prometheus",
+          "Grafana",
+          "AlertManager",
+          "ELK Stack",
+          "CloudWatch",
+        ],
+      },
+      {
+        name: "Passenger Revenue Accounting Project (PRA)",
+        description:
+          "Deployed and upgraded Jboss/Tomcat across 50+ airline clients with 99% uptime.",
+        url: null,
+        skillsUsed: [
+          "GitLab CI/CD",
+          "SQL",
+          "Linux",
+          "Shell Scripting",
+          "JFrog Artifactory",
+        ],
+      },
+    ],
+    certifications: [],
+    languages: [],
+  },
+  "14": {
+    id: "resume_jagrit_timalsina",
+    analysis: {
+      quality: {
+        score: 65,
+        level: "average",
+        hints: [
+          "Include more quantifiable achievements in the experience section.",
+          "The project section is well-detailed with technical stacks.",
+          "Education timeline is clear with expected graduation.",
+        ],
+      },
+      suspicion: {
+        score: 10,
+        level: "safe",
+        flags: [
+          {
+            type: "unclear_overlap",
+            severity: "low",
+            description:
+              "The graphic design role and internship appear to overlap significantly.",
+          },
+        ],
+      },
+      writingStyle: {
+        actionVerbsRate: 0.75,
+        quantificationRate: 0.2,
+        clicheCount: 2,
+      },
+    },
+    verification: {
+      timeline: {
+        hasGaps: false,
+        gaps: [],
+      },
+      identity: {
+        geoConsistency: "match",
+        socialFootprintFound: true,
+      },
+    },
+    basics: {
+      name: {
+        value: "Jagrit Timalsina",
+        rawText: "Jagrit Timalsina",
+        confidence: 1.0,
+        pageIndex: 0,
+      },
+      email: [
+        {
+          value: "ti.jagrit@gmail.com",
+          rawText: "ti.jagrit@gmail.com",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+      ],
+      phone: [
+        {
+          value: "9841406910",
+          rawText: "9841406910",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+      ],
+      location: {
+        rawInput: "Kathmandu-28, Bagbazar",
+        city: "Kathmandu",
+        state: "Bagbazar",
+        country: "Nepal",
+        zipCode: null,
+        countryCode: "NP",
+      },
+      urls: [
+        {
+          type: "linkedin",
+          url: "[https://www.linkedin.com/in/jagrit-timalsina/](https://www.linkedin.com/in/jagrit-timalsina/)",
+        },
+        {
+          type: "github",
+          url: "[https://github.com/ti-jagrit](https://github.com/ti-jagrit)",
+        },
+        {
+          type: "personal",
+          url: "[www.timalsinajagrit.com](https://www.google.com/search?q=https://www.timalsinajagrit.com).np",
+        },
+      ],
+      summary:
+        "Detail-oriented BCA student with hands-on experience in software development, IT support, and graphic design. Proficient in Java, PHP, SQL, Spring Boot, and Laravel. Passionate about web development, system architecture, and problem-solving.",
+    },
+    skills: [
+      {
+        name: "Java",
+        normalizedName: "Java",
+        category: "Languages",
+        computedLevel: "intermediate",
+        validityScore: 7.5,
+        metadata: {
+          firstSeen: "2024-01-01",
+          lastUsed: "2024-12-22",
+          totalMonthsExperience: 12,
+          occurrenceCount: 3,
+          sources: [
+            {
+              sectionId: "skills",
+              sectionType: "experience",
+            },
+          ],
+        },
+      },
+      {
+        name: "Spring Boot",
+        normalizedName: "Spring Boot",
+        category: "Technologies",
+        computedLevel: "intermediate",
+        validityScore: 7.8,
+        metadata: {
+          firstSeen: "2024-01-01",
+          lastUsed: "2024-12-22",
+          totalMonthsExperience: 12,
+          occurrenceCount: 4,
+          sources: [
+            {
+              sectionId: "experience",
+              sectionType: "experience",
+            },
+            {
+              sectionId: "projects",
+              sectionType: "project",
+            },
+          ],
+        },
+      },
+      {
+        name: "PHP",
+        normalizedName: "PHP",
+        category: "Languages",
+        computedLevel: "intermediate",
+        validityScore: 6.8,
+        metadata: {
+          firstSeen: "2023-01-01",
+          lastUsed: "2024-12-22",
+          totalMonthsExperience: 24,
+          occurrenceCount: 3,
+          sources: [
+            {
+              sectionId: "skills",
+              sectionType: "experience",
+            },
+          ],
+        },
+      },
+      {
+        name: "Laravel",
+        normalizedName: "Laravel",
+        category: "Technologies",
+        computedLevel: "intermediate",
+        validityScore: 6.5,
+        metadata: {
+          firstSeen: "2023-01-01",
+          lastUsed: "2024-12-22",
+          totalMonthsExperience: 24,
+          occurrenceCount: 3,
+          sources: [
+            {
+              sectionId: "skills",
+              sectionType: "experience",
+            },
+            {
+              sectionId: "projects",
+              sectionType: "project",
+            },
+          ],
+        },
+      },
+    ],
+    workExperience: [
+      {
+        id: "exp_1",
+        title: {
+          value: "Internship - Software Development",
+          rawText: "Internship - Software Development",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+        normalizedTitle: "Software Development Intern",
+        company: {
+          value: "Saipal Technology",
+          rawText: "Saipal Technology",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+        companyDomain: null,
+        location: null,
+        type: "internship",
+        startDate: {
+          rawText: "Jan 2024",
+          isoDate: "2024-01-01",
+          isCurrent: false,
+        },
+        endDate: {
+          rawText: "Present",
+          isoDate: null,
+          isCurrent: true,
+        },
+        description:
+          "Developing REST APIs and managing databases using modern Java frameworks.",
+        responsibilities: [
+          "Worked on Spring Boot REST API development and database management.",
+          "Assisted in React and JSP-based web application design.",
+        ],
+        skillsDetected: ["Spring Boot", "REST API", "React", "JSP"],
+        isVerified: false,
+        verificationNotes: null,
+        verificationConfidence: null,
+        verificationDate: null,
+      },
+      {
+        id: "exp_2",
+        title: {
+          value: "Graphic Designer",
+          rawText: "Graphic Designer",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+        normalizedTitle: "Graphic Designer",
+        company: {
+          value: "PrintoHub Trade Link Pvt. Ltd.",
+          rawText: "PrintoHub Trade Link Pvt. Ltd.",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+        companyDomain: null,
+        location: null,
+        type: "full-time",
+        startDate: {
+          rawText: "2022",
+          isoDate: "2022-01-01",
+          isCurrent: false,
+        },
+        endDate: {
+          rawText: "Present",
+          isoDate: null,
+          isCurrent: true,
+        },
+        description:
+          "Design and collaboration for print and digital marketing materials.",
+        responsibilities: [
+          "Designed print/digital marketing materials and branding assets.",
+          "Collaborated with clients for visually appealing design delivery.",
+        ],
+        skillsDetected: ["Graphic Design", "Branding"],
+        isVerified: false,
+        verificationNotes: null,
+        verificationConfidence: null,
+        verificationDate: null,
+      },
+      {
+        id: "exp_3",
+        title: {
+          value: "IT Support",
+          rawText: "IT Support",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+        normalizedTitle: "IT Support Specialist",
+        company: {
+          value: "Special School for Disabled and Rehabilitation Center",
+          rawText: "Special School for Disabled and Rehabilitation Center",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+        companyDomain: null,
+        location: null,
+        type: null,
+        startDate: {
+          rawText: "2023",
+          isoDate: "2023-01-01",
+          isCurrent: false,
+        },
+        endDate: {
+          rawText: "2023",
+          isoDate: "2023-12-31",
+          isCurrent: false,
+        },
+        description:
+          "Provided technical troubleshooting for hardware and software.",
+        responsibilities: [
+          "Provided troubleshooting and technical support for hardware/software.",
+        ],
+        skillsDetected: ["Hardware Troubleshooting", "Technical Support"],
+        isVerified: false,
+        verificationNotes: null,
+        verificationConfidence: null,
+        verificationDate: null,
+      },
+    ],
+    education: [
+      {
+        id: "edu_1",
+        institution: {
+          value: "Tribhuvan University",
+          rawText: "Tribhuvan University",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+        degree: {
+          value: "Bachelor of Computer Application (BCA)",
+          rawText: "Bachelor of Computer Application (BCA)",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+        normalizedDegree: "bachelors",
+        fieldOfStudy: "Computer Application",
+        startDate: null,
+        endDate: {
+          rawText: "Oct 2025",
+          isoDate: "2025-10-01",
+          isCurrent: true,
+        },
+        gpa: null,
+      },
+      {
+        id: "edu_2",
+        institution: {
+          value: "Viswa Niketan Secondary School",
+          rawText: "Viswa Niketan Secondary School",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+        degree: {
+          value: "Higher Secondary School (10+2)",
+          rawText: "Higher Secondary School (10+2)",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+        normalizedDegree: "high_school",
+        fieldOfStudy: null,
+        startDate: null,
+        endDate: {
+          rawText: "2020",
+          isoDate: "2020-12-31",
+          isCurrent: false,
+        },
+        gpa: null,
+      },
+    ],
+    projects: [
+      {
+        name: "Billing Web Store",
+        description:
+          "Platform for managing products, categories, generating bills and sales reports with payment integrations.",
+        url: "[https://github.com/ti-jagrit/Bills](https://github.com/ti-jagrit/Bills)",
+        skillsUsed: [
+          "Spring Boot",
+          "JSP",
+          "Bootstrap",
+          "MySQL",
+          "Jasper Studio",
+          "JWT",
+          "OAuth2",
+        ],
+      },
+      {
+        name: "CarDeals",
+        description:
+          "Car buying/selling platform featuring a Decision Tree Algorithm for price prediction.",
+        url: "[https://github.com/ti-jagrit/cardeals](https://github.com/ti-jagrit/cardeals)",
+        skillsUsed: [
+          "PHP",
+          "Laravel",
+          "Python",
+          "SQL",
+          "Decision Tree Algorithm",
+        ],
+      },
+    ],
+    certifications: [
+      {
+        name: "Spring Boot and REST API Development",
+        issuer: "Saipal Technology",
+        date: {
+          rawText: "2024",
+          isoDate: "2024-12-31",
+          isCurrent: false,
+        },
+        doesExpire: false,
+        verificationUrl: null,
+      },
+      {
+        name: "Java Training",
+        issuer: "IT Training Nepal",
+        date: {
+          rawText: "2024",
+          isoDate: "2024-12-31",
+          isCurrent: false,
+        },
+        doesExpire: false,
+        verificationUrl: null,
+      },
+    ],
+    languages: [],
+  },
+  "15": {
+    id: "resume_main",
+    analysis: {
+      quality: {
+        score: 79,
+        level: "high",
+        hints: [
+          "Strong structure with all major sections present.",
+          "Good use of action verbs in responsibility descriptions.",
+          "Add more quantified metrics to increase the content depth score.",
+        ],
+      },
+      suspicion: {
+        score: 0,
+        level: "safe",
+        flags: [],
+      },
+      writingStyle: {
+        actionVerbsRate: 0.88,
+        quantificationRate: 0.12,
+        clicheCount: 1,
+      },
+    },
+    verification: {
+      timeline: {
+        hasGaps: true,
+        gaps: [
+          {
+            startDate: "2024-01-01",
+            endDate: "2024-12-01",
+            durationDays: 335,
+          },
+        ],
+      },
+      identity: {
+        geoConsistency: "unknown",
+        socialFootprintFound: true,
+      },
+    },
+    basics: {
+      name: {
+        value: "Jeshan Tiwari",
+        rawText: "JESHAN TIWARI",
+        confidence: 1.0,
+        pageIndex: 0,
+      },
+      email: [],
+      phone: [],
+      location: {
+        rawInput: "Nepal",
+        city: null,
+        state: null,
+        country: "Nepal",
+        zipCode: null,
+        countryCode: "NP",
+      },
+      urls: [
+        {
+          type: "github",
+          url: "[github.com/Jeshan1](https://github.com/Jeshan1)",
+        },
+        {
+          type: "linkedin",
+          url: "[linkedin.com/in/jeshan-tiwari](https://www.google.com/search?q=https://linkedin.com/in/jeshan-tiwari)",
+        },
+      ],
+      summary:
+        "Full Stack Developer with 2+ years of experience in Laravel, Vue.js, React.js, and Node.js. Proven expertise in developing hospital software, health & insurance modules, and scalable web applications. Skilled in both backend and frontend development, API integrations, and Agile methodologies.",
+    },
+    skills: [
+      {
+        name: "PHP",
+        normalizedName: "PHP",
+        category: "Primary Expertise",
+        computedLevel: "advanced",
+        validityScore: 6.8,
+        metadata: {
+          firstSeen: "2023-01-01",
+          lastUsed: "2025-12-22",
+          totalMonthsExperience: 21,
+          occurrenceCount: 2,
+          sources: [
+            {
+              sectionId: "experience",
+              sectionType: "experience",
+            },
+          ],
+        },
+      },
+      {
+        name: "JavaScript",
+        normalizedName: "JavaScript",
+        category: "Primary Expertise",
+        computedLevel: "advanced",
+        validityScore: 6.8,
+        metadata: {
+          firstSeen: "2023-01-01",
+          lastUsed: "2025-12-22",
+          totalMonthsExperience: 21,
+          occurrenceCount: 2,
+          sources: [
+            {
+              sectionId: "experience",
+              sectionType: "experience",
+            },
+          ],
+        },
+      },
+      {
+        name: "Laravel",
+        normalizedName: "Laravel",
+        category: "Primary Expertise",
+        computedLevel: "advanced",
+        validityScore: 7.5,
+        metadata: {
+          firstSeen: "2023-01-01",
+          lastUsed: "2025-12-22",
+          totalMonthsExperience: 21,
+          occurrenceCount: 5,
+          sources: [
+            {
+              sectionId: "experience",
+              sectionType: "experience",
+            },
+          ],
+        },
+      },
+      {
+        name: "Vue.js",
+        normalizedName: "Vue.js",
+        category: "Primary Expertise",
+        computedLevel: "advanced",
+        validityScore: 6.5,
+        metadata: {
+          firstSeen: "2024-12-01",
+          lastUsed: "2025-12-22",
+          totalMonthsExperience: 12,
+          occurrenceCount: 4,
+          sources: [
+            {
+              sectionId: "experience",
+              sectionType: "experience",
+            },
+          ],
+        },
+      },
+      {
+        name: "React.js",
+        normalizedName: "React.js",
+        category: "Secondary Expertise",
+        computedLevel: "novice",
+        validityScore: 2.4,
+        metadata: {
+          firstSeen: null,
+          lastUsed: null,
+          totalMonthsExperience: 0,
+          occurrenceCount: 1,
+          sources: [],
+        },
+      },
+      {
+        name: "Node.js",
+        normalizedName: "Node.js",
+        category: "Secondary Expertise",
+        computedLevel: "novice",
+        validityScore: 2.4,
+        metadata: {
+          firstSeen: null,
+          lastUsed: null,
+          totalMonthsExperience: 0,
+          occurrenceCount: 2,
+          sources: [],
+        },
+      },
+      {
+        name: "Git/GitHub",
+        normalizedName: "Git",
+        category: "Other Skills",
+        computedLevel: "intermediate",
+        validityScore: 4.5,
+        metadata: {
+          firstSeen: "2023-01-01",
+          lastUsed: "2024-01-01",
+          totalMonthsExperience: 12,
+          occurrenceCount: 2,
+          sources: [
+            {
+              sectionId: "experience",
+              sectionType: "experience",
+            },
+          ],
+        },
+      },
+      {
+        name: "Agile Methodologies",
+        normalizedName: "Agile",
+        category: "Other Skills",
+        computedLevel: "novice",
+        validityScore: 2.8,
+        metadata: {
+          firstSeen: null,
+          lastUsed: null,
+          totalMonthsExperience: 0,
+          occurrenceCount: 2,
+          sources: [],
+        },
+      },
+    ],
+    workExperience: [
+      {
+        id: "exp_1",
+        title: {
+          value: "Junior Developer L3",
+          rawText: "Junior Developer L3",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+        normalizedTitle: "Junior Developer",
+        company: {
+          value: "Mavorion Systems",
+          rawText: "Mavorion Systems",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+        companyDomain: null,
+        location: null,
+        type: "full-time",
+        startDate: {
+          rawText: "04/2025",
+          isoDate: "2025-04",
+          isCurrent: false,
+        },
+        endDate: {
+          rawText: "Present",
+          isoDate: null,
+          isCurrent: true,
+        },
+        description:
+          "Working on Hospital Software (Dolphin Pharmacy System) with modules in pharmacy and inventory.",
+        responsibilities: [
+          "Working on Hospital Software (Dolphin Pharmacy System) with modules in pharmacy and inventory.",
+          "Developed and maintained scalable features using Laravel + Vue.js.",
+          "Collaborated with cross-functional teams to deliver client-specific healthcare solutions.",
+        ],
+        skillsDetected: ["Laravel", "Vue.js"],
+        isVerified: false,
+        verificationNotes: "Company domain not provided.",
+        verificationConfidence: 0.7,
+        verificationDate: null,
+      },
+      {
+        id: "exp_2",
+        title: {
+          value: "Junior Developer L2",
+          rawText: "Junior Developer L2",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+        normalizedTitle: "Junior Developer",
+        company: {
+          value: "CloudTech Services",
+          rawText: "CloudTech Services",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+        companyDomain: null,
+        location: null,
+        type: "full-time",
+        startDate: {
+          rawText: "12/2024",
+          isoDate: "2024-12",
+          isCurrent: false,
+        },
+        endDate: {
+          rawText: "03/2025",
+          isoDate: "2025-03",
+          isCurrent: false,
+        },
+        description:
+          "Built the Health and Insurance Benefit Store Module with Laravel + Vue.js.",
+        responsibilities: [
+          "Built the Health and Insurance Benefit Store Module with Laravel + Vue.js.",
+          "Enhanced UI/UX and optimized workflows for benefit store functionality.",
+          "Assisted in bug fixing, performance optimization, and testing.",
+        ],
+        skillsDetected: ["Laravel", "Vue.js"],
+        isVerified: false,
+        verificationNotes: "Company domain not provided.",
+        verificationConfidence: 0.7,
+        verificationDate: null,
+      },
+      {
+        id: "exp_3",
+        title: {
+          value: "Junior Developer L1",
+          rawText: "Junior Developer L1",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+        normalizedTitle: "Junior Developer",
+        company: {
+          value: "Nakshatra Techno Hub Pvt. Ltd.",
+          rawText: "Nakshatra Techno Hub Pvt. Ltd.",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+        companyDomain: null,
+        location: null,
+        type: "full-time",
+        startDate: {
+          rawText: "01/2023",
+          isoDate: "2023-01",
+          isCurrent: false,
+        },
+        endDate: {
+          rawText: "01/2024",
+          isoDate: "2024-01",
+          isCurrent: false,
+        },
+        description: "Developed scalable web applications using Laravel.",
+        responsibilities: [
+          "Developed scalable web applications using Laravel.",
+          "Integrated third-party APIs and services to expand application functionality.",
+          "Maintained Git-based workflows with clean, maintainable code.",
+        ],
+        skillsDetected: ["Laravel", "Git"],
+        isVerified: false,
+        verificationNotes: "Company domain not provided.",
+        verificationConfidence: 0.7,
+        verificationDate: null,
+      },
+    ],
+    education: [
+      {
+        id: "edu_1",
+        institution: {
+          value: "Birendra Multiple Campus",
+          rawText: "Birendra Multiple Campus",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+        degree: {
+          value: "Bachelor in Computer Application (BCA)",
+          rawText: "Bachelor in Computer Application (BCA)",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+        normalizedDegree: "bachelors",
+        fieldOfStudy: "Computer Application",
+        startDate: {
+          rawText: "2021",
+          isoDate: "2021",
+          isCurrent: false,
+        },
+        endDate: {
+          rawText: "Present",
+          isoDate: null,
+          isCurrent: true,
+        },
+        gpa: null,
+      },
+      {
+        id: "edu_2",
+        institution: {
+          value: "Nepal Secondary School",
+          rawText: "Nepal Secondary School",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+        degree: {
+          value: "High School",
+          rawText: "High School",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+        normalizedDegree: "high_school",
+        fieldOfStudy: null,
+        startDate: null,
+        endDate: {
+          rawText: "2020",
+          isoDate: "2020",
+          isCurrent: false,
+        },
+        gpa: null,
+      },
+    ],
+    projects: [],
+    certifications: [],
+    languages: [],
+  },
+  "16": {
+    id: "resume_john_tharu",
+    analysis: {
+      quality: {
+        score: 78,
+        level: "high",
+        hints: [
+          "Include more quantifiable achievements in work experience sections.",
+          "Add a LinkedIn URL prefix to the social link for better scannability.",
+          "Specify any certifications or additional training to bolster the professional profile.",
+        ],
+      },
+      suspicion: {
+        score: 0,
+        level: "safe",
+        flags: [],
+      },
+      writingStyle: {
+        actionVerbsRate: 0.85,
+        quantificationRate: 0.1,
+        clicheCount: 2,
+      },
+    },
+    verification: {
+      timeline: {
+        hasGaps: true,
+        gaps: [
+          {
+            startDate: "2024-11-01",
+            endDate: "2025-01-01",
+            durationDays: 61,
+          },
+        ],
+      },
+      identity: {
+        geoConsistency: "match",
+        socialFootprintFound: true,
+      },
+    },
+    basics: {
+      name: {
+        value: "John Kathariya Tharu",
+        rawText: "John Kathariya Tharu",
+        confidence: 1.0,
+        pageIndex: 0,
+      },
+      email: [
+        {
+          value: "johntharu24@gmail.com",
+          rawText: "johntharu24@gmail.com",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+      ],
+      phone: [
+        {
+          value: "9864409984",
+          rawText: "9864409984",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+      ],
+      location: {
+        rawInput: "Nepal",
+        city: null,
+        state: null,
+        country: "Nepal",
+        zipCode: null,
+        countryCode: "NP",
+      },
+      urls: [
+        {
+          type: "linkedin",
+          url: "[linkedin.com/in/john-tharu-667929341](https://www.google.com/search?q=https://linkedin.com/in/john-tharu-667929341)",
+        },
+        {
+          type: "github",
+          url: "[github.com/John-Tharu](https://www.google.com/search?q=https://github.com/John-Tharu)",
+        },
+      ],
+      summary:
+        "Full Stack Web Developer with hands-on experience in building responsive web applications using HTML, CSS, JavaScript, Node.js, Express, and MYSQL. Skilled in both frontend and backend development, API integration, and database management. Passionate about creating efficient, user-friendly digital solutions.",
+    },
+    skills: [
+      {
+        name: "HTML5",
+        normalizedName: "HTML5",
+        category: "Frontend Skills",
+        computedLevel: "advanced",
+        validityScore: 7.2,
+        metadata: {
+          firstSeen: "2025-01-01",
+          lastUsed: "2025-12-22",
+          totalMonthsExperience: 11,
+          occurrenceCount: 2,
+          sources: [
+            {
+              sectionId: "PROJECTS",
+              sectionType: "project",
+            },
+          ],
+        },
+      },
+      {
+        name: "JavaScript",
+        normalizedName: "JavaScript",
+        category: "Frontend Skills",
+        computedLevel: "advanced",
+        validityScore: 7.2,
+        metadata: {
+          firstSeen: "2025-01-01",
+          lastUsed: "2025-12-22",
+          totalMonthsExperience: 11,
+          occurrenceCount: 2,
+          sources: [
+            {
+              sectionId: "PROJECTS",
+              sectionType: "project",
+            },
+          ],
+        },
+      },
+      {
+        name: "Node.js",
+        normalizedName: "Node.js",
+        category: "Backend Skills",
+        computedLevel: "advanced",
+        validityScore: 7.8,
+        metadata: {
+          firstSeen: "2025-01-01",
+          lastUsed: "2025-12-22",
+          totalMonthsExperience: 11,
+          occurrenceCount: 5,
+          sources: [
+            {
+              sectionId: "PROJECTS",
+              sectionType: "project",
+            },
+          ],
+        },
+      },
+      {
+        name: "Express.js",
+        normalizedName: "Express.js",
+        category: "Backend Skills",
+        computedLevel: "advanced",
+        validityScore: 7.8,
+        metadata: {
+          firstSeen: "2025-01-01",
+          lastUsed: "2025-12-22",
+          totalMonthsExperience: 11,
+          occurrenceCount: 5,
+          sources: [
+            {
+              sectionId: "PROJECTS",
+              sectionType: "project",
+            },
+          ],
+        },
+      },
+      {
+        name: "MySQL",
+        normalizedName: "MySQL",
+        category: "Database",
+        computedLevel: "intermediate",
+        validityScore: 5.8,
+        metadata: {
+          firstSeen: "2025-03-01",
+          lastUsed: "2025-12-22",
+          totalMonthsExperience: 9,
+          occurrenceCount: 4,
+          sources: [
+            {
+              sectionId: "PROJECTS",
+              sectionType: "project",
+            },
+          ],
+        },
+      },
+      {
+        name: "MongoDB",
+        normalizedName: "MongoDB",
+        category: "Database",
+        computedLevel: "intermediate",
+        validityScore: 4.2,
+        metadata: {
+          firstSeen: "2025-01-01",
+          lastUsed: "2025-02-01",
+          totalMonthsExperience: 2,
+          occurrenceCount: 2,
+          sources: [
+            {
+              sectionId: "PROJECTS",
+              sectionType: "project",
+            },
+          ],
+        },
+      },
+      {
+        name: "Git & GitHub",
+        normalizedName: "Git",
+        category: "Extra Skills",
+        computedLevel: "intermediate",
+        validityScore: 3.5,
+        metadata: {
+          firstSeen: null,
+          lastUsed: null,
+          totalMonthsExperience: 0,
+          occurrenceCount: 1,
+          sources: [],
+        },
+      },
+    ],
+    workExperience: [
+      {
+        id: "work_1",
+        title: {
+          value: "Trainee Tech Officer",
+          rawText: "Trainee Tech Officer",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+        normalizedTitle: "Technical Officer",
+        company: {
+          value: "Royal Tiger Recreation Pvt. Ltd.",
+          rawText: "Royal Tiger Recreation Pvt. Ltd.",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+        companyDomain: null,
+        location: null,
+        type: "internship",
+        startDate: {
+          rawText: "Aug 2024",
+          isoDate: "2024-08",
+          isCurrent: false,
+        },
+        endDate: {
+          rawText: "Nov 2024",
+          isoDate: "2024-11",
+          isCurrent: false,
+        },
+        description:
+          "Assisted in technical operations and IT infrastructure maintenance.",
+        responsibilities: [
+          "Assisted in technical operations, software support, and IT infrastructure maintenance.",
+          "Supported system diagnostics and helped implement software updates.",
+          "Collaborated with senior engineers to troubleshoot and resolve technical issues.",
+          "Gained hands-on experience in network monitoring, user support, and documentation.",
+        ],
+        skillsDetected: [],
+        isVerified: false,
+        verificationNotes:
+          "Role is Trainee level; no company domain available.",
+        verificationConfidence: 0.7,
+        verificationDate: null,
+      },
+      {
+        id: "work_2",
+        title: {
+          value: "Hardware and Networking Technician",
+          rawText: "Hardware and Networking Technician",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+        normalizedTitle: "Network Technician",
+        company: {
+          value: "One Click Computer Service",
+          rawText: "One Click Computer Service",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+        companyDomain: null,
+        location: null,
+        type: "full-time",
+        startDate: {
+          rawText: "Jan 2022",
+          isoDate: "2022-01",
+          isCurrent: false,
+        },
+        endDate: {
+          rawText: "Feb 2024",
+          isoDate: "2024-02",
+          isCurrent: false,
+        },
+        description:
+          "Experienced in installing, configuring, and maintaining computer hardware and network systems.",
+        responsibilities: [
+          "Installed, configured, and maintained computer hardware, network systems, and printers.",
+          "Troubleshot hardware issues and serviced printers.",
+          "Managed LAN/WAN setups and provided technical support.",
+        ],
+        skillsDetected: [],
+        isVerified: false,
+        verificationNotes: "No company domain available.",
+        verificationConfidence: 0.7,
+        verificationDate: null,
+      },
+    ],
+    education: [
+      {
+        id: "edu_1",
+        institution: {
+          value: "Crimson College of Technology",
+          rawText: "Crimson College of Technology",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+        degree: {
+          value: "Bachelor of Computer Application",
+          rawText: "Bachelor of Computer Application",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+        normalizedDegree: "bachelors",
+        fieldOfStudy: "Computer Application",
+        startDate: {
+          rawText: "Sep 2018",
+          isoDate: "2018-09",
+          isCurrent: false,
+        },
+        endDate: {
+          rawText: "Aug 2023",
+          isoDate: "2023-08",
+          isCurrent: false,
+        },
+        gpa: {
+          score: 3.43,
+          scale: 4.0,
+        },
+      },
+    ],
+    projects: [
+      {
+        name: "NamasteFit - Fitness/Yoga Subscription Platform",
+        description:
+          "A subscription-based web platform offering fitness and yoga classes tailored for users in Nepal. Includes authentication, membership plans, and admin dashboards.",
+        url: null,
+        skillsUsed: ["Node.js", "Express", "MYSQL", "Drizzle ORM", "EJS"],
+      },
+      {
+        name: "Pastebin App",
+        description:
+          "A web-based application that allows users to create, store, and share text snippets or code blocks with unique shareable URLs.",
+        url: null,
+        skillsUsed: ["Node.js", "Express", "MYSQL", "EJS", "Prisma ORM"],
+      },
+      {
+        name: "Note App",
+        description:
+          "A simple and user-friendly web application for creating, editing, and managing notes with CRUD operations.",
+        url: null,
+        skillsUsed: ["Node.js", "Express", "Mongoose", "EJS"],
+      },
+    ],
+    certifications: [],
+    languages: [],
+  },
+  "17": {
+    id: "resume_kapil_singh_thakuri",
+    analysis: {
+      quality: {
+        score: 88,
+        level: "high",
+        hints: [
+          "Excellent technical depth across both Laravel and React ecosystems.",
+          "Strong demonstration of project variety including SaaS and Enterprise solutions.",
+          "Good mention of modern dev-ops tools like Docker and CI/CD.",
+          "Could benefit from more quantified metrics (e.g., percentage improvements in performance).",
+        ],
+      },
+      suspicion: {
+        score: 0,
+        level: "safe",
+        flags: [],
+      },
+      writingStyle: {
+        actionVerbsRate: 0.92,
+        quantificationRate: 0.05,
+        clicheCount: 2,
+      },
+    },
+    verification: {
+      timeline: {
+        hasGaps: false,
+        gaps: [],
+      },
+      identity: {
+        geoConsistency: "match",
+        socialFootprintFound: true,
+      },
+    },
+    basics: {
+      name: {
+        value: "Kapil Singh Thakuri",
+        rawText: "Kapil Singh Thakuri",
+        confidence: 1.0,
+        pageIndex: 0,
+      },
+      email: [
+        {
+          value: "kapilsinghthakuri33@gmail.com",
+          rawText: "kapilsinghthakuri33@gmail.com",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+      ],
+      phone: [
+        {
+          value: "+977 9824452680",
+          rawText: "+977 9824452680",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+      ],
+      location: {
+        rawInput: "Chitwan, Nepal",
+        city: "Chitwan",
+        state: null,
+        country: "Nepal",
+        zipCode: null,
+        countryCode: "NP",
+      },
+      urls: [
+        {
+          type: "linkedin",
+          url: "LinkedIn",
+        },
+        {
+          type: "github",
+          url: "GitHub",
+        },
+      ],
+      summary:
+        "Software Developer with experience in PHP (Laravel) and modern frontend technologies. Proven ability to deliver high-quality, optimized applications with secure, maintainable code and collaborative team practices. ",
+    },
+    skills: [
+      {
+        name: "React.js",
+        normalizedName: "React",
+        category: "Frontend",
+        computedLevel: "advanced",
+        validityScore: 8.5,
+        metadata: {
+          firstSeen: "2024-06-01",
+          lastUsed: "2025-12-22",
+          totalMonthsExperience: 18,
+          occurrenceCount: 6,
+          sources: [
+            {
+              sectionId: "TECHNICAL SKILLS",
+              sectionType: "experience",
+            },
+          ],
+        },
+      },
+      {
+        name: "Laravel",
+        normalizedName: "Laravel",
+        category: "Backend",
+        computedLevel: "expert",
+        validityScore: 9.2,
+        metadata: {
+          firstSeen: "2024-03-01",
+          lastUsed: "2025-12-22",
+          totalMonthsExperience: 21,
+          occurrenceCount: 12,
+          sources: [
+            {
+              sectionId: "TECHNICAL SKILLS",
+              sectionType: "experience",
+            },
+          ],
+        },
+      },
+      {
+        name: "Docker",
+        normalizedName: "Docker",
+        category: "Others",
+        computedLevel: "intermediate",
+        validityScore: 6.0,
+        metadata: {
+          firstSeen: "2024-06-01",
+          lastUsed: "2025-12-22",
+          totalMonthsExperience: 18,
+          occurrenceCount: 4,
+          sources: [
+            {
+              sectionId: "EXPERIENCE",
+              sectionType: "experience",
+            },
+          ],
+        },
+      },
+      {
+        name: "TypeScript",
+        normalizedName: "TypeScript",
+        category: "Frontend",
+        computedLevel: "advanced",
+        validityScore: 7.8,
+        metadata: {
+          firstSeen: "2024-06-01",
+          lastUsed: "2025-12-22",
+          totalMonthsExperience: 18,
+          occurrenceCount: 5,
+          sources: [
+            {
+              sectionId: "EXPERIENCE",
+              sectionType: "experience",
+            },
+          ],
+        },
+      },
+    ],
+    workExperience: [
+      {
+        id: "work_1",
+        title: {
+          value: "Laravel & React Software Developer",
+          rawText: "Laravel & React Software Developer",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+        normalizedTitle: "Full Stack Developer",
+        company: {
+          value: "Youngminds Creation Pvt. Ltd.",
+          rawText: "Youngminds Creation Pvt. Ltd.",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+        companyDomain: null,
+        location: {
+          rawInput: "Shantinagar, Kathmandu",
+          city: "Kathmandu",
+          state: null,
+          country: "Nepal",
+          zipCode: null,
+          countryCode: "NP",
+        },
+        type: "full-time",
+        startDate: {
+          rawText: "June, 2024",
+          isoDate: "2024-06",
+          isCurrent: false,
+        },
+        endDate: {
+          rawText: "Present",
+          isoDate: null,
+          isCurrent: true,
+        },
+        description:
+          "Collaborated with cross-functional teams in an Agile environment to build scalable, maintainable web applications using Laravel and React. ",
+        responsibilities: [
+          "Designed and developed robust backend services with Laravel following security best practices. ",
+          "Managed relational schemas using Eloquent ORM and wrote optimized SQL queries. ",
+          "Built modular, reusable frontend components using React (TypeScript) with Mantine and Tailwind CSS. ",
+          "Implemented RBAC, multi-step wizards, and lazy-loaded modules. ",
+          "Integrated RESTful APIs and managed state with Redux and TanStack Query. ",
+          "Dockerized frontend environments for CI/CD workflows. ",
+        ],
+        skillsDetected: [
+          "Laravel",
+          "React",
+          "TypeScript",
+          "Redux",
+          "TanStack Query",
+          "Docker",
+          "SQL",
+          "Tailwind CSS",
+        ],
+        isVerified: false,
+        verificationNotes: null,
+        verificationConfidence: 0.7,
+        verificationDate: null,
+      },
+      {
+        id: "work_2",
+        title: {
+          value: "Laravel Intern",
+          rawText: "Laravel Intern",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+        normalizedTitle: "Backend Developer Intern",
+        company: {
+          value: "Youngminds Creation Pvt. Ltd.",
+          rawText: "Youngminds Creation Pvt. Ltd.",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+        companyDomain: null,
+        location: {
+          rawInput: "Shantinagar, Kathmandu",
+          city: "Kathmandu",
+          state: null,
+          country: "Nepal",
+          zipCode: null,
+          countryCode: "NP",
+        },
+        type: "internship",
+        startDate: {
+          rawText: "March, 2024",
+          isoDate: "2024-03",
+          isCurrent: false,
+        },
+        endDate: {
+          rawText: "May, 2024",
+          isoDate: "2024-05",
+          isCurrent: false,
+        },
+        description:
+          "Assisted senior developers in building modules with Laravel, applying MVC architecture and RESTful routing. ",
+        responsibilities: [
+          "Applied MVC architecture, RESTful routing, and Eloquent ORM. ",
+          "Wrote and optimized SQL queries and managed database migrations. ",
+          "Supported UI integration using Blade, Tailwind CSS, and Bootstrap. ",
+          "Participated in Agile ceremonies including daily stand-ups and code reviews. ",
+          "Practiced Git branching strategies and resolved merge conflicts. ",
+        ],
+        skillsDetected: [
+          "Laravel",
+          "Eloquent",
+          "SQL",
+          "Tailwind CSS",
+          "Bootstrap",
+          "Git",
+        ],
+        isVerified: false,
+        verificationNotes: null,
+        verificationConfidence: 0.7,
+        verificationDate: null,
+      },
+    ],
+    education: [
+      {
+        id: "edu_1",
+        institution: {
+          value: "Tribhuvan University, Birendra Multiple Campus",
+          rawText: "Tribhuvan University, Birendra Multiple Campus",
+          confidence: 1.0,
+          pageIndex: 3,
+        },
+        degree: {
+          value: "BSc. CSIT",
+          rawText: "BSc. CSIT",
+          confidence: 1.0,
+          pageIndex: 3,
+        },
+        normalizedDegree: "bachelors",
+        fieldOfStudy: "Computer Science and Information Technology",
+        startDate: {
+          rawText: "2019",
+          isoDate: "2019",
+          isCurrent: false,
+        },
+        endDate: {
+          rawText: "2023",
+          isoDate: "2023",
+          isCurrent: false,
+        },
+        gpa: null,
+      },
+    ],
+    projects: [
+      {
+        name: "Research & Ethics Management Platform",
+        description:
+          "A digital platform for managing ethical research protocol submissions across multiple countries. Implemented Figma-based UI as modular components. ",
+        url: null,
+        skillsUsed: [
+          "React (TypeScript)",
+          "Mantine",
+          "Zod",
+          "Redux",
+          "TanStack Query",
+          "Docker",
+        ],
+      },
+      {
+        name: "Inventory & Sales Management Platform",
+        description:
+          "A role-based stock and agent management system for tracking sales and bonus distribution. Integrated RESTful APIs provided by a NestJS backend. ",
+        url: null,
+        skillsUsed: [
+          "React (TypeScript)",
+          "React Router v7",
+          "Jotai",
+          "TanStack Query",
+          "Zod",
+          "Docker",
+        ],
+      },
+      {
+        name: "Healthcare Management Platform (SaaS)",
+        description:
+          "A SaaS solution for hospital appointment scheduling and health monitoring. Designed secure REST APIs for managing patient records and health vitals. ",
+        url: null,
+        skillsUsed: [
+          "Laravel",
+          "Fortify",
+          "Spatie Roles & Permissions",
+          "Laravel Passport",
+          "Tailwind CSS",
+        ],
+      },
+    ],
+    certifications: [],
+    languages: [],
+  },
+  "18": {
+    id: "resume_kiran_shrestha",
+    analysis: {
+      quality: {
+        score: 85,
+        level: "high",
+        hints: [
+          "Strong technical depth in backend systems and eGovernance projects.",
+          "Excellent list of specific key achievements for each role.",
+          "Good use of action verbs throughout the experience section.",
+          "Could strengthen the profile by adding a specific graduation year for the Bachelor's degree.",
+        ],
+      },
+      suspicion: {
+        score: 0,
+        level: "safe",
+        flags: [],
+      },
+      writingStyle: {
+        actionVerbsRate: 0.88,
+        quantificationRate: 0.15,
+        clicheCount: 1,
+      },
+    },
+    verification: {
+      timeline: {
+        hasGaps: true,
+        gaps: [
+          {
+            startDate: "2020-01-01",
+            endDate: "2021-11-30",
+            durationDays: 699,
+          },
+          {
+            startDate: "2022-07-01",
+            endDate: "2022-07-31",
+            durationDays: 31,
+          },
+          {
+            startDate: "2023-07-01",
+            endDate: "2023-09-30",
+            durationDays: 92,
+          },
+        ],
+      },
+      identity: {
+        geoConsistency: "match",
+        socialFootprintFound: true,
+      },
+    },
+    basics: {
+      name: {
+        value: "Kiran Shrestha",
+        rawText: "Kiran Shrestha",
+        confidence: 1.0,
+        pageIndex: 0,
+      },
+      email: [
+        {
+          value: "kiranshrestha903@gmail.com",
+          rawText: "kiranshrestha903@gmail.com",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+      ],
+      phone: [
+        {
+          value: "+9779818521901",
+          rawText: "(+977) 9818521901",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+      ],
+      location: {
+        rawInput: "Nepal",
+        city: null,
+        state: null,
+        country: "Nepal",
+        zipCode: null,
+        countryCode: "NP",
+      },
+      urls: [
+        {
+          type: "github",
+          url: "[github.com/ikiranshrestha](https://github.com/ikiranshrestha)",
+        },
+        {
+          type: "linkedin",
+          url: "[linkedin.com/in/ikiranshrestha](https://www.google.com/search?q=https://linkedin.com/in/ikiranshrestha)",
+        },
+      ],
+      summary:
+        "Fullstack Software Engineer with 3+ years of experience designing and building secure, data-driven backend systems. Proven track record delivering eGovernance platforms for government agencies, law enforcement systems, and high-traffic B2B/B2C platforms. Strong expertise in Laravel, MySQL, and Redis, with experience in ETL-style data migration, stored procedures, Elasticsearch, Docker, and clean modular architecture.",
+    },
+    skills: [
+      {
+        name: "Laravel",
+        normalizedName: "Laravel",
+        category: "Languages & Frameworks",
+        computedLevel: "expert",
+        validityScore: 9.4,
+        metadata: {
+          firstSeen: "2022-08-01",
+          lastUsed: "2025-12-22",
+          totalMonthsExperience: 36,
+          occurrenceCount: 6,
+          sources: [
+            {
+              sectionId: "TECHNICAL SKILLS",
+              sectionType: "experience",
+            },
+          ],
+        },
+      },
+      {
+        name: "PHP",
+        normalizedName: "PHP",
+        category: "Languages & Frameworks",
+        computedLevel: "expert",
+        validityScore: 8.8,
+        metadata: {
+          firstSeen: "2022-08-01",
+          lastUsed: "2025-12-22",
+          totalMonthsExperience: 36,
+          occurrenceCount: 2,
+          sources: [
+            {
+              sectionId: "TECHNICAL SKILLS",
+              sectionType: "experience",
+            },
+          ],
+        },
+      },
+      {
+        name: "MySQL",
+        normalizedName: "MySQL",
+        category: "Databases & Search",
+        computedLevel: "advanced",
+        validityScore: 8.2,
+        metadata: {
+          firstSeen: "2022-08-01",
+          lastUsed: "2025-12-22",
+          totalMonthsExperience: 36,
+          occurrenceCount: 3,
+          sources: [
+            {
+              sectionId: "TECHNICAL SKILLS",
+              sectionType: "experience",
+            },
+          ],
+        },
+      },
+      {
+        name: "Redis",
+        normalizedName: "Redis",
+        category: "Databases & Search",
+        computedLevel: "advanced",
+        validityScore: 7.5,
+        metadata: {
+          firstSeen: "2022-08-01",
+          lastUsed: "2023-06-01",
+          totalMonthsExperience: 10,
+          occurrenceCount: 3,
+          sources: [
+            {
+              sectionId: "EXPERIENCE",
+              sectionType: "experience",
+            },
+          ],
+        },
+      },
+      {
+        name: "Docker",
+        normalizedName: "Docker",
+        category: "Tools & Technologies",
+        computedLevel: "intermediate",
+        validityScore: 5.8,
+        metadata: {
+          firstSeen: "2023-10-01",
+          lastUsed: "2025-12-22",
+          totalMonthsExperience: 26,
+          occurrenceCount: 2,
+          sources: [
+            {
+              sectionId: "TECHNICAL SKILLS",
+              sectionType: "experience",
+            },
+          ],
+        },
+      },
+    ],
+    workExperience: [
+      {
+        id: "work_1",
+        title: {
+          value: "Software Engineer",
+          rawText: "Software Engineer",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+        normalizedTitle: "Software Engineer",
+        company: {
+          value: "Code Fusion Technologies",
+          rawText: "Code Fusion Technologies",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+        companyDomain: null,
+        location: null,
+        type: "full-time",
+        startDate: {
+          rawText: "Oct 2023",
+          isoDate: "2023-10",
+          isCurrent: false,
+        },
+        endDate: {
+          rawText: "Present",
+          isoDate: null,
+          isCurrent: true,
+        },
+        description:
+          "Building secure, data-driven backend systems for eGovernance and UNDP projects.",
+        responsibilities: [
+          "Developed a large-scale platform to track and analyze socio-economic data for vulnerable populations (UNDP Project).",
+          "Led complex data migration performing schema mapping, datatype normalization, and ETL-style validation using SQL.",
+          "Built solutions focused on digitizing public services and improving citizen engagement.",
+          "Designed and implemented modular backend architecture in Laravel and MySQL.",
+        ],
+        skillsDetected: ["Laravel", "MySQL", "SQL", "ETL"],
+        isVerified: false,
+        verificationNotes: "Company domain not provided.",
+        verificationConfidence: 0.7,
+        verificationDate: null,
+      },
+      {
+        id: "work_2",
+        title: {
+          value: "Associate Software Engineer",
+          rawText: "Associate Software Engineer",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+        normalizedTitle: "Associate Software Engineer",
+        company: {
+          value: "Hazesoft Pvt. Ltd.",
+          rawText: "Hazesoft Pvt. Ltd.",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+        companyDomain: null,
+        location: null,
+        type: "full-time",
+        startDate: {
+          rawText: "Aug 2022",
+          isoDate: "2022-08",
+          isCurrent: false,
+        },
+        endDate: {
+          rawText: "Jun 2023",
+          isoDate: "2023-06",
+          isCurrent: false,
+        },
+        description:
+          "Developed features for a modular B2B/B2C eCommerce platform (HDL Platform).",
+        responsibilities: [
+          "Built reusable Laravel 9 modules for inventory management, order processing, and vendor integrations.",
+          "Implemented Redis-based caching, reducing query times.",
+          "Integrated Elasticsearch for high-performance search and dashboard experiences.",
+          "Collaborated with cross-functional teams to improve scalability.",
+        ],
+        skillsDetected: ["Laravel", "Redis", "Elasticsearch"],
+        isVerified: false,
+        verificationNotes: "Company domain not provided.",
+        verificationConfidence: 0.7,
+        verificationDate: null,
+      },
+      {
+        id: "work_3",
+        title: {
+          value: "Software Engineer Intern",
+          rawText: "Software Engineer Intern",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+        normalizedTitle: "Software Engineer Intern",
+        company: {
+          value: "LIS Nepal",
+          rawText: "LIS Nepal",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+        companyDomain: null,
+        location: null,
+        type: "internship",
+        startDate: {
+          rawText: "Dec 2021",
+          isoDate: "2021-12",
+          isCurrent: false,
+        },
+        endDate: {
+          rawText: "Jun 2022",
+          isoDate: "2022-06",
+          isCurrent: false,
+        },
+        description:
+          "Worked on nationwide systems for Nepal Police including CCIS, DIRS, and Police Clearance registration.",
+        responsibilities: [
+          "Developed and optimized secure modules using .NET Framework 4.5 and Oracle 12C.",
+          "Supported full SDLC including requirements gathering, development, testing, and deployment.",
+        ],
+        skillsDetected: [".NET", "Oracle"],
+        isVerified: false,
+        verificationNotes: "Company domain not provided.",
+        verificationConfidence: 0.7,
+        verificationDate: null,
+      },
+      {
+        id: "work_4",
+        title: {
+          value: "WordPress Development Intern",
+          rawText: "WordPress Development Intern",
+          confidence: 1.0,
+          pageIndex: 1,
+        },
+        normalizedTitle: "WordPress Developer Intern",
+        company: {
+          value: "EPrabidhi Pvt. Ltd.",
+          rawText: "EPrabidhi Pvt. Ltd.",
+          confidence: 1.0,
+          pageIndex: 1,
+        },
+        companyDomain: null,
+        location: null,
+        type: "internship",
+        startDate: {
+          rawText: "Sep 2019",
+          isoDate: "2019-09",
+          isCurrent: false,
+        },
+        endDate: {
+          rawText: "Dec 2019",
+          isoDate: "2019-12",
+          isCurrent: false,
+        },
+        description:
+          "Built and customized WordPress websites using tailored themes and plugins.",
+        responsibilities: [
+          "Built and customized WordPress websites using tailored themes and plugins.",
+          "Delivered optimized configurations for client-specific requirements.",
+        ],
+        skillsDetected: ["WordPress"],
+        isVerified: false,
+        verificationNotes: "Company domain not provided.",
+        verificationConfidence: 0.7,
+        verificationDate: null,
+      },
+    ],
+    education: [
+      {
+        id: "edu_1",
+        institution: {
+          value: "Divya Gyan College",
+          rawText: "Divya Gyan College",
+          confidence: 1.0,
+          pageIndex: 1,
+        },
+        degree: {
+          value: "Bachelor in Computer Application",
+          rawText: "Bachelor in Computer Application",
+          confidence: 1.0,
+          pageIndex: 1,
+        },
+        normalizedDegree: "bachelors",
+        fieldOfStudy: "Computer Application",
+        startDate: null,
+        endDate: null,
+        gpa: null,
+      },
+      {
+        id: "edu_2",
+        institution: {
+          value: "United Academy Higher Secondary School",
+          rawText: "United Academy Higher Secondary School",
+          confidence: 1.0,
+          pageIndex: 1,
+        },
+        degree: {
+          value: "XII",
+          rawText: "XII",
+          confidence: 1.0,
+          pageIndex: 1,
+        },
+        normalizedDegree: "high_school",
+        fieldOfStudy: null,
+        startDate: null,
+        endDate: null,
+        gpa: null,
+      },
+    ],
+    projects: [],
+    certifications: [
+      {
+        name: "AWS Academy Graduate - Cloud Foundations",
+        issuer: "AWS Academy",
+        date: {
+          rawText: "null",
+          isoDate: null,
+          isCurrent: false,
+        },
+        doesExpire: false,
+        verificationUrl: null,
+      },
+    ],
+    languages: [],
+  },
+  "19": {
+    id: "resume_kritesh_pokhrel",
+    analysis: {
+      quality: {
+        score: 92,
+        level: "exceptional",
+        hints: [
+          "Highly detailed experience with specific technical achievements and metrics.",
+          "Demonstrates advanced knowledge of both frontend (Angular) and backend (.NET Core) ecosystems.",
+          "Excellent documentation of complex architectural tasks and leadership responsibilities.",
+          "Clear evidence of working with modern DevOps and monitoring tools.",
+        ],
+      },
+      suspicion: {
+        score: 0,
+        level: "safe",
+        flags: [],
+      },
+      writingStyle: {
+        actionVerbsRate: 0.95,
+        quantificationRate: 0.2,
+        clicheCount: 0,
+      },
+    },
+    verification: {
+      timeline: {
+        hasGaps: false,
+        gaps: [],
+      },
+      identity: {
+        geoConsistency: "match",
+        socialFootprintFound: true,
+      },
+    },
+    basics: {
+      name: {
+        value: "Kritesh Pokhrel",
+        rawText: "Kritesh Pokhrel",
+        confidence: 1.0,
+        pageIndex: 0,
+      },
+      email: [
+        {
+          value: "kriteshpokharel100@gmail.com",
+          rawText: "kriteshpokharel100@gmail.com",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+      ],
+      phone: [
+        {
+          value: "+9779866068872",
+          rawText: "(+977) 9866068872",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+      ],
+      location: {
+        rawInput: "Nepal",
+        city: null,
+        state: null,
+        country: "Nepal",
+        zipCode: null,
+        countryCode: "NP",
+      },
+      urls: [
+        {
+          type: "linkedin",
+          url: "[linkedin.com/in/kritesh-pokhrel](https://www.google.com/search?q=https://linkedin.com/in/kritesh-pokhrel)",
+        },
+        {
+          type: "personal",
+          url: "kriteshpokhrel.dev",
+        },
+      ],
+      summary: null,
+    },
+    skills: [
+      {
+        name: "Angular",
+        normalizedName: "Angular",
+        category: "Technologies/Libraries",
+        computedLevel: "expert",
+        validityScore: 9.5,
+        metadata: {
+          firstSeen: "2022-08-01",
+          lastUsed: "2025-09-01",
+          totalMonthsExperience: 37,
+          occurrenceCount: 6,
+          sources: [
+            {
+              sectionId: "EXPERIENCE",
+              sectionType: "experience",
+            },
+          ],
+        },
+      },
+      {
+        name: ".NET Core",
+        normalizedName: ".NET Core",
+        category: "Technologies/Libraries",
+        computedLevel: "expert",
+        validityScore: 8.9,
+        metadata: {
+          firstSeen: "2022-08-01",
+          lastUsed: "2025-09-01",
+          totalMonthsExperience: 37,
+          occurrenceCount: 3,
+          sources: [
+            {
+              sectionId: "EXPERIENCE",
+              sectionType: "experience",
+            },
+          ],
+        },
+      },
+      {
+        name: "TypeScript",
+        normalizedName: "TypeScript",
+        category: "Languages",
+        computedLevel: "expert",
+        validityScore: 8.5,
+        metadata: {
+          firstSeen: "2022-08-01",
+          lastUsed: "2025-09-01",
+          totalMonthsExperience: 37,
+          occurrenceCount: 2,
+          sources: [
+            {
+              sectionId: "EXPERIENCE",
+              sectionType: "experience",
+            },
+          ],
+        },
+      },
+      {
+        name: "C#",
+        normalizedName: "C#",
+        category: "Languages",
+        computedLevel: "advanced",
+        validityScore: 8.0,
+        metadata: {
+          firstSeen: "2022-08-01",
+          lastUsed: "2025-09-01",
+          totalMonthsExperience: 37,
+          occurrenceCount: 3,
+          sources: [
+            {
+              sectionId: "EXPERIENCE",
+              sectionType: "experience",
+            },
+          ],
+        },
+      },
+      {
+        name: "Azure DevOps",
+        normalizedName: "Azure DevOps",
+        category: "Technologies/Libraries",
+        computedLevel: "intermediate",
+        validityScore: 6.8,
+        metadata: {
+          firstSeen: "2022-08-01",
+          lastUsed: "2025-09-01",
+          totalMonthsExperience: 37,
+          occurrenceCount: 2,
+          sources: [
+            {
+              sectionId: "EXPERIENCE",
+              sectionType: "experience",
+            },
+          ],
+        },
+      },
+    ],
+    workExperience: [
+      {
+        id: "work_1",
+        title: {
+          value: "Software Engineer",
+          rawText: "Software Engineer",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+        normalizedTitle: "Software Engineer",
+        company: {
+          value: "Eurofins IT Solutions India Pvt. Ltd",
+          rawText: "Eurofins IT Solutions India Pvt. Ltd",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+        companyDomain: null,
+        location: {
+          rawInput: "India",
+          city: null,
+          state: null,
+          country: "India",
+          zipCode: null,
+          countryCode: "IN",
+        },
+        type: "full-time",
+        startDate: {
+          rawText: "AUG 2022",
+          isoDate: "2022-08",
+          isCurrent: false,
+        },
+        endDate: {
+          rawText: "SEPTEMBER 2025",
+          isoDate: "2025-09",
+          isCurrent: false,
+        },
+        description:
+          "Project: Off Site Management (OSM). Developed and optimized a PWA for offline sample collection using Service Workers, IndexedDB, and GPS.",
+        responsibilities: [
+          "Developed and optimized a PWA for offline sample collection, enhancing field operability.",
+          "Built reusable Angular-based component library for Form & Geo controls.",
+          "Engineered scalable REST APIs and microservices using .NET Core and MS SQL.",
+          "Optimized Sync and Parcels/Container modules, reducing execution times by 85%.",
+          "Led Angular upgrades (v10 to v16), improving maintainability.",
+          "Established CI/CD pipelines on Azure DevOps.",
+          "Planned application domain and architectural approach, conducted code reviews, and provided mentoring.",
+        ],
+        skillsDetected: [
+          "Angular",
+          "PWA",
+          ".NET Core",
+          "MS SQL",
+          "Microservices",
+          "TypeScript",
+          "Azure DevOps",
+          "C#",
+        ],
+        isVerified: false,
+        verificationNotes:
+          "Evidence of complex architectural tasks and specific optimization metrics (85% reduction).",
+        verificationConfidence: 0.9,
+        verificationDate: null,
+      },
+    ],
+    education: [
+      {
+        id: "edu_1",
+        institution: {
+          value: "New Horizon College of Engineering",
+          rawText: "New Horizon College of Engineering",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+        degree: {
+          value: "Bachelor's in Computer Science & Engineering",
+          rawText: "Bachelor's in Computer Science & Engineering",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+        normalizedDegree: "bachelors",
+        fieldOfStudy: "Computer Science & Engineering",
+        startDate: {
+          rawText: "AUG 2018",
+          isoDate: "2018-08",
+          isCurrent: false,
+        },
+        endDate: {
+          rawText: "JUL 2022",
+          isoDate: "2022-07",
+          isCurrent: false,
+        },
+        gpa: null,
+      },
+    ],
+    projects: [
+      {
+        name: "SEVA: Secure E-Voting Application",
+        description:
+          "Developed a decentralized e-voting platform on Ethereum ensuring election transparency and security.",
+        url: null,
+        skillsUsed: ["ReactJS", "Solidity", "Web3.js"],
+      },
+      {
+        name: "VisionEd",
+        description:
+          "Created an Android assistant app for visually impaired users offering communication and safety features.",
+        url: null,
+        skillsUsed: ["Java"],
+      },
+      {
+        name: "SearchTap",
+        description:
+          "Built a child-safe search engine incorporating NLP keyword filtering to block inappropriate content.",
+        url: null,
+        skillsUsed: ["Flask", "TensorFlow", "Firebase"],
+      },
+    ],
+    certifications: [],
+    languages: [],
+  },
+  "20": {
+    id: "resume_main",
+    analysis: {
+      quality: {
+        score: 78,
+        level: "high",
+        hints: [
+          "Include more quantifiable metrics in work responsibilities.",
+          "Ensure dates in work history are chronological (currently shows 2024-2023 in intern role).",
+          "Add more details to academic projects to increase content depth.",
+        ],
+      },
+      suspicion: {
+        score: 15,
+        level: "safe",
+        flags: [
+          {
+            type: "date_discrepancy",
+            severity: "low",
+            description:
+              "Internship dates (04/2024-07/2023) appear to be reversed or contain a typo.",
+          },
+        ],
+      },
+      writingStyle: {
+        actionVerbsRate: 0.8,
+        quantificationRate: 0.0,
+        clicheCount: 0,
+      },
+    },
+    verification: {
+      timeline: {
+        hasGaps: false,
+        gaps: [],
+      },
+      identity: {
+        geoConsistency: "match",
+        socialFootprintFound: true,
+      },
+    },
+    basics: {
+      name: {
+        value: "Kshitij Jung Shahi",
+        rawText: "KSHITIJ JUNG SHAHI",
+        confidence: 1.0,
+        pageIndex: 0,
+      },
+      email: [
+        {
+          value: "kshitij.shahi97031@gmail.com",
+          rawText: "kshitij.shahi97031@gmail.com",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+      ],
+      phone: [
+        {
+          value: "+9779843004285",
+          rawText: "+977-9843004285",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+      ],
+      location: {
+        rawInput: "Kathmandu, Nepal",
+        city: "Kathmandu",
+        state: null,
+        country: "Nepal",
+        zipCode: null,
+        countryCode: "NP",
+      },
+      urls: [
+        {
+          type: "linkedin",
+          url: "[https://www.linkedin.com/in/kshitij-jung-shahi-781428307/](https://www.linkedin.com/in/kshitij-jung-shahi-781428307/)",
+        },
+        {
+          type: "github",
+          url: "[https://github.com/Moeel149](https://github.com/Moeel149)",
+        },
+        {
+          type: "portfolio",
+          url: "[https://kshitijshahi.com.np/](https://kshitijshahi.com.np/)",
+        },
+      ],
+      summary:
+        "I'm a full-stack developer and student with a strong interest in both frontend and backend technologies. I'm curious, always learning, and enjoy solving problems through code. Balancing studies and development has helped me stay organized, adaptable, and motivated to keep improving every day.",
+    },
+    skills: [
+      {
+        name: "HTML",
+        normalizedName: "HTML",
+        category: "Frontend",
+        computedLevel: "advanced",
+        validityScore: 7.2,
+        metadata: {
+          firstSeen: "2023-04-01",
+          lastUsed: "2025-02-01",
+          totalMonthsExperience: 22,
+          occurrenceCount: 3,
+          sources: [
+            {
+              sectionId: "skills",
+              sectionType: "experience",
+            },
+            {
+              sectionId: "experience",
+              sectionType: "experience",
+            },
+            {
+              sectionId: "project",
+              sectionType: "project",
+            },
+          ],
+        },
+      },
+      {
+        name: "CSS",
+        normalizedName: "CSS",
+        category: "Frontend",
+        computedLevel: "advanced",
+        validityScore: 7.2,
+        metadata: {
+          firstSeen: "2023-04-01",
+          lastUsed: "2025-02-01",
+          totalMonthsExperience: 22,
+          occurrenceCount: 3,
+          sources: [
+            {
+              sectionId: "skills",
+              sectionType: "experience",
+            },
+          ],
+        },
+      },
+      {
+        name: "JavaScript",
+        normalizedName: "JavaScript",
+        category: "Frontend",
+        computedLevel: "advanced",
+        validityScore: 7.5,
+        metadata: {
+          firstSeen: "2023-04-01",
+          lastUsed: "2025-02-01",
+          totalMonthsExperience: 22,
+          occurrenceCount: 3,
+          sources: [
+            {
+              sectionId: "skills",
+              sectionType: "experience",
+            },
+          ],
+        },
+      },
+      {
+        name: "TypeScript",
+        normalizedName: "TypeScript",
+        category: "Programming Languages",
+        computedLevel: "intermediate",
+        validityScore: 5.8,
+        metadata: {
+          firstSeen: "2024-04-01",
+          lastUsed: "2025-02-01",
+          totalMonthsExperience: 10,
+          occurrenceCount: 2,
+          sources: [
+            {
+              sectionId: "skills",
+              sectionType: "experience",
+            },
+          ],
+        },
+      },
+      {
+        name: "React.js",
+        normalizedName: "React.js",
+        category: "Frontend",
+        computedLevel: "intermediate",
+        validityScore: 5.5,
+        metadata: {
+          firstSeen: "2024-04-01",
+          lastUsed: "2025-02-01",
+          totalMonthsExperience: 10,
+          occurrenceCount: 2,
+          sources: [
+            {
+              sectionId: "skills",
+              sectionType: "experience",
+            },
+          ],
+        },
+      },
+      {
+        name: "Next.js",
+        normalizedName: "Next.js",
+        category: "Frontend",
+        computedLevel: "intermediate",
+        validityScore: 5.5,
+        metadata: {
+          firstSeen: "2024-09-01",
+          lastUsed: "2025-02-01",
+          totalMonthsExperience: 6,
+          occurrenceCount: 2,
+          sources: [
+            {
+              sectionId: "experience",
+              sectionType: "experience",
+            },
+          ],
+        },
+      },
+      {
+        name: "Node.js",
+        normalizedName: "Node.js",
+        category: "Backend",
+        computedLevel: "intermediate",
+        validityScore: 5.5,
+        metadata: {
+          firstSeen: "2024-09-01",
+          lastUsed: "2025-02-01",
+          totalMonthsExperience: 6,
+          occurrenceCount: 2,
+          sources: [
+            {
+              sectionId: "experience",
+              sectionType: "experience",
+            },
+          ],
+        },
+      },
+      {
+        name: "PHP",
+        normalizedName: "PHP",
+        category: "Backend",
+        computedLevel: "intermediate",
+        validityScore: 5.5,
+        metadata: {
+          firstSeen: "2023-04-01",
+          lastUsed: "2024-07-01",
+          totalMonthsExperience: 15,
+          occurrenceCount: 3,
+          sources: [
+            {
+              sectionId: "experience",
+              sectionType: "experience",
+            },
+          ],
+        },
+      },
+      {
+        name: "PostgreSQL",
+        normalizedName: "PostgreSQL",
+        category: "Database",
+        computedLevel: "novice",
+        validityScore: 2.8,
+        metadata: {
+          firstSeen: "2024-04-01",
+          lastUsed: "2025-02-01",
+          totalMonthsExperience: 10,
+          occurrenceCount: 2,
+          sources: [
+            {
+              sectionId: "skills",
+              sectionType: "experience",
+            },
+          ],
+        },
+      },
+      {
+        name: "Docker",
+        normalizedName: "Docker",
+        category: "DevOps",
+        computedLevel: "novice",
+        validityScore: 2.2,
+        metadata: {
+          firstSeen: null,
+          lastUsed: null,
+          totalMonthsExperience: 0,
+          occurrenceCount: 1,
+          sources: [
+            {
+              sectionId: "skills",
+              sectionType: "experience",
+            },
+          ],
+        },
+      },
+    ],
+    workExperience: [
+      {
+        id: "exp_1",
+        title: {
+          value: "Web Developer",
+          rawText: "Web Developer",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+        normalizedTitle: "Web Developer",
+        company: {
+          value: "Neptune TechZone",
+          rawText: "Neptune TechZone",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+        companyDomain: null,
+        location: {
+          rawInput: "Dillibazar, Kathmandu",
+          city: "Kathmandu",
+          state: null,
+          country: null,
+          zipCode: null,
+          countryCode: null,
+        },
+        type: "full-time",
+        startDate: {
+          rawText: "09/2024",
+          isoDate: "2024-09",
+          isCurrent: false,
+        },
+        endDate: {
+          rawText: "02/2025",
+          isoDate: "2025-02",
+          isCurrent: false,
+        },
+        description:
+          "Developed and maintained the company website using Next.js and Node.js, improving scalability and performance.",
+        responsibilities: [
+          "Developed and maintained the company website using Next.js and Node.js.",
+          "Boosted user engagement by optimizing UI responsiveness and load speed.",
+          "Collaborated with designers and backend teams for seamless integration.",
+        ],
+        skillsDetected: ["Next.js", "Node.js", "UI Optimization"],
+        isVerified: false,
+        verificationNotes: "Company domain not provided.",
+        verificationConfidence: 0.7,
+        verificationDate: null,
+      },
+      {
+        id: "exp_2",
+        title: {
+          value: "Web Developer Intern",
+          rawText: "Web Developer Intern",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+        normalizedTitle: "Web Developer Intern",
+        company: {
+          value: "Rapid Web Solutions",
+          rawText: "Rapid Web Solutions",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+        companyDomain: null,
+        location: {
+          rawInput: "Durbar Marg, Kathmandu",
+          city: "Kathmandu",
+          state: null,
+          country: null,
+          zipCode: null,
+          countryCode: null,
+        },
+        type: "internship",
+        startDate: {
+          rawText: "04/2024",
+          isoDate: "2024-04",
+          isCurrent: false,
+        },
+        endDate: {
+          rawText: "07/2023",
+          isoDate: "2023-07",
+          isCurrent: false,
+        },
+        description:
+          "Gained hands-on experience with semantic HTML, SCSS, and project structuring for scalable codebases.",
+        responsibilities: [
+          "Gained hands-on experience with semantic HTML, SCSS, and project structuring.",
+          "Designed and deployed responsive websites using WordPress and PHP backend.",
+        ],
+        skillsDetected: ["HTML", "SCSS", "WordPress", "PHP"],
+        isVerified: false,
+        verificationNotes: "End date precedes start date.",
+        verificationConfidence: 0.4,
+        verificationDate: null,
+      },
+    ],
+    education: [
+      {
+        id: "edu_1",
+        institution: {
+          value: "Padmashree College",
+          rawText: "Padmashree College",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+        degree: {
+          value: "Bachelor's in IT",
+          rawText: "Bachelor's in IT",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+        normalizedDegree: "bachelors",
+        fieldOfStudy: "Information Technology",
+        startDate: {
+          rawText: "2023",
+          isoDate: "2023",
+          isCurrent: false,
+        },
+        endDate: {
+          rawText: "ongoing",
+          isoDate: null,
+          isCurrent: true,
+        },
+        gpa: null,
+      },
+      {
+        id: "edu_2",
+        institution: {
+          value: "Capital College and Research Center",
+          rawText: "Capital College and Reseach Center",
+          confidence: 0.9,
+          pageIndex: 0,
+        },
+        degree: {
+          value: "Higher Education",
+          rawText: "Higher Education",
+          confidence: 0.8,
+          pageIndex: 0,
+        },
+        normalizedDegree: "high_school",
+        fieldOfStudy: null,
+        startDate: {
+          rawText: "2019",
+          isoDate: "2019",
+          isCurrent: false,
+        },
+        endDate: {
+          rawText: "2021",
+          isoDate: "2021",
+          isCurrent: false,
+        },
+        gpa: {
+          score: 3.71,
+          scale: 4.0,
+        },
+      },
+      {
+        id: "edu_3",
+        institution: {
+          value: "Sainik Awasiya Mahavidalaya",
+          rawText: "Sainik Awasiya Mahavidalaya",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+        degree: {
+          value: "Secondary Education",
+          rawText: "Secondary Education",
+          confidence: 0.8,
+          pageIndex: 0,
+        },
+        normalizedDegree: "high_school",
+        fieldOfStudy: null,
+        startDate: {
+          rawText: "2012",
+          isoDate: "2012",
+          isCurrent: false,
+        },
+        endDate: {
+          rawText: "2019",
+          isoDate: "2019",
+          isCurrent: false,
+        },
+        gpa: {
+          score: 3.75,
+          scale: 4.0,
+        },
+      },
+    ],
+    projects: [
+      {
+        name: "Guitar House E-commerce Website",
+        description:
+          "E-commerce Website built using HTML, CSS, JS, PHP, and mySQL.",
+        url: "[https://github.com/Moeell49/Guitar](https://github.com/Moeell49/Guitar) House eCommerce Website",
+        skillsUsed: ["HTML", "CSS", "JavaScript", "PHP", "MySQL"],
+      },
+      {
+        name: "Chat-Application",
+        description:
+          "Chat-Application using ReactJs, Typescript, Tailwind, nodeJs and PostgreSQL.",
+        url: "[https://github.com/Moeel149/Chat-app](https://www.google.com/search?q=https://github.com/Moeel149/Chat-app)",
+        skillsUsed: [
+          "ReactJs",
+          "Typescript",
+          "Tailwind",
+          "Node.js",
+          "PostgreSQL",
+        ],
+      },
+    ],
+    certifications: [
+      {
+        name: "2nd Runner Up in Techthon",
+        issuer: "Padmashree College",
+        date: {
+          rawText: null,
+          isoDate: null,
+          isCurrent: false,
+        },
+        doesExpire: false,
+        verificationUrl: null,
+      },
+      {
+        name: "Winning Certificate of School Level Cricket Tournament",
+        issuer: "Sainik Awasiya Mahavidalaya",
+        date: {
+          rawText: null,
+          isoDate: null,
+          isCurrent: false,
+        },
+        doesExpire: false,
+        verificationUrl: null,
+      },
+    ],
+    languages: [],
+  },
+  "21": {
+    id: "resume_23",
+    analysis: {
+      quality: {
+        score: 55,
+        level: "average",
+        hints: [
+          "Add specific project descriptions and outcomes to demonstrate impact.",
+          "Include information about internships or university activities to bolster professional experience.",
+          "Quantify skills or project features (e.g., number of users, performance improvements).",
+        ],
+      },
+      suspicion: {
+        score: 0,
+        level: "safe",
+        flags: [],
+      },
+      writingStyle: {
+        actionVerbsRate: 0.5,
+        quantificationRate: 0.0,
+        clicheCount: 1,
+      },
+    },
+    verification: {
+      timeline: {
+        hasGaps: false,
+        gaps: [],
+      },
+      identity: {
+        geoConsistency: "match",
+        socialFootprintFound: true,
+      },
+    },
+    basics: {
+      name: {
+        value: "Narayan Adhikari",
+        rawText: "NARAYAN ADHIKARI",
+        confidence: 1.0,
+        pageIndex: 0,
+      },
+      email: [
+        {
+          value: "narayanabin223@gmail.com",
+          rawText: "narayanabin223@gmail.com",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+      ],
+      phone: [
+        {
+          value: "+9779861289616",
+          rawText: "+977-9861289616",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+      ],
+      location: {
+        rawInput: "Lalitpur, Nepal",
+        city: "Lalitpur",
+        state: null,
+        country: "Nepal",
+        zipCode: null,
+        countryCode: "NP",
+      },
+      urls: [
+        {
+          type: "linkedin",
+          url: "[https://www.linkedin.com/in/narayan-adhikari](https://www.google.com/search?q=https://www.linkedin.com/in/narayan-adhikari)",
+        },
+        {
+          type: "github",
+          url: "[https://github.com/narayan](https://github.com/narayan)",
+        },
+      ],
+      summary:
+        "I have just completed my B.E and I am looking for a suitable role at a company where I can apply my skills and gain professional experience by working in real world projects. I want to be a Full-stack Developer.",
+    },
+    skills: [
+      {
+        name: "Java",
+        normalizedName: "Java",
+        category: "Programming Languages",
+        computedLevel: "advanced",
+        validityScore: 6.5,
+        metadata: {
+          firstSeen: "2021-09-01",
+          lastUsed: "2025-09-01",
+          totalMonthsExperience: 48,
+          occurrenceCount: 1,
+          sources: [
+            {
+              sectionId: "skills",
+              sectionType: "education",
+            },
+          ],
+        },
+      },
+      {
+        name: "JavaScript",
+        normalizedName: "JavaScript",
+        category: "Programming Languages",
+        computedLevel: "advanced",
+        validityScore: 6.5,
+        metadata: {
+          firstSeen: "2021-09-01",
+          lastUsed: "2025-09-01",
+          totalMonthsExperience: 48,
+          occurrenceCount: 1,
+          sources: [
+            {
+              sectionId: "skills",
+              sectionType: "education",
+            },
+          ],
+        },
+      },
+      {
+        name: "Python",
+        normalizedName: "Python",
+        category: "Programming Languages",
+        computedLevel: "intermediate",
+        validityScore: 5.5,
+        metadata: {
+          firstSeen: "2021-09-01",
+          lastUsed: "2025-09-01",
+          totalMonthsExperience: 48,
+          occurrenceCount: 1,
+          sources: [
+            {
+              sectionId: "skills",
+              sectionType: "education",
+            },
+          ],
+        },
+      },
+      {
+        name: "ReactJS",
+        normalizedName: "ReactJS",
+        category: "Frontend",
+        computedLevel: "intermediate",
+        validityScore: 5.2,
+        metadata: {
+          firstSeen: null,
+          lastUsed: null,
+          totalMonthsExperience: null,
+          occurrenceCount: 2,
+          sources: [
+            {
+              sectionId: "skills",
+              sectionType: "education",
+            },
+          ],
+        },
+      },
+      {
+        name: "SQL",
+        normalizedName: "SQL",
+        category: "Database",
+        computedLevel: "intermediate",
+        validityScore: 4.5,
+        metadata: {
+          firstSeen: null,
+          lastUsed: null,
+          totalMonthsExperience: null,
+          occurrenceCount: 1,
+          sources: [
+            {
+              sectionId: "skills",
+              sectionType: "education",
+            },
+          ],
+        },
+      },
+      {
+        name: "Git",
+        normalizedName: "Git",
+        category: "Tools",
+        computedLevel: "intermediate",
+        validityScore: 4.0,
+        metadata: {
+          firstSeen: null,
+          lastUsed: null,
+          totalMonthsExperience: null,
+          occurrenceCount: 1,
+          sources: [
+            {
+              sectionId: "skills",
+              sectionType: "education",
+            },
+          ],
+        },
+      },
+    ],
+    workExperience: [],
+    education: [
+      {
+        id: "edu_23_1",
+        institution: {
+          value: "IOE Purwanchal Campus, Dharan",
+          rawText: "IOE Purwanchal Campus, Dharan",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+        degree: {
+          value: "B.E. Computer Engineering",
+          rawText: "B.E. COMPUTER ENGINEERING",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+        normalizedDegree: "bachelors",
+        fieldOfStudy: "Computer Engineering",
+        startDate: null,
+        endDate: {
+          rawText: "September 2025",
+          isoDate: "2025-09",
+          isCurrent: false,
+        },
+        gpa: null,
+      },
+    ],
+    projects: [
+      {
+        name: "Frontend for organization",
+        description:
+          "Worked on implementing frontend of a website for a organization.",
+        url: null,
+        skillsUsed: ["HTML", "CSS", "ReactJS"],
+      },
+      {
+        name: "Full Stack Auth App",
+        description: "Full Stack Auth App with MERN deployment.",
+        url: null,
+        skillsUsed: ["MongoDB", "ExpressJS", "ReactJS", "NodeJS"],
+      },
+    ],
+    certifications: [],
+    languages: [],
+  },
+  "22": {
+    id: "resume_21",
+    analysis: {
+      quality: {
+        score: 72,
+        level: "high",
+        hints: [
+          "Fix formatting issues in the experience section to clarify dates.",
+          "Ensure consistency between the roles listed in the experience section and the skills profile.",
+          "Expand on specific technologies used in the 'Solution Development' skill.",
+        ],
+      },
+      suspicion: {
+        score: 25,
+        level: "concern",
+        flags: [
+          {
+            type: "timeline_overlap",
+            severity: "medium",
+            description:
+              "Multiple roles (Software Engineer, Web Developer) listed with overlapping or ambiguous dates in 2023.",
+          },
+        ],
+      },
+      writingStyle: {
+        actionVerbsRate: 0.85,
+        quantificationRate: 0.1,
+        clicheCount: 2,
+      },
+    },
+    verification: {
+      timeline: {
+        hasGaps: false,
+        gaps: [],
+      },
+      identity: {
+        geoConsistency: "match",
+        socialFootprintFound: true,
+      },
+    },
+    basics: {
+      name: {
+        value: "Madhukar Gumanju",
+        rawText: "MADHUKAR GUMANJU",
+        confidence: 1.0,
+        pageIndex: 0,
+      },
+      email: [
+        {
+          value: "madhugumangu@gmail.com",
+          rawText: "madhugumangu@gmail.com",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+      ],
+      phone: [
+        {
+          value: "+9779840786886",
+          rawText: "+977 9840786886",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+      ],
+      location: {
+        rawInput: "Suryebinayak-5, Bhaktapur, Nepal",
+        city: "Bhaktapur",
+        state: "Suryebinayak-5",
+        country: "Nepal",
+        zipCode: null,
+        countryCode: "NP",
+      },
+      urls: [
+        {
+          type: "personal",
+          url: "[http://madhukargumanju.com.np](https://www.google.com/search?q=http://madhukargumanju.com.np)",
+        },
+      ],
+      summary:
+        "Highly motivated employee eager to take on new challenges, with a strong work ethic, adaptability, and exceptional interpersonal skills. Skilled at working independently as well as under supervision, and quickly mastering new skills.",
+    },
+    skills: [
+      {
+        name: "Node.js",
+        normalizedName: "Node.js",
+        category: "Backend",
+        computedLevel: "intermediate",
+        validityScore: 5.8,
+        metadata: {
+          firstSeen: null,
+          lastUsed: "2023-09-01",
+          totalMonthsExperience: null,
+          occurrenceCount: 1,
+          sources: [
+            {
+              sectionId: "skills",
+              sectionType: "experience",
+            },
+          ],
+        },
+      },
+      {
+        name: "MySQL",
+        normalizedName: "MySQL",
+        category: "Database",
+        computedLevel: "intermediate",
+        validityScore: 5.8,
+        metadata: {
+          firstSeen: null,
+          lastUsed: "2023-09-01",
+          totalMonthsExperience: null,
+          occurrenceCount: 1,
+          sources: [
+            {
+              sectionId: "skills",
+              sectionType: "experience",
+            },
+          ],
+        },
+      },
+      {
+        name: "ReactJS",
+        normalizedName: "ReactJS",
+        category: "Frontend",
+        computedLevel: "intermediate",
+        validityScore: 5.5,
+        metadata: {
+          firstSeen: null,
+          lastUsed: "2023-09-01",
+          totalMonthsExperience: null,
+          occurrenceCount: 1,
+          sources: [
+            {
+              sectionId: "skills",
+              sectionType: "experience",
+            },
+          ],
+        },
+      },
+      {
+        name: "Agile",
+        normalizedName: "Agile",
+        category: "Project Management",
+        computedLevel: "intermediate",
+        validityScore: 5.2,
+        metadata: {
+          firstSeen: null,
+          lastUsed: "2023-09-01",
+          totalMonthsExperience: null,
+          occurrenceCount: 1,
+          sources: [
+            {
+              sectionId: "skills",
+              sectionType: "experience",
+            },
+          ],
+        },
+      },
+    ],
+    workExperience: [
+      {
+        id: "exp_21_1",
+        title: {
+          value: "Software Engineer",
+          rawText: "SOFTWARE ENGINEER",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+        normalizedTitle: "Software Engineer",
+        company: {
+          value: "AEIRC",
+          rawText: "AEIRC-ADVANCE EDUCATION INNOVATIVE RESEARCH CENTER",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+        companyDomain: "aeirc.tech",
+        location: null,
+        type: "full-time",
+        startDate: {
+          rawText: "SEP 2023",
+          isoDate: "2023-09",
+          isCurrent: true,
+        },
+        endDate: {
+          rawText: "Present",
+          isoDate: null,
+          isCurrent: true,
+        },
+        description:
+          "Develop, test, and maintain scalable and efficient software solutions. Collaborate with cross-functional teams.",
+        responsibilities: [
+          "Develop, test, and maintain scalable and efficient software solutions.",
+          "Collaborate with cross-functional teams to define, design, and implement new features.",
+          "Debug and troubleshoot issues, ensuring optimal performance and reliability.",
+          "Ensure software security, data protection, and compliance with industry standards.",
+        ],
+        skillsDetected: ["Software Development", "Security", "Troubleshooting"],
+        isVerified: true,
+        verificationNotes: "Domain exists and aligns with title.",
+        verificationConfidence: 0.9,
+        verificationDate: null,
+      },
+      {
+        id: "exp_21_2",
+        title: {
+          value: "Web Developer",
+          rawText: "WEB DEVELOPER",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+        normalizedTitle: "Web Developer",
+        company: {
+          value: "AEIRC",
+          rawText: "AEIRC",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+        companyDomain: "aeirc.tech",
+        location: null,
+        type: "full-time",
+        startDate: {
+          rawText: "FEB 2023",
+          isoDate: "2023-02",
+          isCurrent: false,
+        },
+        endDate: {
+          rawText: "AUG 2023",
+          isoDate: "2023-08",
+          isCurrent: false,
+        },
+        description:
+          "Develop and maintain scalable web applications with modern frontend and backend technologies.",
+        responsibilities: [
+          "Develop and maintain scalable web applications.",
+          "Build responsive, user-friendly UIs and interactive web components.",
+        ],
+        skillsDetected: ["Web Development", "UI"],
+        isVerified: true,
+        verificationNotes: null,
+        verificationConfidence: 0.8,
+        verificationDate: null,
+      },
+    ],
+    education: [
+      {
+        id: "edu_21_1",
+        institution: {
+          value: "ISMT - Kathmandu, Nepal",
+          rawText:
+            "Int'l School of Management and Technology (ISMT) - Kathmandu, Nepal",
+          confidence: 1.0,
+          pageIndex: 1,
+        },
+        degree: {
+          value: "BSc.IT (Hons) Computer System Engineering",
+          rawText: "BSC.IT (HONS) COMPUTER SYSTEM ENGINEERING",
+          confidence: 1.0,
+          pageIndex: 1,
+        },
+        normalizedDegree: "bachelors",
+        fieldOfStudy: "Computer System Engineering",
+        startDate: null,
+        endDate: {
+          rawText: "JUNE 20XX",
+          isoDate: null,
+          isCurrent: false,
+        },
+        gpa: null,
+      },
+    ],
+    projects: [],
+    certifications: [
+      {
+        name: "React Frontend Development Course",
+        issuer: "Next Step",
+        date: {
+          rawText: "2023",
+          isoDate: "2023",
+          isCurrent: false,
+        },
+        doesExpire: false,
+        verificationUrl: null,
+      },
+    ],
+    languages: [],
+  },
+  "23": {
+    id: "resume_22",
+    analysis: {
+      quality: {
+        score: 92,
+        level: "exceptional",
+        hints: [
+          "The resume is highly professional with clear quantification of achievements.",
+          "Strong evidence of specialized skills through publications and patents.",
+        ],
+      },
+      suspicion: {
+        score: 0,
+        level: "safe",
+        flags: [],
+      },
+      writingStyle: {
+        actionVerbsRate: 0.95,
+        quantificationRate: 0.6,
+        clicheCount: 0,
+      },
+    },
+    verification: {
+      timeline: {
+        hasGaps: false,
+        gaps: [],
+      },
+      identity: {
+        geoConsistency: "match",
+        socialFootprintFound: true,
+      },
+    },
+    basics: {
+      name: {
+        value: "Manash Sangam",
+        rawText: "MANASH SANGAM",
+        confidence: 1.0,
+        pageIndex: 0,
+      },
+      email: [
+        {
+          value: "manashsangam04@gmail.com",
+          rawText: "manashsangam04@gmail.com",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+      ],
+      phone: [
+        {
+          value: "+9779803369741",
+          rawText: "+9779803369741",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+      ],
+      location: {
+        rawInput: "Kathmandu, Nepal",
+        city: "Kathmandu",
+        state: null,
+        country: "Nepal",
+        zipCode: null,
+        countryCode: "NP",
+      },
+      urls: [
+        {
+          type: "personal",
+          url: "[https://www.manash-sangam.com.np](https://www.google.com/search?q=https://www.manash-sangam.com.np)",
+        },
+        {
+          type: "linkedin",
+          url: "[https://www.linkedin.com/in/manash-sangam/](https://www.linkedin.com/in/manash-sangam/)",
+        },
+      ],
+      summary:
+        "Software Engineer specializing in JavaScript, Python, and Go, with expertise in backend development, DevOps, and building scalable full-stack solutions. Passionate about Linux, open-source technologies, and automation.",
+    },
+    skills: [
+      {
+        name: "Go",
+        normalizedName: "Go",
+        category: "Programming Languages",
+        computedLevel: "expert",
+        validityScore: 9.2,
+        metadata: {
+          firstSeen: "2023-07-01",
+          lastUsed: "2024-12-22",
+          totalMonthsExperience: 18,
+          occurrenceCount: 4,
+          sources: [
+            {
+              sectionId: "experience",
+              sectionType: "experience",
+            },
+          ],
+        },
+      },
+      {
+        name: "Docker",
+        normalizedName: "Docker",
+        category: "Cloud & DevOps",
+        computedLevel: "advanced",
+        validityScore: 8.1,
+        metadata: {
+          firstSeen: "2023-07-01",
+          lastUsed: "2024-12-22",
+          totalMonthsExperience: 18,
+          occurrenceCount: 2,
+          sources: [
+            {
+              sectionId: "skills",
+              sectionType: "experience",
+            },
+          ],
+        },
+      },
+    ],
+    workExperience: [
+      {
+        id: "exp_22_1",
+        title: {
+          value: "Software Engineer",
+          rawText: "Software Engineer",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+        normalizedTitle: "Software Engineer",
+        company: {
+          value: "HSBC Technology India",
+          rawText: "HSBC Technology India",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+        companyDomain: "hsbc.com",
+        location: {
+          rawInput: "India",
+          city: null,
+          state: null,
+          country: "India",
+          zipCode: null,
+          countryCode: "IN",
+        },
+        type: "full-time",
+        startDate: {
+          rawText: "Jul 2024",
+          isoDate: "2024-07",
+          isCurrent: true,
+        },
+        endDate: {
+          rawText: "Present",
+          isoDate: null,
+          isCurrent: true,
+        },
+        description:
+          "Developed full-stack solutions transforming data lineage usage within the organization.",
+        responsibilities: [
+          "Developed full-stack solutions that transformed data lineage usage.",
+          "Streamlined the process of understanding data flow across applications.",
+          "Built interactive tools for better decision-making and documentation.",
+        ],
+        skillsDetected: ["React", "JavaScript", "Python", "Flask", "Linux"],
+        isVerified: true,
+        verificationNotes: "Reputable company and consistent role details.",
+        verificationConfidence: 1.0,
+        verificationDate: "2025-12-22",
+      },
+    ],
+    education: [
+      {
+        id: "edu_22_1",
+        institution: {
+          value: "Kalinga Institute of Industrial Technology",
+          rawText: "Kalinga Institute of Industrial Technology, Bhubaneswar",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+        degree: {
+          value: "B.Tech in Computer Science and Engineering",
+          rawText: "B.Tech in Computer Science and Engineering",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+        normalizedDegree: "bachelors",
+        fieldOfStudy: "Computer Science",
+        startDate: {
+          rawText: "2020",
+          isoDate: "2020",
+          isCurrent: false,
+        },
+        endDate: {
+          rawText: "2024",
+          isoDate: "2024",
+          isCurrent: false,
+        },
+        gpa: {
+          score: 9.52,
+          scale: 10.0,
+        },
+      },
+    ],
+    projects: [
+      {
+        name: "RFID-HR-Attendance-Tracker",
+        description: "Go based Backend API for Employee Attendance Tracking.",
+        url: null,
+        skillsUsed: ["Go", "ESP8266", "RFID"],
+      },
+    ],
+    certifications: [],
+    languages: [],
+  },
+  "24": {
+    id: "resume_24",
+    analysis: {
+      quality: {
+        score: 82,
+        level: "high",
+        hints: [
+          "Quantify achievements in the summary or experience sections (e.g., percentage improvement in load times). ",
+          "Provide more specific details for the 'Learning Management System' project. ",
+          "Highlight any leadership or collaborative achievements beyond technical tasks. ",
+        ],
+      },
+      suspicion: {
+        score: 0,
+        level: "safe",
+        flags: [],
+      },
+      writingStyle: {
+        actionVerbsRate: 0.9,
+        quantificationRate: 0.1,
+        clicheCount: 0,
+      },
+    },
+    verification: {
+      timeline: {
+        hasGaps: false,
+        gaps: [],
+      },
+      identity: {
+        geoConsistency: "match",
+        socialFootprintFound: true,
+      },
+    },
+    basics: {
+      name: {
+        value: "Niraj Byanju",
+        rawText: "Niraj Byanju",
+        confidence: 1.0,
+        pageIndex: 0,
+      },
+      email: [
+        {
+          value: "nirajbyanju1234@gmail.com",
+          rawText: "nirajbyanju1234@gmail.com",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+      ],
+      phone: [
+        {
+          value: "+9779843906039",
+          rawText: "+977 9843906039",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+      ],
+      location: {
+        rawInput: "Nepal",
+        city: null,
+        state: null,
+        country: "Nepal",
+        zipCode: null,
+        countryCode: "NP",
+      },
+      urls: [
+        {
+          type: "linkedin",
+          url: "LinkedIn",
+        },
+        {
+          type: "github",
+          url: "GitHub",
+        },
+        {
+          type: "portfolio",
+          url: "Portfolio",
+        },
+      ],
+      summary:
+        "Full-stack Developer with expertise in Laravel, CodeIgniter, and React. Experienced in developing web applications and websites, with a strong background in both front-end and backend technologies. ",
+    },
+    skills: [
+      {
+        name: "Laravel",
+        normalizedName: "Laravel",
+        category: "Backend",
+        computedLevel: "advanced",
+        validityScore: 8.5,
+        metadata: {
+          firstSeen: "2019-01-01",
+          lastUsed: "2025-12-22",
+          totalMonthsExperience: 83,
+          occurrenceCount: 5,
+          sources: [
+            {
+              sectionId: "experience",
+              sectionType: "experience",
+            },
+          ],
+        },
+      },
+      {
+        name: "React.js",
+        normalizedName: "React.js",
+        category: "Frontend",
+        computedLevel: "advanced",
+        validityScore: 7.8,
+        metadata: {
+          firstSeen: "2019-01-01",
+          lastUsed: "2025-12-22",
+          totalMonthsExperience: 83,
+          occurrenceCount: 4,
+          sources: [
+            {
+              sectionId: "experience",
+              sectionType: "experience",
+            },
+          ],
+        },
+      },
+      {
+        name: "CodeIgniter",
+        normalizedName: "CodeIgniter",
+        category: "Backend",
+        computedLevel: "intermediate",
+        validityScore: 6.8,
+        metadata: {
+          firstSeen: "2023-12-01",
+          lastUsed: "2025-12-22",
+          totalMonthsExperience: 24,
+          occurrenceCount: 3,
+          sources: [
+            {
+              sectionId: "experience",
+              sectionType: "experience",
+            },
+          ],
+        },
+      },
+      {
+        name: "MySQL",
+        normalizedName: "MySQL",
+        category: "Database",
+        computedLevel: "advanced",
+        validityScore: 7.5,
+        metadata: {
+          firstSeen: "2019-01-01",
+          lastUsed: "2025-12-22",
+          totalMonthsExperience: 83,
+          occurrenceCount: 2,
+          sources: [
+            {
+              sectionId: "experience",
+              sectionType: "experience",
+            },
+          ],
+        },
+      },
+    ],
+    workExperience: [
+      {
+        id: "exp_24_1",
+        title: {
+          value: "Full-Stack Developer",
+          rawText: "Full-Stack Developer",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+        normalizedTitle: "Full Stack Developer",
+        company: {
+          value: "Midas Health Services",
+          rawText: "Midas Health Services",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+        companyDomain: null,
+        location: null,
+        type: "full-time",
+        startDate: {
+          rawText: "February 2025",
+          isoDate: "2025-02",
+          isCurrent: true,
+        },
+        endDate: {
+          rawText: "present",
+          isoDate: null,
+          isCurrent: true,
+        },
+        description:
+          "Hospital Management System development focusing on Laravel and CodeIgniter. ",
+        responsibilities: [
+          "Debugged and resolved issues in the existing hospital management system to improve performance and stability. ",
+          "Optimized database queries and views for better efficiency and faster load times. ",
+          "Developed and implemented new features based on client requirements using Laravel and CodeIgniter frameworks. ",
+        ],
+        skillsDetected: ["Laravel", "CodeIgniter", "Database Optimization"],
+        isVerified: false,
+        verificationNotes: "Missing company domain.",
+        verificationConfidence: 0.7,
+        verificationDate: null,
+      },
+      {
+        id: "exp_24_2",
+        title: {
+          value: "Full-Stack Developer",
+          rawText: "Full-Stack Developer",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+        normalizedTitle: "Full Stack Developer",
+        company: {
+          value: "Seshar Innovation",
+          rawText: "Seshar Innovation",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+        companyDomain: null,
+        location: null,
+        type: "full-time",
+        startDate: {
+          rawText: "December 2023",
+          isoDate: "2023-12",
+          isCurrent: false,
+        },
+        endDate: {
+          rawText: "November 2024",
+          isoDate: "2024-11",
+          isCurrent: false,
+        },
+        description:
+          "Enhanced the CIMS system and developed an order management system. ",
+        responsibilities: [
+          "Enhanced the CIMS system (CodeIgniter) by fixing bugs and adding email notifications, referral system, and password recovery. ",
+          "Developed an order management system (Laravel) with target reports, daily call reports, and product modules. ",
+          "Designed user interfaces using Bootstrap and integrated APIs with Axios in a React-based application. ",
+        ],
+        skillsDetected: [
+          "CodeIgniter",
+          "Laravel",
+          "Bootstrap",
+          "React.js",
+          "Axios",
+        ],
+        isVerified: false,
+        verificationNotes: "Missing company domain.",
+        verificationConfidence: 0.7,
+        verificationDate: null,
+      },
+    ],
+    education: [
+      {
+        id: "edu_24_1",
+        institution: {
+          value: "Nilai University",
+          rawText: "Nilai University",
+          confidence: 1.0,
+          pageIndex: 1,
+        },
+        degree: {
+          value: "Bachelor's in Information Technology",
+          rawText: "Bachelor's in Information Technology",
+          confidence: 1.0,
+          pageIndex: 1,
+        },
+        normalizedDegree: "bachelors",
+        fieldOfStudy: "Information Technology",
+        startDate: {
+          rawText: "January 2020",
+          isoDate: "2020-01",
+          isCurrent: false,
+        },
+        endDate: {
+          rawText: "March 2024",
+          isoDate: "2024-03",
+          isCurrent: false,
+        },
+        gpa: null,
+      },
+    ],
+    projects: [
+      {
+        name: "Opportunities Sharing Website",
+        description:
+          "Developed a comprehensive web application for sharing and discovering opportunities such as internships and scholarships. ",
+        url: null,
+        skillsUsed: [
+          "Laravel",
+          "Bootstrap",
+          "React.js",
+          "Tailwind",
+          "MySQL",
+          "Git",
+        ],
+      },
+    ],
+    certifications: [],
+    languages: [],
+  },
+  "25": {
+    id: "resume_25",
+    analysis: {
+      quality: {
+        score: 85,
+        level: "high",
+        hints: [
+          "Include specific metrics for 'impactful digital experiences' or 'improved developer productivity'. ",
+          "Add details about the 'complex mono platform application' to showcase depth. ",
+          "Clarify the specific contributions made as a 'Freelancer'. ",
+        ],
+      },
+      suspicion: {
+        score: 0,
+        level: "safe",
+        flags: [],
+      },
+      writingStyle: {
+        actionVerbsRate: 0.95,
+        quantificationRate: 0.0,
+        clicheCount: 1,
+      },
+    },
+    verification: {
+      timeline: {
+        hasGaps: false,
+        gaps: [],
+      },
+      identity: {
+        geoConsistency: "match",
+        socialFootprintFound: true,
+      },
+    },
+    basics: {
+      name: {
+        value: "Noyal Nakarmi",
+        rawText: "Noyal Nakarmi",
+        confidence: 1.0,
+        pageIndex: 0,
+      },
+      email: [
+        {
+          value: "noyal12.nakarmi@gmail.com",
+          rawText: "noyal12.nakarmi@gmail.com",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+      ],
+      phone: [
+        {
+          value: "+9779862425308",
+          rawText: "+977 9862425308",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+      ],
+      location: {
+        rawInput: "Satungal, KTM",
+        city: "Kathmandu",
+        state: "KTM",
+        country: "Nepal",
+        zipCode: null,
+        countryCode: "NP",
+      },
+      urls: [
+        {
+          type: "linkedin",
+          url: "Linkedin",
+        },
+        {
+          type: "github",
+          url: "Noyal080",
+        },
+        {
+          type: "portfolio",
+          url: "Portfolio",
+        },
+      ],
+      summary:
+        "Front-End Engineer with 2+ year of experience crafting dynamic web and mobile applications. Known for developing custom packages to improve developer productivity and creating responsive designs. ",
+    },
+    skills: [
+      {
+        name: "React JS",
+        normalizedName: "React JS",
+        category: "Frontend",
+        computedLevel: "expert",
+        validityScore: 9.0,
+        metadata: {
+          firstSeen: "2023-04-01",
+          lastUsed: "2025-12-22",
+          totalMonthsExperience: 32,
+          occurrenceCount: 7,
+          sources: [
+            {
+              sectionId: "experience",
+              sectionType: "experience",
+            },
+          ],
+        },
+      },
+      {
+        name: "TypeScript",
+        normalizedName: "TypeScript",
+        category: "Programming Languages",
+        computedLevel: "advanced",
+        validityScore: 8.2,
+        metadata: {
+          firstSeen: "2024-07-01",
+          lastUsed: "2025-12-22",
+          totalMonthsExperience: 17,
+          occurrenceCount: 5,
+          sources: [
+            {
+              sectionId: "experience",
+              sectionType: "experience",
+            },
+          ],
+        },
+      },
+      {
+        name: "Next JS",
+        normalizedName: "Next JS",
+        category: "Frontend",
+        computedLevel: "intermediate",
+        validityScore: 6.5,
+        metadata: {
+          firstSeen: "2024-09-01",
+          lastUsed: "2025-12-22",
+          totalMonthsExperience: 15,
+          occurrenceCount: 3,
+          sources: [
+            {
+              sectionId: "experience",
+              sectionType: "experience",
+            },
+          ],
+        },
+      },
+      {
+        name: "Redux",
+        normalizedName: "Redux",
+        category: "State Management",
+        computedLevel: "advanced",
+        validityScore: 7.5,
+        metadata: {
+          firstSeen: "2023-04-01",
+          lastUsed: "2024-10-01",
+          totalMonthsExperience: 18,
+          occurrenceCount: 3,
+          sources: [
+            {
+              sectionId: "experience",
+              sectionType: "experience",
+            },
+          ],
+        },
+      },
+    ],
+    workExperience: [
+      {
+        id: "exp_25_1",
+        title: {
+          value: "Frontend Engineer",
+          rawText: "Frontend Engineer",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+        normalizedTitle: "Frontend Engineer",
+        company: {
+          value: "Zeta Labs",
+          rawText: "Zeta Labs",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+        companyDomain: null,
+        location: {
+          rawInput: "Kuleswor, Kathmandu",
+          city: "Kathmandu",
+          state: "Kuleswor",
+          country: null,
+          zipCode: null,
+          countryCode: null,
+        },
+        type: "full-time",
+        startDate: {
+          rawText: "09/2024",
+          isoDate: "2024-09",
+          isCurrent: true,
+        },
+        endDate: {
+          rawText: "present",
+          isoDate: null,
+          isCurrent: true,
+        },
+        description: "Developed web applications and the company portfolio. ",
+        responsibilities: [
+          "Developed a web application using React, react-query, Hero UI, and TypeScript for resource access. ",
+          "Created the company's portfolio using Next JS, Tailwind CSS, and TypeScript with an SMTP mail service. ",
+          "Developed a complex mono platform application using React JS, Tailwind CSS, and Shaden UI. ",
+        ],
+        skillsDetected: [
+          "React",
+          "react-query",
+          "Next JS",
+          "TypeScript",
+          "Tailwind CSS",
+        ],
+        isVerified: false,
+        verificationNotes: "Missing company domain.",
+        verificationConfidence: 0.7,
+        verificationDate: null,
+      },
+      {
+        id: "exp_25_2",
+        title: {
+          value: "Frontend Developer",
+          rawText: "Frontend Developer",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+        normalizedTitle: "Frontend Developer",
+        company: {
+          value: "Corpola Tech",
+          rawText: "Corpola Tech",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+        companyDomain: null,
+        location: {
+          rawInput: "Sankhamul, Laliltpur",
+          city: "Laliltpur",
+          state: "Sankhamul",
+          country: null,
+          zipCode: null,
+          countryCode: null,
+        },
+        type: "full-time",
+        startDate: {
+          rawText: "04/2023",
+          isoDate: "2023-04",
+          isCurrent: false,
+        },
+        endDate: {
+          rawText: "10/2024",
+          isoDate: "2024-10",
+          isCurrent: false,
+        },
+        description: "Developed LMS and e-commerce platforms. ",
+        responsibilities: [
+          "Developed a Learning Management system using React JS, Semantic UI, and Context. ",
+          "Developed an e-commerce website with an admin dashboard using Redux and Tailwind CSS. ",
+          "Developed and posted a custom package for e-commerce layout on NPM. ",
+        ],
+        skillsDetected: ["React JS", "Redux", "Semantic UI", "NPM"],
+        isVerified: false,
+        verificationNotes: "Missing company domain.",
+        verificationConfidence: 0.7,
+        verificationDate: null,
+      },
+    ],
+    education: [
+      {
+        id: "edu_25_1",
+        institution: {
+          value: "Kathmandu Bernhardt College",
+          rawText: "Kathmandu Bernhardt College",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+        degree: {
+          value: "BSc Computer Science and Information Technology",
+          rawText: "BSc Computer Science and Information Technology",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+        normalizedDegree: "bachelors",
+        fieldOfStudy: "Computer Science and Information Technology",
+        startDate: {
+          rawText: "2018",
+          isoDate: "2018",
+          isCurrent: false,
+        },
+        endDate: {
+          rawText: "2023",
+          isoDate: "2023",
+          isCurrent: false,
+        },
+        gpa: null,
+      },
+    ],
+    projects: [],
+    certifications: [],
+    languages: [],
+  },
+  "26": {
+    id: "resume_26",
+    analysis: {
+      quality: {
+        score: 90,
+        level: "exceptional",
+        hints: [
+          "Strong quantification of results (e.g., 40% reduction in unauthorized access, 30% cost reduction). ",
+          "Clear evidence of complex system integration and technical leadership. ",
+          "Include a LinkedIn profile or portfolio link for a stronger social footprint.",
+        ],
+      },
+      suspicion: {
+        score: 0,
+        level: "safe",
+        flags: [],
+      },
+      writingStyle: {
+        actionVerbsRate: 1.0,
+        quantificationRate: 0.4,
+        clicheCount: 0,
+      },
+    },
+    verification: {
+      timeline: {
+        hasGaps: false,
+        gaps: [],
+      },
+      identity: {
+        geoConsistency: "match",
+        socialFootprintFound: false,
+      },
+    },
+    basics: {
+      name: {
+        value: "Pradip Kafle",
+        rawText: "Pradip Kafle",
+        confidence: 1.0,
+        pageIndex: 0,
+      },
+      email: [
+        {
+          value: "n.pradip101@gmail.com",
+          rawText: "n.pradip101@gmail.com",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+      ],
+      phone: [
+        {
+          value: "+9779846465013",
+          rawText: "+977 9846465013",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+      ],
+      location: {
+        rawInput: "Koteshwor, Kathmandu",
+        city: "Kathmandu",
+        state: "Koteshwor",
+        country: "Nepal",
+        zipCode: null,
+        countryCode: "NP",
+      },
+      urls: [],
+      summary:
+        "Skilled in Python programming, problem-solving, and implementing efficient solutions. Strong grasp of the Django framework intricacies, coupled with a commitment to clean code practices. ",
+    },
+    skills: [
+      {
+        name: "Python",
+        normalizedName: "Python",
+        category: "Programming Languages",
+        computedLevel: "expert",
+        validityScore: 9.5,
+        metadata: {
+          firstSeen: "2022-06-01",
+          lastUsed: "2025-12-22",
+          totalMonthsExperience: 42,
+          occurrenceCount: 6,
+          sources: [
+            {
+              sectionId: "experience",
+              sectionType: "experience",
+            },
+          ],
+        },
+      },
+      {
+        name: "Django",
+        normalizedName: "Django",
+        category: "Backend",
+        computedLevel: "expert",
+        validityScore: 9.2,
+        metadata: {
+          firstSeen: "2022-06-01",
+          lastUsed: "2025-12-22",
+          totalMonthsExperience: 42,
+          occurrenceCount: 5,
+          sources: [
+            {
+              sectionId: "experience",
+              sectionType: "experience",
+            },
+          ],
+        },
+      },
+      {
+        name: "PostgreSQL",
+        normalizedName: "PostgreSQL",
+        category: "Database",
+        computedLevel: "advanced",
+        validityScore: 7.8,
+        metadata: {
+          firstSeen: "2022-06-01",
+          lastUsed: "2025-12-22",
+          totalMonthsExperience: 42,
+          occurrenceCount: 2,
+          sources: [
+            {
+              sectionId: "skills",
+              sectionType: "experience",
+            },
+          ],
+        },
+      },
+      {
+        name: "Docker",
+        normalizedName: "Docker",
+        category: "DevOps",
+        computedLevel: "intermediate",
+        validityScore: 5.5,
+        metadata: {
+          firstSeen: null,
+          lastUsed: null,
+          totalMonthsExperience: null,
+          occurrenceCount: 1,
+          sources: [
+            {
+              sectionId: "skills",
+              sectionType: "experience",
+            },
+          ],
+        },
+      },
+    ],
+    workExperience: [
+      {
+        id: "exp_26_1",
+        title: {
+          value: "Python Software Engineer",
+          rawText: "Python Software Engineer",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+        normalizedTitle: "Python Software Engineer",
+        company: {
+          value: "Khalti Pvt. Ltd",
+          rawText: "Khalti Pvt. Ltd",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+        companyDomain: "khalti.com",
+        location: {
+          rawInput: "Bakhundol, Lalitpur",
+          city: "Lalitpur",
+          state: "Bakhundol",
+          country: null,
+          zipCode: null,
+          countryCode: null,
+        },
+        type: "full-time",
+        startDate: {
+          rawText: "May 2024",
+          isoDate: "2024-05",
+          isCurrent: true,
+        },
+        endDate: {
+          rawText: "Present",
+          isoDate: null,
+          isCurrent: true,
+        },
+        description:
+          "Engineered secure payment features and bank integrations. ",
+        responsibilities: [
+          "Engineered the VPA feature for secure fund transfers via mobile numbers. ",
+          "Implemented a self-verification layer for transaction records, achieving a 30% cost reduction. ",
+          "Integrated Khalti with bank Core Banking Systems using the ISO 8583 protocol. ",
+        ],
+        skillsDetected: ["Python", "ISO 8583", "API Integration"],
+        isVerified: true,
+        verificationNotes: "Reputable company and consistent role details.",
+        verificationConfidence: 1.0,
+        verificationDate: "2025-12-22",
+      },
+      {
+        id: "exp_26_2",
+        title: {
+          value: "Python Developer",
+          rawText: "Python Developer",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+        normalizedTitle: "Python Developer",
+        company: {
+          value: "MangoSoftware Solutions",
+          rawText: "MangoSoftware Solutions",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+        companyDomain: null,
+        location: {
+          rawInput: "Kathmandu",
+          city: "Kathmandu",
+          state: null,
+          country: null,
+          zipCode: null,
+          countryCode: null,
+        },
+        type: "full-time",
+        startDate: {
+          rawText: "June 2022",
+          isoDate: "2022-06",
+          isCurrent: false,
+        },
+        endDate: {
+          rawText: "May 2024",
+          isoDate: "2024-05",
+          isCurrent: false,
+        },
+        description:
+          "Spearheaded video KYC and document transfer systems for banks. ",
+        responsibilities: [
+          "Spearheaded the development of a video KYC system for Prabhu Bank using DRF, Celery, and Redis. ",
+          "Mentored interns through the development of a Document Transfer System (ADC). ",
+          "Executed JWT-based authentication for Midwest University, reducing unauthorized access by 40%. ",
+        ],
+        skillsDetected: ["Django", "DRF", "Celery", "Redis", "JWT"],
+        isVerified: false,
+        verificationNotes: "Missing company domain.",
+        verificationConfidence: 0.8,
+        verificationDate: null,
+      },
+    ],
+    education: [
+      {
+        id: "edu_26_1",
+        institution: {
+          value: "NEW SUMMIT COLLEGE",
+          rawText: "NEW SUMMIT COLLEGE, TRIBHUWAN UNIVERSITY",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+        degree: {
+          value: "Bachelors of Computer Science and Information Technology",
+          rawText: "Bachelors of Computer Science and Information Technology",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+        normalizedDegree: "bachelors",
+        fieldOfStudy: "Computer Science and Information Technology",
+        startDate: {
+          rawText: "2019",
+          isoDate: "2019",
+          isCurrent: false,
+        },
+        endDate: {
+          rawText: "2023",
+          isoDate: "2023",
+          isCurrent: false,
+        },
+        gpa: null,
+      },
+    ],
+    projects: [],
+    certifications: [
+      {
+        name: "Python Data Structure",
+        issuer: "Coursera",
+        date: {
+          rawText: null,
+          isoDate: null,
+          isCurrent: false,
+        },
+        doesExpire: false,
+        verificationUrl: null,
+      },
+      {
+        name: "Oracle SQL Certification course",
+        issuer: "Udemy",
+        date: {
+          rawText: null,
+          isoDate: null,
+          isCurrent: false,
+        },
+        doesExpire: false,
+        verificationUrl: null,
+      },
+    ],
+    languages: [],
+  },
+  "27": {
+    id: "resume_27",
+    analysis: {
+      quality: {
+        score: 62,
+        level: "average",
+        hints: [
+          "Provide specific dates for the internship and degree completion.",
+          "Add detailed descriptions for projects like the 'School Management Website' to showcase technical depth.",
+          "Quantify teaching experience or project impact where possible.",
+        ],
+      },
+      suspicion: {
+        score: 5,
+        level: "safe",
+        flags: [],
+      },
+      writingStyle: {
+        actionVerbsRate: 0.4,
+        quantificationRate: 0.0,
+        clicheCount: 0,
+      },
+    },
+    verification: {
+      timeline: {
+        hasGaps: false,
+        gaps: [],
+      },
+      identity: {
+        geoConsistency: "mismatch",
+        socialFootprintFound: true,
+      },
+    },
+    basics: {
+      name: {
+        value: "Ram Prasad Chaudhary",
+        rawText: "RAM PRASAD CHAUDHARY",
+        confidence: 1.0,
+        pageIndex: 0,
+      },
+      email: [
+        {
+          value: "ramprasadc331@gmail.com",
+          rawText: "ramprasadc331@gmail.com",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+      ],
+      phone: [
+        {
+          value: "+919328424564",
+          rawText: "+919328424564",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+      ],
+      location: {
+        rawInput: "Rajkot Gujrat",
+        city: "Rajkot",
+        state: "Gujrat",
+        country: "India",
+        zipCode: null,
+        countryCode: "IN",
+      },
+      urls: [
+        {
+          type: "linkedin",
+          url: "[https://www.linkedin.com/in/ram-prasad-chaudhary-312221251](https://www.google.com/search?q=https://www.linkedin.com/in/ram-prasad-chaudhary-312221251)",
+        },
+      ],
+      summary:
+        "Aspiring Computer Engineer with a strong foundation in programming, databases, and web development. Passionate about solving real-world problems through innovative coding and design.",
+    },
+    skills: [
+      {
+        name: "Java",
+        normalizedName: "Java",
+        category: "Programming Languages",
+        computedLevel: "advanced",
+        validityScore: 6.8,
+        metadata: {
+          firstSeen: null,
+          lastUsed: null,
+          totalMonthsExperience: null,
+          occurrenceCount: 3,
+          sources: [
+            {
+              sectionId: "skills",
+              sectionType: "experience",
+            },
+          ],
+        },
+      },
+      {
+        name: "PHP",
+        normalizedName: "PHP",
+        category: "Backend",
+        computedLevel: "intermediate",
+        validityScore: 5.5,
+        metadata: {
+          firstSeen: null,
+          lastUsed: null,
+          totalMonthsExperience: null,
+          occurrenceCount: 2,
+          sources: [
+            {
+              sectionId: "skills",
+              sectionType: "experience",
+            },
+          ],
+        },
+      },
+      {
+        name: "React",
+        normalizedName: "React",
+        category: "Frontend",
+        computedLevel: "intermediate",
+        validityScore: 4.8,
+        metadata: {
+          firstSeen: null,
+          lastUsed: null,
+          totalMonthsExperience: null,
+          occurrenceCount: 1,
+          sources: [
+            {
+              sectionId: "skills",
+              sectionType: "experience",
+            },
+          ],
+        },
+      },
+    ],
+    workExperience: [
+      {
+        id: "exp_27_1",
+        title: {
+          value: "Math and Computer Teacher",
+          rawText: "Math and Computer Teacher",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+        normalizedTitle: "Teacher",
+        company: {
+          value: "Sunglow English School",
+          rawText: "Sunglow English School",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+        companyDomain: null,
+        location: null,
+        type: "full-time",
+        startDate: {
+          rawText: "2023 FEB",
+          isoDate: "2023-02",
+          isCurrent: false,
+        },
+        endDate: {
+          rawText: "2023 Aug",
+          isoDate: "2023-08",
+          isCurrent: false,
+        },
+        description: "Taught Mathematics and Computer Science to students.",
+        responsibilities: [
+          "Instruction in Mathematics and Computer Science subjects.",
+        ],
+        skillsDetected: [],
+        isVerified: false,
+        verificationNotes:
+          "Teaching role outside of software development core.",
+        verificationConfidence: 0.4,
+        verificationDate: null,
+      },
+    ],
+    education: [
+      {
+        id: "edu_27_1",
+        institution: {
+          value: "RK University",
+          rawText: "RK University",
+          confidence: 0.9,
+          pageIndex: 0,
+        },
+        degree: {
+          value: "Bachelor of Technology",
+          rawText: "BACHELOR OF TECHNOLOGY",
+          confidence: 1.0,
+          pageIndex: 0,
+        },
+        normalizedDegree: "bachelors",
+        fieldOfStudy: "Computer Engineering",
+        startDate: {
+          rawText: "2022",
+          isoDate: "2022",
+          isCurrent: false,
+        },
+        endDate: {
+          rawText: "2026",
+          isoDate: "2026",
+          isCurrent: false,
+        },
+        gpa: null,
+      },
+    ],
+    projects: [
+      {
+        name: "School Management Website",
+        description: "Built using PHP.",
+        url: null,
+        skillsUsed: ["PHP"],
+      },
+      {
+        name: "Hostel Management System",
+        description: "Built using Advanced Java.",
+        url: null,
+        skillsUsed: ["Java"],
+      },
+    ],
+    certifications: [
+      {
+        name: "Foundational C#",
+        issuer: "Microsoft",
+        date: {
+          rawText: null,
+          isoDate: null,
+          isCurrent: false,
+        },
+        doesExpire: false,
+        verificationUrl: null,
+      },
+    ],
+    languages: [
+      {
+        language: "English",
+        proficiency: "conversational",
+      },
+      {
+        language: "Nepali",
+        proficiency: "native",
       },
     ],
   },
