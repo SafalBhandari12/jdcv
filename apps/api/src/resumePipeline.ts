@@ -431,8 +431,9 @@ export function displayAndExportParsedResume(
 async function main() {
   try {
     const resumeFiles = uploadResumesFromDir("./resumes/resumes");
+    console.log(resumeFiles);
 
-    for (const file of resumeFiles.slice(0, 27)) {
+    for (const file of resumeFiles) {
       console.log(`Processing: ${file.originalName}`);
 
       try {

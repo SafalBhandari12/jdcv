@@ -18,6 +18,11 @@ const resumeData: Record<string, ParsedResume> = {
   "08": loadResume("08"),
   "09": loadResume("09"),
   "10": loadResume("10"),
+  "11": loadResume("11"),
+  "12": loadResume("12"),
+  "13": loadResume("13"),
+  "14": loadResume("14"),
+  "15": loadResume("15"),
 };
 
 export default resumeData;

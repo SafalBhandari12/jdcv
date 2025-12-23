@@ -159,7 +159,7 @@ function getTotalMonths(
 
 function industryExperienceGate(
   resume: ParsedResume,
-  minIndustryExperience: number = 3
+  minIndustryExperience: number
 ): boolean {
   let totalMonths = 0;
   const workExperiences: WorkExperience[] = resume?.workExperience ?? [];
@@ -638,7 +638,7 @@ async function main() {
       continue;
     }
 
-    const industryExperienceResult = industryExperienceGate(resume);
+    const industryExperienceResult = industryExperienceGate(resume,24);
     if (!industryExperienceResult) {
       console.log(resume.basics.name.value, "failed industry experience gate");
       continue;
