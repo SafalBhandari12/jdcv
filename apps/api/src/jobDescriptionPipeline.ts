@@ -445,7 +445,7 @@ function skillGate(candidateSkills: Skill[], jdSkills: JDSkills): boolean {
 function skillScoreNormalized(
   candidateSkills: Skill[],
   jdSkills: JDSkills,
-  idealSkillValue = 230
+  idealSkillValue = 200
 ): number {
   if (!candidateSkills || candidateSkills.length === 0) return 0;
 
