@@ -5,7 +5,6 @@
   "type": "module",
   "scripts": {
     "dev": "tsx src/jobDescriptionPipeline.ts",
-    "dev1": "tsx src/resumePipeline.ts",
     "build": "tsc",
     "start": "node dist/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"

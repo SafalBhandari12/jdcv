@@ -83,14 +83,23 @@ function passesQualityGate(
 // I built this because the default iso date parser in TypeScript is too strict for our use case since dates can be in YYYY, YYYY-MM or YYYY-MM-DD format
 function getDate(dateStr: string): Date | number {
   try {
-    if (dateStr.length === 10) {
+    // Handle full ISO datetime strings (e.g., "2022-06-01T00:00:00Z")
+    if (dateStr.includes("T")) {
       return new Date(dateStr);
-    } else if (dateStr.length === 7) {
+    }
+    // Handle YYYY-MM-DD format
+    else if (dateStr.length === 10) {
+      return new Date(dateStr);
+    }
+    // Handle YYYY-MM format
+    else if (dateStr.length === 7) {
       const [year, month] = dateStr.split("-");
       if (year && month) {
         return new Date(parseInt(year), parseInt(month) - 1);
       }
-    } else if (dateStr.length === 4) {
+    }
+    // Handle YYYY format
+    else if (dateStr.length === 4) {
       return new Date(parseInt(dateStr), 0);
     }
   } catch (error) {
@@ -139,15 +148,17 @@ function getTotalMonths(
 
 function industryExperienceGate(
   resume: ParsedResume,
-  minIndustryExperience: number = 36
+  minIndustryExperience: number = 3
 ): boolean {
   let totalMonths = 0;
   const workExperiences: WorkExperience[] = resume?.workExperience ?? [];
   for (const workExperience of workExperiences) {
-    totalMonths += getTotalMonths(
+    const months = getTotalMonths(
       workExperience.startDate,
       workExperience.endDate
     );
+
+    totalMonths += months;
   }
   return totalMonths >= minIndustryExperience;
 }
@@ -348,48 +359,63 @@ export function cosineSimilarityBatchNormalized(
 async function main() {
   const allResumes = await loadAllResumes(RESUME_DIR);
   const score: { resumeId: string; score: number }[] = [];
+  console.log(allResumes.length, "resumes loaded");
 
   for (const resume of allResumes) {
-    console.log("Processing Resume:", resume?.basics.name ?? "Unknown");
     const qualityGateResult = passesQualityGate(resume, 70, 30);
-    console.log("Quality Gate Result:", qualityGateResult);
+    if (!qualityGateResult) {
+      console.log(resume.basics.name.value, "failed quality gate");
+      continue;
+    }
 
     const industryExperienceResult = industryExperienceGate(resume);
-    console.log("Industry Experience Gate Result:", industryExperienceResult);
+    if (!industryExperienceResult) {
+      console.log(resume.basics.name.value, "failed industry experience gate");
+      continue;
+    }
 
     const educationResult = educationGate(
       resume?.education ?? [],
       ["bachelors", "masters"],
-      ["software", "computer science", "computer engineering", "it"],
+      [
+        "software",
+        "computer science",
+        "computer engineering",
+        "information technology",
+        "computer application",
+      ],
       false
     );
-    console.log("Education Gate Result:", educationResult);
+    if (!educationResult) {
+      console.log(resume.basics.name.value, "failed industry experience gate");
+      continue;
+    }
 
     const jdSkills: JDSkills = {
       must: [
         {
-          name: "Docker",
-          minLevel: "advanced",
-          minMonthsExperience: 6,
+          name: "nodejs",
+          minLevel: "intermediate",
+          minMonthsExperience: 4,
           maxMonthsSinceLastUse: 24,
         },
         {
-          name: "Kubernetes",
+          name: "react",
           minLevel: "intermediate",
-          minMonthsExperience: 6,
+          minMonthsExperience: 3,
           maxMonthsSinceLastUse: 24,
         },
       ],
       optional: [
-        { name: "Docker", minLevel: "advanced" },
+        { name: "nodejs", minLevel: "intermediate" },
         { name: "AWS", minLevel: "expert" },
       ],
       minOptionalRequired: 1,
       either: [
         [
           {
-            name: "GCP",
-            minLevel: "intermediate",
+            name: "postgresql",
+            minLevel: "novice",
             minMonthsExperience: 6,
             maxMonthsSinceLastUse: 24,
           },
@@ -410,7 +436,12 @@ async function main() {
     };
 
     const skillGateResult = skillGate(resume?.skills ?? [], jdSkills);
-    console.log("Skill Gate Result:", skillGateResult);
+    if (!skillGateResult) {
+      console.log(resume.basics.name.value, "failed skill gate");
+      continue;
+    }
+
+    console.log(resume.basics.name.value);
 
     const RESPONSIBILITIES = [
       "Design, develop, and maintain scalable server-side applications and services using PHP and Laravel framework",

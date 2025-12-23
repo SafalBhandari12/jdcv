@@ -61,9 +61,6 @@ export function uploadResumesFromDir(
         actualPath: fullPath,
         originalName: fileName,
       });
-
-      console.log(`✓ Resume file found: ${fileName}`);
-      console.log(`  - File size: ${fileSize} bytes`);
     }
   }
 
@@ -132,9 +129,6 @@ export function extractMetadata(
     parserVersion: "1.0.0",
     Language: "en",
   };
-
-  console.log("Metadata extracted:");
-  console.log(JSON.stringify(metadata, null, 2));
 
   return metadata;
 }
@@ -479,7 +473,7 @@ async function main() {
   }
 }
 
-main().catch((err) => {
-  console.error("✗ Error:", err);
-  process.exit(1);
-});
+// main().catch((err) => {
+//   console.error("✗ Error:", err);
+//   process.exit(1);
+// });
