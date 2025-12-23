@@ -80,6 +80,17 @@ function passesQualityGate(
   return qualityScore >= minQuality && suspicionScore <= maxSuspicion;
 }
 
+function qualityScoreNormalized(
+  resume: ParsedResume,
+  idealQuality = 90 // beyond this, extra quality adds little value
+): number {
+  const quality = resume?.analysis?.quality?.score ?? 0;
+
+  if (quality <= 0) return 0;
+
+  return Math.min(Math.log1p(quality) / Math.log1p(idealQuality), 1);
+}
+
 // I built this because the default iso date parser in TypeScript is too strict for our use case since dates can be in YYYY, YYYY-MM or YYYY-MM-DD format
 function getDate(dateStr: string): Date | number {
   try {
@@ -163,6 +174,21 @@ function industryExperienceGate(
   return totalMonths >= minIndustryExperience;
 }
 
+function industryExperienceScoreNormalized(
+  resume: ParsedResume,
+  idealMonths = 120 // e.g. 10 years
+): number {
+  let totalMonths = 0;
+
+  for (const we of resume.workExperience ?? []) {
+    totalMonths += getTotalMonths(we.startDate, we.endDate);
+  }
+
+  if (totalMonths <= 0) return 0;
+
+  return Math.min(Math.log1p(totalMonths) / Math.log1p(idealMonths), 1);
+}
+
 const DEGREE_RANK: { [key: string]: number } = {
   high_school: 1,
   diploma: 2,
@@ -226,6 +252,90 @@ function educationGate(
   return false;
 }
 
+function educationScoreNormalized(
+  candidateEducation: Education[],
+  requiredDegrees: string[],
+  requiredFields?: string[],
+  idealEducationValue = 58 // default ceiling (phd + field + current approx)
+): number {
+  if (!candidateEducation || candidateEducation.length === 0) return 0;
+
+  let bestDegreeRank = 0;
+  let bestFieldMatched = false;
+  let bestIsCurrent = false;
+  let meetsRequiredDegree = false;
+
+  for (const edu of candidateEducation) {
+    const degree = edu.normalizedDegree ?? "";
+    const degreeRank = DEGREE_RANK[degree] ?? 0;
+    const field = (edu.fieldOfStudy ?? "").toLowerCase();
+    const endDate = edu.endDate ?? {};
+
+    // Check if degree meets minimum required degree
+    let hasRequiredDegree = false;
+    for (const requiredDegree of requiredDegrees) {
+      if (
+        degree &&
+        (DEGREE_RANK[requiredDegree] ?? 0) <= (DEGREE_RANK[degree] ?? 0)
+      ) {
+        hasRequiredDegree = true;
+        break;
+      }
+    }
+
+    // Check if field matches any required field
+    let fieldMatched = false;
+    if (requiredFields && requiredFields.length > 0) {
+      for (const rf of requiredFields) {
+        if (rf && field.includes(rf.toLowerCase())) {
+          fieldMatched = true;
+          break;
+        }
+      }
+    } else {
+      // If no requiredFields provided, consider fieldMatched = true (no penalty)
+      fieldMatched = true;
+    }
+
+    // Choose the "best" record by degreeRank first, then by field match, then current status
+    const better =
+      degreeRank > bestDegreeRank ||
+      (degreeRank === bestDegreeRank && fieldMatched && !bestFieldMatched) ||
+      (degreeRank === bestDegreeRank &&
+        fieldMatched === bestFieldMatched &&
+        endDate.isCurrent === true &&
+        !bestIsCurrent);
+
+    if (better) {
+      bestDegreeRank = degreeRank;
+      bestFieldMatched = fieldMatched;
+      bestIsCurrent = endDate.isCurrent === true;
+      meetsRequiredDegree = hasRequiredDegree;
+    }
+  }
+
+  if (bestDegreeRank === 0) return 0;
+
+  // Build a raw education value
+  const degreeComponent = bestDegreeRank * 10; // bachelors=30, masters=40, phd=50
+  const fieldBonus = bestFieldMatched ? 5 : 0;
+  const currentBonus = bestIsCurrent ? 3 : 0;
+
+  // Bonus for meeting minimum required degree
+  const requiredDegreeBonus = meetsRequiredDegree ? 8 : 0;
+
+  const rawValue =
+    degreeComponent + fieldBonus + currentBonus + requiredDegreeBonus;
+
+  // Normalize with log1p to get diminishing returns and cap at 1
+  const score = Math.min(
+    Math.log1p(rawValue) / Math.log1p(idealEducationValue),
+    1
+  );
+
+  return score;
+}
+
 const SKILL_LEVEL_RANK: { [key: string]: number } = {
   novice: 1,
   intermediate: 2,
@@ -252,12 +362,7 @@ function matchSkill(
   req: SkillRequirement,
   checkRecent: boolean = false
 ): boolean {
-  const skillLevel = skill?.computedLevel ?? "novice";
-  const minLevel = req?.minLevel ?? "novice";
-
-  if ((SKILL_LEVEL_RANK[skillLevel] ?? 0) < (SKILL_LEVEL_RANK[minLevel] ?? 0)) {
-    return false;
-  }
+  // Skill level rank filtering removed - keeping only experience-based checks
 
   if (
     (skill?.metadata?.totalMonthsExperience ?? 0) <
@@ -337,6 +442,78 @@ function skillGate(candidateSkills: Skill[], jdSkills: JDSkills): boolean {
   return true;
 }
 
+function skillScoreNormalized(
+  candidateSkills: Skill[],
+  jdSkills: JDSkills,
+  idealSkillValue = 230
+): number {
+  if (!candidateSkills || candidateSkills.length === 0) return 0;
+
+  const lookup: Record<string, Skill> = {};
+  for (const s of candidateSkills) {
+    lookup[(s.normalizedName ?? "").toLowerCase()] = s;
+  }
+
+  let rawScore = 0;
+
+  const INTERMEDIATE_RANK = SKILL_LEVEL_RANK["intermediate"] || 2;
+
+  // ---------- MUST skills ----------
+  for (const req of jdSkills.must ?? []) {
+    const skill = lookup[req.name.toLowerCase()];
+    if (!skill) continue;
+
+    const levelRank = SKILL_LEVEL_RANK[skill.computedLevel ?? "novice"] ?? 1;
+
+    const months = skill.metadata?.totalMonthsExperience ?? 0;
+
+    // Level bonus: only reward ABOVE intermediate
+    const levelDelta = Math.max(levelRank - INTERMEDIATE_RANK, 0);
+    rawScore += levelDelta * 12;
+
+    // Months bonus (diminishing)
+    rawScore += Math.min(Math.log1p(months) * 2, 16);
+  }
+
+  // ---------- OPTIONAL skills ----------
+  for (const req of jdSkills.optional ?? []) {
+    const skill = lookup[req.name.toLowerCase()];
+    if (!skill) continue;
+
+    const levelRank = SKILL_LEVEL_RANK[skill.computedLevel ?? "novice"] ?? 1;
+
+    const months = skill.metadata?.totalMonthsExperience ?? 0;
+
+    const levelDelta = Math.max(levelRank - INTERMEDIATE_RANK, 0);
+    rawScore += levelDelta * 8;
+
+    rawScore += Math.min(Math.log1p(months), 10);
+  }
+
+  // ---------- OTHER skills (weak signal) ----------
+  for (const skill of candidateSkills) {
+    const name = (skill.normalizedName ?? "").toLowerCase();
+
+    const counted =
+      (jdSkills.must ?? []).some((r) => r.name.toLowerCase() === name) ||
+      (jdSkills.optional ?? []).some((r) => r.name.toLowerCase() === name);
+
+    if (counted) continue;
+
+    const levelRank = SKILL_LEVEL_RANK[skill.computedLevel ?? "novice"] ?? 1;
+
+    const months = skill.metadata?.totalMonthsExperience ?? 0;
+
+    const levelDelta = Math.max(levelRank - INTERMEDIATE_RANK, 0);
+    rawScore += levelDelta * 3;
+
+    rawScore += Math.min(Math.log1p(months), 5);
+  }
+
+  // ---------- normalize & cap ----------
+  return Math.min(Math.log1p(rawScore) / Math.log1p(idealSkillValue), 1);
+}
+
 // Utility function for calculating the cosine similarity of one embedding with multiple embeddings
 function normalize(v: number[]): number[] {
   const norm = Math.sqrt(v.reduce((s, x) => s + x * x, 0));
@@ -355,10 +532,103 @@ export function cosineSimilarityBatchNormalized(
   );
 }
 
+// Helper function to collect all resume embeddings
+function collectResumeEmbeddings(resume: ParsedResume): number[][] {
+  const embeddings: number[][] = [];
+
+  // Add work experience responsibility embeddings
+  const workExperienceEmbeddings =
+    resume.workExperience
+      ?.flatMap((we) => we.responsibilitiesEmbeddings || [])
+      .filter((e) => e && e.length > 0) ?? [];
+  embeddings.push(...workExperienceEmbeddings);
+
+  // Add project description embeddings
+  const projectEmbeddings =
+    resume.projects
+      ?.map((p) => p.descriptionEmbedding)
+      .filter(
+        (e): e is number[] => e !== null && e !== undefined && e.length > 0
+      ) ?? [];
+  embeddings.push(...projectEmbeddings);
+
+  // Add summary embedding if available
+  if (
+    resume.basics.summaryEmbedding &&
+    resume.basics.summaryEmbedding.length > 0
+  ) {
+    embeddings.push(resume.basics.summaryEmbedding);
+  }
+
+  return embeddings;
+}
+
+// Weights for final composite score
+const FINAL_WEIGHTS = {
+  embedding: 0.4, // semantic JD ↔ resume match
+  skills: 0.35, // skill depth + months + level bonus
+  experience: 0.15, // industry seniority
+  education: 0.05, // degree + relevance
+  quality: 0.05, // resume quality / reliability
+};
+
+// Helper function to calculate average max similarity score (top 60% only)
+function calculateEmbeddingSimilarity(
+  jdEmbeddings: number[][],
+  resumeEmbeddings: number[][]
+): number {
+  if (resumeEmbeddings.length === 0 || jdEmbeddings.length === 0) {
+    return 0;
+  }
+
+  const responsibilityScores: number[] = [];
+
+  // Collect all max similarity scores for each JD responsibility
+  for (const jdEmbedding of jdEmbeddings) {
+    const similarities = cosineSimilarityBatchNormalized(
+      jdEmbedding,
+      resumeEmbeddings
+    );
+    const maxSimilarity = Math.max(...similarities, 0);
+    responsibilityScores.push(maxSimilarity);
+  }
+
+  // Sort scores in descending order to get the highest matches
+  responsibilityScores.sort((a, b) => b - a);
+
+  // Take only the top 60% of responsibilities
+  const top60PercentCount = Math.ceil(responsibilityScores.length * 0.6);
+  const topScores = responsibilityScores.slice(0, top60PercentCount);
+
+  // Calculate average of top 60%
+  const averageScore =
+    topScores.reduce((sum, score) => sum + score, 0) / topScores.length;
+
+  return averageScore;
+}
+
+// Calculate composite final score using weighted combination of all signals
+function calculateFinalScore(
+  embeddingScore: number,
+  skillScore: number,
+  experienceScore: number,
+  educationScore: number,
+  qualityScore: number
+): number {
+  const finalScore =
+    embeddingScore * FINAL_WEIGHTS.embedding +
+    skillScore * FINAL_WEIGHTS.skills +
+    experienceScore * FINAL_WEIGHTS.experience +
+    educationScore * FINAL_WEIGHTS.education +
+    qualityScore * FINAL_WEIGHTS.quality;
+
+  return finalScore;
+}
+
 // Main execution
 async function main() {
   const allResumes = await loadAllResumes(RESUME_DIR);
-  const score: { resumeId: string; score: number }[] = [];
+  const candidateScores: { resumeId: string; score: number }[] = [];
   console.log(allResumes.length, "resumes loaded");
 
   for (const resume of allResumes) {
@@ -395,39 +665,31 @@ async function main() {
       must: [
         {
           name: "nodejs",
-          minLevel: "intermediate",
           minMonthsExperience: 4,
           maxMonthsSinceLastUse: 24,
         },
         {
           name: "react",
-          minLevel: "intermediate",
           minMonthsExperience: 3,
           maxMonthsSinceLastUse: 24,
         },
       ],
-      optional: [
-        { name: "nodejs", minLevel: "intermediate" },
-        { name: "AWS", minLevel: "expert" },
-      ],
+      optional: [{ name: "nodejs" }, { name: "AWS" }],
       minOptionalRequired: 1,
       either: [
         [
           {
             name: "postgresql",
-            minLevel: "novice",
             minMonthsExperience: 6,
             maxMonthsSinceLastUse: 24,
           },
           {
             name: "Azure",
-            minLevel: "intermediate",
             minMonthsExperience: 6,
             maxMonthsSinceLastUse: 24,
           },
           {
             name: "Aws",
-            minLevel: "intermediate",
             minMonthsExperience: 6,
             maxMonthsSinceLastUse: 24,
           },
@@ -443,63 +705,108 @@ async function main() {
 
     console.log(resume.basics.name.value);
 
+    // Define job responsibilities for semantic matching
     const RESPONSIBILITIES = [
-      "Design, develop, and maintain scalable server-side applications and services using PHP and Laravel framework",
-      "Architect and implement RESTful APIs with authentication, validation, and documentation",
-      "Define and enforce database schemas, migrations, and efficient query patterns using Eloquent ORM or raw SQL",
-      "Write clean, modular, secure, and testable code conforming to PSR standards and framework best practices",
-      "Develop and maintain automated unit, feature, and integration tests using PHPUnit and Laravel testing tools",
-      "Perform code reviews, enforce coding standards, and mentor peers on framework usage and engineering practices",
-      "Optimize application performance, caching strategies, and asynchronous workflows (queues, jobs, events)",
-      "Identify, debug, and resolve production defects, security vulnerabilities, and performance bottlenecks",
-      "Integrate third-party APIs, external services, and payment gateways with robust error handling",
-      "Collaborate with front-end teams to integrate UI components and ensure seamless data exchange and UX consistency",
-      "Participate in architecture discussions, sprint planning, technical design reviews, and daily agile ceremonies",
-      "Implement secure session management, authentication/authorization flows, and apply OWASP security best practices",
-      "Configure and maintain CI/CD pipelines, deployment scripts, and environment-specific configurations",
-      "Document system design, API specifications, deployment processes, and operational procedures",
+      "Develop and maintain web applications using modern JavaScript frameworks (e.g., React, Next.js, Node.js)",
+      "Build and consume RESTful APIs with proper validation, authentication, and error handling",
+      "Work with databases (SQL or NoSQL) to design schemas, write queries, and manage data efficiently",
+      "Write clean, readable, and maintainable code following best practices and team conventions",
+      "Collaborate with designers and front-end developers to implement responsive and user-friendly interfaces",
+      "Integrate third-party APIs and external services as required by the application",
+      "Participate in debugging, testing, and fixing issues across the full stack",
+      "Use version control (Git) and follow basic code review and collaboration workflows",
+      "Optimize application performance and ensure reasonable scalability",
+      "Assist in deploying applications and understanding basic CI/CD and environment configurations",
+      "Document features, APIs, and implementation details when needed",
+      "Collaborate with the team in planning, stand-ups, and general development discussions",
     ];
+
+    // Required education (same as gate)
+    const requiredDegrees = ["bachelors", "masters"];
+    const requiredEducationFields = [
+      "software",
+      "computer science",
+      "computer engineering",
+      "information technology",
+      "computer application",
+    ];
+
+    // Generate embeddings for job responsibilities
     const jdEmbeddings = await embedTexts(RESPONSIBILITIES);
-    const resumeEmbeddings: number[][] = [];
-    resumeEmbeddings.push(
-      ...(resume.workExperience
-        ?.flatMap((we) => we.responsibilitiesEmbeddings || [])
-        .filter((e) => e && e.length > 0) ?? [])
+
+    // Collect all relevant resume embeddings
+    const resumeEmbeddings = collectResumeEmbeddings(resume);
+
+    // Calculate semantic similarity score
+    const embeddingSimilarityScore = calculateEmbeddingSimilarity(
+      jdEmbeddings,
+      resumeEmbeddings
     );
-    resumeEmbeddings.push(
-      ...(resume.projects
-        ?.flatMap((p) =>
-          p.descriptionEmbedding ? [p.descriptionEmbedding] : []
-        )
-        .filter((e) => e && e.length > 0) ?? [])
+
+    // Calculate all normalized component scores
+    const skillScore = skillScoreNormalized(resume?.skills ?? [], jdSkills);
+    const experienceScore = industryExperienceScoreNormalized(resume);
+    const educationScore = educationScoreNormalized(
+      resume?.education ?? [],
+      requiredDegrees,
+      requiredEducationFields
     );
-    if (
-      resume.basics.summaryEmbedding &&
-      resume.basics.summaryEmbedding.length > 0
-    ) {
-      resumeEmbeddings.push(resume.basics.summaryEmbedding);
-    }
-    resumeEmbeddings.push(
-      ...resume.projects
-        .map((p) => p.descriptionEmbedding)
-        .filter(
-          (e): e is number[] => e !== null && e !== undefined && e.length > 0
-        )
+    const qualityScore = qualityScoreNormalized(resume);
+
+    // Calculate final composite score
+    const finalScore = calculateFinalScore(
+      embeddingSimilarityScore,
+      skillScore,
+      experienceScore,
+      educationScore,
+      qualityScore
     );
-    let currentSum = 0;
-    for (const responsibilityEmbeddingJd of jdEmbeddings) {
-      const similarities = cosineSimilarityBatchNormalized(
-        responsibilityEmbeddingJd,
-        resumeEmbeddings.filter(
-          (e) => e !== null && e !== undefined
-        ) as number[][]
-      );
-      currentSum += Math.max(...similarities, 0);
-    }
-    const score = currentSum / jdEmbeddings.length;
-    console.log("Embedding Similarity Score:", score.toFixed(4));
+
+    console.log(`\n=== ${resume.basics.name.value} ===`);
+    console.log(
+      "  Embedding:  ",
+      embeddingSimilarityScore.toFixed(4),
+      `(${(embeddingSimilarityScore * FINAL_WEIGHTS.embedding).toFixed(4)})`
+    );
+    console.log(
+      "  Skills:     ",
+      skillScore.toFixed(4),
+      `(${(skillScore * FINAL_WEIGHTS.skills).toFixed(4)})`
+    );
+    console.log(
+      "  Experience: ",
+      experienceScore.toFixed(4),
+      `(${(experienceScore * FINAL_WEIGHTS.experience).toFixed(4)})`
+    );
+    console.log(
+      "  Education:  ",
+      educationScore.toFixed(4),
+      `(${(educationScore * FINAL_WEIGHTS.education).toFixed(4)})`
+    );
+    console.log(
+      "  Quality:    ",
+      qualityScore.toFixed(4),
+      `(${(qualityScore * FINAL_WEIGHTS.quality).toFixed(4)})`
+    );
+    console.log("  FINAL SCORE:", finalScore.toFixed(4));
+
+    // Store the candidate score
+    candidateScores.push({
+      resumeId: resume.basics.name.value,
+      score: finalScore,
+    });
   }
-  console.log("Final Scores:", score);
+
+  // Sort by score descending
+  candidateScores.sort((a, b) => b.score - a.score);
+
+  console.log("\n=== FINAL RANKINGS ===");
+  candidateScores.forEach((candidate, index) => {
+    console.log(
+      `${index + 1}. ${candidate.resumeId}: ${candidate.score.toFixed(4)}`
+    );
+  });
+  console.log("\nFinal Scores:", candidateScores);
 }
 
 main().catch(console.error);
