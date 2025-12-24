@@ -5,7 +5,6 @@ const pdfjsLib = await import("pdfjs-dist/legacy/build/pdf.mjs");
 import crypto from "crypto";
 import { resumePrompt } from "./utils/prompts.js";
 import type { ParsedResume } from "./types/resume.js";
-import resumeData from "./resumeData.js";
 
 dotenv.config();
 
@@ -15,17 +14,18 @@ const getEnv = (key: string): string | undefined => {
   return process.env[key];
 };
 
-// OpenRouter API Key
-const OPENROUTER_API_KEY = getEnv("OPENROUTER_API_KEY");
+// Gemini API Key
+const GEMINI_API_KEY_RAW = getEnv("GEMINI_API_KEY");
+
+if (!GEMINI_API_KEY_RAW) {
+  throw new Error("GEMINI_API_KEY is not set");
+}
+
+const GEMINI_API_KEY: string = GEMINI_API_KEY_RAW;
+
+console.log("✓ Gemini API key found");
 
 const HF_TOKEN = getEnv("HF_TOKEN");
-
-// OpenRouter token check
-if (OPENROUTER_API_KEY) {
-  console.log("✓ OpenRouter API key found");
-} else {
-  throw new Error("OPENROUTER_API_KEY is not set");
-}
 
 // HF token check
 if (HF_TOKEN) {
@@ -151,22 +151,26 @@ export async function extractResumeWithLLM(
   return generateWithApiKeyFallback(resumeParsingPrompt);
 }
 
-async function callOpenRouter(
+async function callGemini(
   prompt: string,
-  model: string = "google/gemini-2.0-flash-exp:free"
+  apiKey: string,
+  model: string = "gemini-1.5-flash"
 ): Promise<string> {
-  const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+
+  const res = await fetch(url, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${OPENROUTER_API_KEY}`,
     },
     body: JSON.stringify({
-      model: model,
-      messages: [
+      contents: [
         {
-          role: "user",
-          content: prompt,
+          parts: [
+            {
+              text: prompt,
+            },
+          ],
         },
       ],
     }),
@@ -178,17 +182,19 @@ async function callOpenRouter(
   }
 
   const json = (await res.json()) as {
-    choices?: Array<{
-      message?: {
-        content?: string;
+    candidates?: Array<{
+      content?: {
+        parts?: Array<{
+          text?: string;
+        }>;
       };
     }>;
   };
 
-  const text = json.choices?.[0]?.message?.content;
+  const text = json.candidates?.[0]?.content?.parts?.[0]?.text;
 
   if (!text) {
-    throw new Error("No text content in OpenRouter response");
+    throw new Error("No text content in Gemini response");
   }
 
   return text;
@@ -197,60 +203,26 @@ async function callOpenRouter(
 async function generateWithApiKeyFallback(
   prompt: string
 ): Promise<ParsedResume> {
-  let lastError: unknown = null;
+  const model = "gemini-2.5-flash";
 
-  // Model options from OpenRouter (free and paid)
-  const models = [
-    "google/gemini-2.0-flash-exp:free",
-    "google/gemini-1.5-flash-exp:free",
-    "google/gemini-1.5-pro",
-  ];
+  let responseText = await callGemini(prompt, GEMINI_API_KEY, model);
 
-  for (const model of models) {
-    try {
-      const responseText = await callOpenRouter(prompt, model);
-
-      if (!responseText) {
-        throw new Error("Empty response from OpenRouter");
-      }
-
-      const parsed = JSON.parse(responseText) as ParsedResume;
-
-      return parsed;
-    } catch (err: any) {
-      lastError = err;
-
-      const message = String(err?.message ?? err);
-
-      const isRateLimit =
-        message.includes("429") ||
-        message.toLowerCase().includes("rate") ||
-        message.toLowerCase().includes("quota") ||
-        message.toLowerCase().includes("resource exhausted");
-
-      const isModelNotAvailable =
-        message.includes("not found") ||
-        message.includes("not available") ||
-        message.includes("INVALID_ARGUMENT");
-
-      if (err instanceof SyntaxError) {
-        console.error(`✗ JSON parsing failed with model ${model}`);
-        throw err;
-      }
-
-      if (isModelNotAvailable) {
-        continue;
-      }
-
-      if (!isRateLimit) {
-        throw err;
-      }
-    }
+  if (!responseText) {
+    throw new Error("Empty response from Gemini");
   }
 
-  throw new Error(
-    "All OpenRouter models exhausted. Last error: " + String(lastError)
-  );
+  // Remove markdown code blocks if present (```json ... ``` or ``` ... ```)
+  if (responseText.startsWith("```json")) {
+    responseText = responseText
+      .replace(/^```json\s*/, "")
+      .replace(/\s*```$/, "");
+  } else if (responseText.startsWith("```")) {
+    responseText = responseText.replace(/^```\s*/, "").replace(/\s*```$/, "");
+  }
+
+  const parsed = JSON.parse(responseText) as ParsedResume;
+
+  return parsed;
 }
 
 // ---------------------Add neta data to parsed resume ----------------------//
@@ -442,18 +414,34 @@ async function main() {
         // STEP 2: Extract metadata
         const metadata = extractMetadata(resumeText, file.originalName);
 
+        // STEP 2.5: Check if resume with this hash already exists
+        const EXPORT_DIR = "./resumes/parsed";
+        const existingFilePath = path.join(
+          EXPORT_DIR,
+          `${metadata.fileHash}.json`
+        );
+
+        if (fs.existsSync(existingFilePath)) {
+          console.log(
+            `⚠ Resume with hash ${metadata.fileHash} already exists. Skipping...`
+          );
+          continue;
+        }
+
         // STEP 3: Extract resume with LLM
         const resumeDataId = metadata.fileName.split(".")[0];
         if (!resumeDataId) {
           continue;
         }
-        let parsedResume = resumeData[resumeDataId];
-        if (!parsedResume) {
-          continue;
-        }
+
+        let parsedResume: ParsedResume;
+
+        console.log(`Resume ID ${resumeDataId}: Using LLM extraction`);
+        parsedResume = await extractResumeWithLLM(resumeText);
 
         // STEP 4: Add metadata to parsed resume
         parsedResume = addMetadataToResume(parsedResume, metadata);
+        console.log(parsedResume);
 
         // STEP 5: Generate embeddings for text fields
         parsedResume = await generateEmbeddingsForResume(parsedResume);
