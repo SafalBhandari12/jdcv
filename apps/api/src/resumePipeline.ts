@@ -148,14 +148,16 @@ export async function extractResumeWithLLM(
   console.log("Sending resume text to Gemini API for parsing...");
   console.log(`Prompt size: ${resumeParsingPrompt.length} characters\n`);
 
-  return generateWithApiKeyFallback(resumeParsingPrompt);
+  const { parsedResume } =
+    await generateWithApiKeyFallback(resumeParsingPrompt);
+  return parsedResume;
 }
 
 async function callGemini(
   prompt: string,
   apiKey: string,
   model: string = "gemini-1.5-flash"
-): Promise<string> {
+): Promise<{ text: string; cost: number }> {
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
 
   const res = await fetch(url, {
@@ -189,6 +191,10 @@ async function callGemini(
         }>;
       };
     }>;
+    usageMetadata?: {
+      promptTokenCount?: number;
+      candidatesTokenCount?: number;
+    };
   };
 
   const text = json.candidates?.[0]?.content?.parts?.[0]?.text;
@@ -197,32 +203,47 @@ async function callGemini(
     throw new Error("No text content in Gemini response");
   }
 
-  return text;
+  // Calculate cost based on Gemini pricing
+  // Gemini 2.5 Flash: $0.075 per 1M input tokens, $0.30 per 1M output tokens
+  const promptTokens = json.usageMetadata?.promptTokenCount ?? 0;
+  const outputTokens = json.usageMetadata?.candidatesTokenCount ?? 0;
+  const inputCost = (promptTokens / 1_000_000) * 0.075;
+  const outputCost = (outputTokens / 1_000_000) * 0.3;
+  const totalCost = inputCost + outputCost;
+
+  return { text, cost: totalCost };
 }
 
 async function generateWithApiKeyFallback(
   prompt: string
-): Promise<ParsedResume> {
+): Promise<{ parsedResume: ParsedResume; cost: number }> {
   const model = "gemini-2.5-flash";
 
-  let responseText = await callGemini(prompt, GEMINI_API_KEY, model);
+  const { text: responseText, cost } = await callGemini(
+    prompt,
+    GEMINI_API_KEY,
+    model
+  );
 
   if (!responseText) {
     throw new Error("Empty response from Gemini");
   }
 
   // Remove markdown code blocks if present (```json ... ``` or ``` ... ```)
-  if (responseText.startsWith("```json")) {
-    responseText = responseText
+  let cleanedResponse = responseText;
+  if (cleanedResponse.startsWith("```json")) {
+    cleanedResponse = cleanedResponse
       .replace(/^```json\s*/, "")
       .replace(/\s*```$/, "");
-  } else if (responseText.startsWith("```")) {
-    responseText = responseText.replace(/^```\s*/, "").replace(/\s*```$/, "");
+  } else if (cleanedResponse.startsWith("```")) {
+    cleanedResponse = cleanedResponse
+      .replace(/^```\s*/, "")
+      .replace(/\s*```$/, "");
   }
 
-  const parsed = JSON.parse(responseText) as ParsedResume;
+  const parsed = JSON.parse(cleanedResponse) as ParsedResume;
 
-  return parsed;
+  return { parsedResume: parsed, cost };
 }
 
 // ---------------------Add neta data to parsed resume ----------------------//
@@ -246,7 +267,21 @@ const API_URL =
 if (!HF_TOKEN) {
   throw new Error("HF_TOKEN is not set");
 }
+
 type Embedding = number[];
+
+// Track cumulative costs
+let totalGeminiCost = 0;
+let totalHFCost = 0;
+
+export function getCosts() {
+  return { gemini: totalGeminiCost, hf: totalHFCost };
+}
+
+export function resetCosts() {
+  totalGeminiCost = 0;
+  totalHFCost = 0;
+}
 
 export async function embedTexts(texts: string[]): Promise<Embedding[]> {
   const response = await fetch(API_URL, {
@@ -262,6 +297,10 @@ export async function embedTexts(texts: string[]): Promise<Embedding[]> {
     const err = await response.text();
     throw new Error(`HF API error ${response.status}: ${err}`);
   }
+
+  // Estimate HuggingFace cost (approximately $0.000002 per request)
+  const estimatedHFCost = 0.000002 * texts.length;
+  totalHFCost += estimatedHFCost;
 
   return (await response.json()) as Embedding[];
 }
@@ -405,6 +444,11 @@ async function main() {
     const resumeFiles = uploadResumesFromDir("./resumes/resumes");
     console.log(resumeFiles);
 
+    let processedCount = 0;
+    let skippedCount = 0;
+    totalGeminiCost = 0;
+    totalHFCost = 0;
+
     for (const file of resumeFiles) {
       console.log(`Processing: ${file.originalName}`);
 
@@ -425,6 +469,7 @@ async function main() {
           console.log(
             `⚠ Resume with hash ${metadata.fileHash} already exists. Skipping...`
           );
+          skippedCount++;
           continue;
         }
 
@@ -435,13 +480,17 @@ async function main() {
         }
 
         let parsedResume: ParsedResume;
+        let geminiCost = 0;
 
         console.log(`Resume ID ${resumeDataId}: Using LLM extraction`);
-        parsedResume = await extractResumeWithLLM(resumeText);
+        const { parsedResume: parsed, cost } =
+          await generateWithApiKeyFallback(resumeText);
+        parsedResume = parsed;
+        geminiCost = cost;
+        totalGeminiCost += geminiCost;
 
         // STEP 4: Add metadata to parsed resume
         parsedResume = addMetadataToResume(parsedResume, metadata);
-        console.log(parsedResume);
 
         // STEP 5: Generate embeddings for text fields
         parsedResume = await generateEmbeddingsForResume(parsedResume);
@@ -450,19 +499,30 @@ async function main() {
         displayAndExportParsedResume(parsedResume, metadata.fileHash);
 
         console.log(`✓ COMPLETED: ${file.originalName}`);
+        console.log(`  Gemini Cost: $${geminiCost.toFixed(6)}`);
+        processedCount++;
       } catch (fileError) {
         console.error(`✗ Error: ${fileError}`);
       }
     }
 
+    console.log("\n" + "=".repeat(60));
     console.log("✓ PIPELINE COMPLETED");
+    console.log("=".repeat(60));
+    console.log(`Resumes Processed: ${processedCount}`);
+    console.log(`Resumes Skipped: ${skippedCount}`);
+    console.log(`\n📊 COST SUMMARY:`);
+    console.log(`  Total Gemini Cost: $${totalGeminiCost.toFixed(6)}`);
+    console.log(`  Total HuggingFace Cost: $${totalHFCost.toFixed(6)}`);
+    console.log(`  Total Cost: $${(totalGeminiCost + totalHFCost).toFixed(6)}`);
+    console.log("=".repeat(60));
   } catch (err) {
     console.error("✗ Fatal error:", err);
     process.exit(1);
   }
 }
 
-// main().catch((err) => {
-//   console.error("✗ Error:", err);
-//   process.exit(1);
-// });
+main().catch((err) => {
+  console.error("✗ Error:", err);
+  process.exit(1);
+});

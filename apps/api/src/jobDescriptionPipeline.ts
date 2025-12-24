@@ -336,6 +336,14 @@ function educationScoreNormalized(
   return score;
 }
 
+// Helper function to normalize skill names by removing dots and converting to lowercase
+function normalizeSkillName(name: string): string {
+  return (name ?? "")
+    .toLowerCase()
+    .replace(/\./g, "") // Remove dots (e.g., "node.js" → "nodejs")
+    .replace(/\s+/g, ""); // Remove spaces
+}
+
 const SKILL_LEVEL_RANK: { [key: string]: number } = {
   novice: 1,
   intermediate: 2,
@@ -387,13 +395,13 @@ function matchSkill(
 function skillGate(candidateSkills: Skill[], jdSkills: JDSkills): boolean {
   const lookUp: { [key: string]: Skill } = {};
   for (const skill of candidateSkills) {
-    const normalizedName = (skill?.normalizedName ?? "").toLowerCase();
+    const normalizedName = normalizeSkillName(skill?.normalizedName ?? "");
     lookUp[normalizedName] = skill;
   }
 
   // Compulsory Fields
   for (const req of jdSkills.must ?? []) {
-    const skillName = req.name.toLowerCase();
+    const skillName = normalizeSkillName(req.name);
     if (!(skillName in lookUp)) {
       return false;
     }
@@ -406,7 +414,7 @@ function skillGate(candidateSkills: Skill[], jdSkills: JDSkills): boolean {
   // Optional Fields
   let optionalCount = 0;
   for (const req of jdSkills.optional ?? []) {
-    const skillName = req.name.toLowerCase();
+    const skillName = normalizeSkillName(req.name);
     if (skillName in lookUp) {
       const candidateSkill = lookUp[skillName];
       if (candidateSkill && matchSkill(candidateSkill, req)) {
@@ -422,7 +430,7 @@ function skillGate(candidateSkills: Skill[], jdSkills: JDSkills): boolean {
   for (const eitherSkills of jdSkills.either ?? []) {
     let eitherMatched = false;
     for (const skill of eitherSkills ?? []) {
-      const normalizedSkillName = skill.name.toLowerCase();
+      const normalizedSkillName = normalizeSkillName(skill.name);
       if (normalizedSkillName in lookUp) {
         const candidateSkill = lookUp[normalizedSkillName];
         if (!candidateSkill) {
@@ -451,7 +459,7 @@ function skillScoreNormalized(
 
   const lookup: Record<string, Skill> = {};
   for (const s of candidateSkills) {
-    lookup[(s.normalizedName ?? "").toLowerCase()] = s;
+    lookup[normalizeSkillName(s.normalizedName ?? "")] = s;
   }
 
   let rawScore = 0;
@@ -460,7 +468,7 @@ function skillScoreNormalized(
 
   // ---------- MUST skills ----------
   for (const req of jdSkills.must ?? []) {
-    const skill = lookup[req.name.toLowerCase()];
+    const skill = lookup[normalizeSkillName(req.name)];
     if (!skill) continue;
 
     const levelRank = SKILL_LEVEL_RANK[skill.computedLevel ?? "novice"] ?? 1;
@@ -477,7 +485,7 @@ function skillScoreNormalized(
 
   // ---------- OPTIONAL skills ----------
   for (const req of jdSkills.optional ?? []) {
-    const skill = lookup[req.name.toLowerCase()];
+    const skill = lookup[normalizeSkillName(req.name)];
     if (!skill) continue;
 
     const levelRank = SKILL_LEVEL_RANK[skill.computedLevel ?? "novice"] ?? 1;
@@ -492,11 +500,13 @@ function skillScoreNormalized(
 
   // ---------- OTHER skills (weak signal) ----------
   for (const skill of candidateSkills) {
-    const name = (skill.normalizedName ?? "").toLowerCase();
+    const name = normalizeSkillName(skill.normalizedName ?? "");
 
     const counted =
-      (jdSkills.must ?? []).some((r) => r.name.toLowerCase() === name) ||
-      (jdSkills.optional ?? []).some((r) => r.name.toLowerCase() === name);
+      (jdSkills.must ?? []).some((r) => normalizeSkillName(r.name) === name) ||
+      (jdSkills.optional ?? []).some(
+        (r) => normalizeSkillName(r.name) === name
+      );
 
     if (counted) continue;
 
@@ -624,6 +634,23 @@ function calculateFinalScore(
 
   return finalScore;
 }
+const firstTime = Date.now();
+const RESPONSIBILITIES = [
+  "Develop and maintain web applications using modern JavaScript frameworks (e.g., React, Next.js, Node.js)",
+  "Build and consume RESTful APIs with proper validation, authentication, and error handling",
+  "Work with databases (SQL or NoSQL) to design schemas, write queries, and manage data efficiently",
+  "Write clean, readable, and maintainable code following best practices and team conventions",
+  "Collaborate with designers and front-end developers to implement responsive and user-friendly interfaces",
+  "Integrate third-party APIs and external services as required by the application",
+  "Participate in debugging, testing, and fixing issues across the full stack",
+  "Use version control (Git) and follow basic code review and collaboration workflows",
+  "Optimize application performance and ensure reasonable scalability",
+  "Assist in deploying applications and understanding basic CI/CD and environment configurations",
+  "Document features, APIs, and implementation details when needed",
+  "Collaborate with the team in planning, stand-ups, and general development discussions",
+];
+const jdEmbeddings = await embedTexts(RESPONSIBILITIES);
+console.log("JD embeddings generated in", Date.now() - firstTime, "ms");
 
 // Main execution
 async function main() {
@@ -709,20 +736,6 @@ async function main() {
     console.log(resume.basics.name.value);
 
     // Define job responsibilities for semantic matching
-    const RESPONSIBILITIES = [
-      "Develop and maintain web applications using modern JavaScript frameworks (e.g., React, Next.js, Node.js)",
-      "Build and consume RESTful APIs with proper validation, authentication, and error handling",
-      "Work with databases (SQL or NoSQL) to design schemas, write queries, and manage data efficiently",
-      "Write clean, readable, and maintainable code following best practices and team conventions",
-      "Collaborate with designers and front-end developers to implement responsive and user-friendly interfaces",
-      "Integrate third-party APIs and external services as required by the application",
-      "Participate in debugging, testing, and fixing issues across the full stack",
-      "Use version control (Git) and follow basic code review and collaboration workflows",
-      "Optimize application performance and ensure reasonable scalability",
-      "Assist in deploying applications and understanding basic CI/CD and environment configurations",
-      "Document features, APIs, and implementation details when needed",
-      "Collaborate with the team in planning, stand-ups, and general development discussions",
-    ];
 
     // Required education (same as gate)
     const requiredDegrees = ["bachelors", "masters"];
@@ -735,7 +748,6 @@ async function main() {
     ];
 
     // Generate embeddings for job responsibilities
-    const jdEmbeddings = await embedTexts(RESPONSIBILITIES);
 
     // Collect all relevant resume embeddings
     const resumeEmbeddings = collectResumeEmbeddings(resume);

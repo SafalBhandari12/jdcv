@@ -337,6 +337,14 @@ export function educationScoreNormalized(
   return score;
 }
 
+// Helper function to normalize skill names by removing dots and converting to lowercase
+function normalizeSkillName(name: string): string {
+  return (name ?? "")
+    .toLowerCase()
+    .replace(/\./g, "") // Remove dots (e.g., "node.js" → "nodejs")
+    .replace(/\s+/g, ""); // Remove spaces
+}
+
 function matchSkill(
   skill: Skill,
   req: SkillRequirement,
@@ -368,12 +376,12 @@ export function skillGate(
 ): boolean {
   const lookUp: { [key: string]: Skill } = {};
   for (const skill of candidateSkills) {
-    const normalizedName = (skill?.normalizedName ?? "").toLowerCase();
+    const normalizedName = normalizeSkillName(skill?.normalizedName ?? "");
     lookUp[normalizedName] = skill;
   }
 
   for (const req of jdSkills.must ?? []) {
-    const skillName = req.name.toLowerCase();
+    const skillName = normalizeSkillName(req.name);
     if (!(skillName in lookUp)) {
       return false;
     }
@@ -385,7 +393,7 @@ export function skillGate(
 
   let optionalCount = 0;
   for (const req of jdSkills.optional ?? []) {
-    const skillName = req.name.toLowerCase();
+    const skillName = normalizeSkillName(req.name);
     if (skillName in lookUp) {
       const candidateSkill = lookUp[skillName];
       if (candidateSkill && matchSkill(candidateSkill, req)) {
@@ -400,7 +408,7 @@ export function skillGate(
   for (const eitherSkills of jdSkills.either ?? []) {
     let eitherMatched = false;
     for (const skill of eitherSkills ?? []) {
-      const normalizedSkillName = skill.name.toLowerCase();
+      const normalizedSkillName = normalizeSkillName(skill.name);
       if (normalizedSkillName in lookUp) {
         const candidateSkill = lookUp[normalizedSkillName];
         if (!candidateSkill) {
@@ -429,14 +437,14 @@ export function skillScoreNormalized(
 
   const lookup: Record<string, Skill> = {};
   for (const s of candidateSkills) {
-    lookup[(s.normalizedName ?? "").toLowerCase()] = s;
+    lookup[normalizeSkillName(s.normalizedName ?? "")] = s;
   }
 
   let rawScore = 0;
   const INTERMEDIATE_RANK = SKILL_LEVEL_RANK["intermediate"] || 2;
 
   for (const req of jdSkills.must ?? []) {
-    const skill = lookup[req.name.toLowerCase()];
+    const skill = lookup[normalizeSkillName(req.name)];
     if (!skill) continue;
 
     const levelRank = SKILL_LEVEL_RANK[skill.computedLevel ?? "novice"] ?? 1;
@@ -448,7 +456,7 @@ export function skillScoreNormalized(
   }
 
   for (const req of jdSkills.optional ?? []) {
-    const skill = lookup[req.name.toLowerCase()];
+    const skill = lookup[normalizeSkillName(req.name)];
     if (!skill) continue;
 
     const levelRank = SKILL_LEVEL_RANK[skill.computedLevel ?? "novice"] ?? 1;
@@ -460,11 +468,13 @@ export function skillScoreNormalized(
   }
 
   for (const skill of candidateSkills) {
-    const name = (skill.normalizedName ?? "").toLowerCase();
+    const name = normalizeSkillName(skill.normalizedName ?? "");
 
     const counted =
-      (jdSkills.must ?? []).some((r) => r.name.toLowerCase() === name) ||
-      (jdSkills.optional ?? []).some((r) => r.name.toLowerCase() === name);
+      (jdSkills.must ?? []).some((r) => normalizeSkillName(r.name) === name) ||
+      (jdSkills.optional ?? []).some(
+        (r) => normalizeSkillName(r.name) === name
+      );
 
     if (counted) continue;
 
