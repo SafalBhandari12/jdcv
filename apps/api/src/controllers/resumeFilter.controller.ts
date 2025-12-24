@@ -5,8 +5,6 @@ import {
   extractResumeWithLLM,
   addMetadataToResume,
   generateEmbeddingsForResume,
-  getCosts,
-  resetCosts,
 } from "../resumePipeline.js";
 import {
   filterAndScoreResumes,
@@ -65,9 +63,6 @@ export async function uploadAndFilterResumes(
 
     console.log(`Processing ${req.files.length} resume(s)...`);
 
-    // Reset costs for this batch
-    resetCosts();
-
     // Process each uploaded resume
     const parsedResumes: ParsedResume[] = [];
     const processingErrors: Array<{ filename: string; error: string }> = [];
@@ -122,9 +117,6 @@ export async function uploadAndFilterResumes(
 
     console.log(`✓ Filtering complete. ${results.length} candidate(s) passed`);
 
-    // Get cost information
-    const costs = getCosts();
-
     // Return results
     res.status(200).json({
       success: true,
@@ -136,11 +128,6 @@ export async function uploadAndFilterResumes(
         results: results,
         processingErrors:
           processingErrors.length > 0 ? processingErrors : undefined,
-        costs: {
-          geminiUSD: parseFloat(costs.gemini.toFixed(6)),
-          huggingfaceUSD: parseFloat(costs.hf.toFixed(6)),
-          totalUSD: parseFloat((costs.gemini + costs.hf).toFixed(6)),
-        },
       },
     });
   } catch (error) {
